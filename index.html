@@ -454,6 +454,7 @@
         let app;
         let db;
         const ENV_ID = 'xy291-4gf0nj6u43fc7139';
+        let useCloudBase = true; // 是否使用 CloudBase
 
         // 游戏变量
         const canvas = document.getElementById('board');
@@ -475,10 +476,40 @@
                     env: ENV_ID
                 });
                 db = app.database();
+                useCloudBase = true;
                 console.log('CloudBase 初始化成功');
             } catch (error) {
-                console.error('CloudBase 初始化失败:', error);
+                console.error('CloudBase 初始化失败，使用本地存储:', error);
+                useCloudBase = false;
+                initLocalLeaderboard();
             }
+        }
+
+        // 初始化本地排行榜
+        function initLocalLeaderboard() {
+            let leaderboard = localStorage.getItem('gobang_leaderboard');
+            if (!leaderboard) {
+                leaderboard = [];
+                localStorage.setItem('gobang_leaderboard', JSON.stringify(leaderboard));
+            }
+        }
+
+        // 获取本地排行榜
+        function getLocalLeaderboard() {
+            let leaderboard = localStorage.getItem('gobang_leaderboard');
+            return leaderboard ? JSON.parse(leaderboard) : [];
+        }
+
+        // 保存到本地排行榜
+        function saveToLocalLeaderboard(playerData) {
+            let leaderboard = getLocalLeaderboard();
+            const existingIndex = leaderboard.findIndex(p => p.nickname === playerData.nickname);
+            if (existingIndex >= 0) {
+                leaderboard[existingIndex] = playerData;
+            } else {
+                leaderboard.push(playerData);
+            }
+            localStorage.setItem('gobang_leaderboard', JSON.stringify(leaderboard));
         }
 
         // 设置昵称
@@ -506,23 +537,41 @@
         // 加载玩家数据
         async function loadPlayerData() {
             try {
-                const result = await db.collection('gobang_leaderboard')
-                    .where({
-                        nickname: playerNickname
-                    })
-                    .get();
-                
-                if (result.data.length > 0) {
-                    playerData = result.data[0];
-                    updateScoreDisplay();
+                if (useCloudBase) {
+                    const result = await db.collection('gobang_leaderboard')
+                        .where({
+                            nickname: playerNickname
+                        })
+                        .get();
+                    
+                    if (result.data.length > 0) {
+                        playerData = result.data[0];
+                        updateScoreDisplay();
+                    } else {
+                        playerData = {
+                            nickname: playerNickname,
+                            score: 0,
+                            games_played: 0,
+                            games_won: 0,
+                            created_at: new Date().toISOString()
+                        };
+                        updateScoreDisplay();
+                    }
                 } else {
-                    playerData = {
-                        nickname: playerNickname,
-                        score: 0,
-                        games_played: 0,
-                        games_won: 0,
-                        created_at: new Date().toISOString()
-                    };
+                    // 使用本地存储
+                    let leaderboard = getLocalLeaderboard();
+                    const existingPlayer = leaderboard.find(p => p.nickname === playerNickname);
+                    if (existingPlayer) {
+                        playerData = existingPlayer;
+                    } else {
+                        playerData = {
+                            nickname: playerNickname,
+                            score: 0,
+                            games_played: 0,
+                            games_won: 0,
+                            created_at: new Date().toISOString()
+                        };
+                    }
                     updateScoreDisplay();
                 }
             } catch (error) {
@@ -557,16 +606,21 @@
                 playerData.last_played = now.toISOString();
                 playerData.updated_at = now.toISOString();
                 
-                if (playerData._id) {
-                    // 更新现有记录
-                    await db.collection('gobang_leaderboard')
-                        .doc(playerData._id)
-                        .update(playerData);
+                if (useCloudBase) {
+                    if (playerData._id) {
+                        // 更新现有记录
+                        await db.collection('gobang_leaderboard')
+                            .doc(playerData._id)
+                            .update(playerData);
+                    } else {
+                        // 创建新记录
+                        const result = await db.collection('gobang_leaderboard')
+                            .add(playerData);
+                        playerData._id = result.id;
+                    }
                 } else {
-                    // 创建新记录
-                    const result = await db.collection('gobang_leaderboard')
-                        .add(playerData);
-                    playerData._id = result.id;
+                    // 使用本地存储
+                    saveToLocalLeaderboard(playerData);
                 }
                 
                 updateScoreDisplay();
@@ -590,17 +644,26 @@
             table.classList.add('hidden');
             
             try {
-                const result = await db.collection('gobang_leaderboard')
-                    .orderBy('score', 'desc')
-                    .limit(10)
-                    .get();
+                let data = [];
+                if (useCloudBase) {
+                    const result = await db.collection('gobang_leaderboard')
+                        .orderBy('score', 'desc')
+                        .limit(10)
+                        .get();
+                    data = result.data;
+                } else {
+                    // 使用本地存储
+                    data = getLocalLeaderboard();
+                    data.sort((a, b) => b.score - a.score);
+                    data = data.slice(0, 10);
+                }
                 
                 tbody.innerHTML = '';
                 
-                if (result.data.length === 0) {
+                if (data.length === 0) {
                     tbody.innerHTML = '<tr><td colspan="5">暂无排行榜数据</td></tr>';
                 } else {
-                    result.data.forEach((item, index) => {
+                    data.forEach((item, index) => {
                         const row = document.createElement('tr');
                         const rankClass = index < 3 ? `rank-${index + 1}` : '';
                         row.innerHTML = `
