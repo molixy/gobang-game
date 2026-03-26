@@ -1344,6 +1344,8 @@
         let gameTimer = null;
         let gameTime = 0;
         let moveCount = 0;
+        let currentGameScore = 0;
+        let currentReplayGame = null; // 当前回放的棋谱
 
         // 选择游戏模式
         function selectGameMode(mode) {
@@ -2184,11 +2186,14 @@
         function showWinMessage(message) {
             const winMessageEl = document.getElementById('winMessage');
             const config = DIFFICULTY_CONFIG[currentDifficulty];
-            
+
+            // 计算最终得分
+            const finalScore = currentGameScore || Math.floor(config.scoreMultiplier * 100);
+
             const speedBadge = getSpeedBadge(moveCount, gameTime);
             const targetDiff = moveCount <= config.targetSteps && gameTime <= config.targetTime;
             const diffText = targetDiff ? '🎯 达成目标！' : '继续加油！';
-            
+
             winMessageEl.innerHTML = `
                 <div class="result-text">${message}</div>
                 <div class="game-stats">
@@ -2217,7 +2222,7 @@
                         </div>
                         <div class="stat-item">
                             <div class="stat-label">得分</div>
-                            <div class="stat-value" style="color: #ffd700;">+${currentGameScore}</div>
+                            <div class="stat-value" style="color: #ffd700;">+${finalScore}</div>
                         </div>
                     </div>
                     <div style="text-align: center; margin-top: 10px; color: ${targetDiff ? '#4caf50' : '#ff9800'}; font-weight: bold;">
@@ -2231,6 +2236,21 @@
             `;
             winMessageEl.classList.add('show');
             document.getElementById('overlay').classList.add('show');
+        }
+
+        // 获取速度评价徽章
+        function getSpeedBadge(moves, time) {
+            const config = DIFFICULTY_CONFIG[currentDifficulty];
+            const isFast = moves <= config.targetSteps && time <= config.targetTime;
+            const isMedium = moves <= config.targetSteps * 1.5 && time <= config.targetTime * 1.5;
+
+            if (isFast) {
+                return '<span class="speed-badge fast">⚡ 快速</span>';
+            } else if (isMedium) {
+                return '<span class="speed-badge medium">🐢 中等</span>';
+            } else {
+                return '<span class="speed-badge slow">🐌 慢速</span>';
+            }
         }
 
         function hideWinMessage() {
@@ -2381,8 +2401,10 @@
                 savedGames = [];
             }
 
-            gameRecord.date = new Date().toISOString();
-            savedGames.unshift(gameRecord);
+            // 深拷贝当前棋谱,避免引用问题
+            const recordToSave = JSON.parse(JSON.stringify(gameRecord));
+            recordToSave.date = new Date().toISOString();
+            savedGames.unshift(recordToSave);
 
             // 最多保存20个棋谱
             if (savedGames.length > 20) {
@@ -2456,6 +2478,9 @@
         function loadGameForReplay(game) {
             closeRecordPanel();
 
+            // 保存当前回放的棋谱
+            currentReplayGame = game;
+
             // 重置棋盘
             gameBoard = [];
             for (let i = 0; i < BOARD_SIZE; i++) {
@@ -2493,8 +2518,7 @@
         }
 
         function replayNext() {
-            const savedGames = JSON.parse(localStorage.getItem('gobang_saved_games') || '[]');
-            if (replayIndex < savedGames[0].moves.length) {
+            if (currentReplayGame && replayIndex < currentReplayGame.moves.length) {
                 replayIndex++;
                 drawReplayState();
                 updateReplayButtons();
@@ -2502,9 +2526,8 @@
         }
 
         function replayLast() {
-            const savedGames = JSON.parse(localStorage.getItem('gobang_saved_games') || '[]');
-            if (savedGames.length > 0) {
-                replayIndex = savedGames[0].moves.length;
+            if (currentReplayGame) {
+                replayIndex = currentReplayGame.moves.length;
                 drawReplayState();
                 updateReplayButtons();
             }
@@ -2518,11 +2541,9 @@
                 }
             }
 
-            const savedGames = JSON.parse(localStorage.getItem('gobang_saved_games') || '[]');
-            if (savedGames.length > 0) {
-                const game = savedGames[0];
-                for (let i = 0; i < replayIndex && i < game.moves.length; i++) {
-                    const move = game.moves[i];
+            if (currentReplayGame) {
+                for (let i = 0; i < replayIndex && i < currentReplayGame.moves.length; i++) {
+                    const move = currentReplayGame.moves[i];
                     gameBoard[move.row][move.col] = move.color;
                 }
             }
@@ -2531,8 +2552,7 @@
         }
 
         function updateReplayButtons() {
-            const savedGames = JSON.parse(localStorage.getItem('gobang_saved_games') || '[]');
-            const totalMoves = savedGames.length > 0 ? savedGames[0].moves.length : 0;
+            const totalMoves = currentReplayGame ? currentReplayGame.moves.length : 0;
 
             document.getElementById('replayFirst').disabled = replayIndex === 0;
             document.getElementById('replayPrev').disabled = replayIndex === 0;
@@ -2542,9 +2562,15 @@
 
         function exitReplay() {
             isReplaying = false;
+            currentReplayGame = null;
             document.getElementById('replayControls').style.display = 'none';
             document.getElementById('pauseBtn').disabled = false;
-            initGame();
+            document.getElementById('undoBtn').disabled = false;
+
+            // 返回主菜单而不是直接开始新游戏
+            document.getElementById('mainContent').classList.add('hidden');
+            document.getElementById('gameModeSection').classList.remove('hidden');
+            document.getElementById('modeSpecificRules').style.display = 'none';
         }
 
         // 落子动画
