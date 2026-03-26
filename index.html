@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>五子棋对战</title>
-    <script src="https://cdn.jsdelivr.net/npm/@cloudbase/js-sdk@8/dist/cloudbase.js"></script>
     <style>
         * {
             margin: 0;
@@ -141,9 +140,10 @@
 
         .main-content {
             display: grid;
-            grid-template-columns: 1fr auto 1fr;
+            grid-template-columns: 1fr;
             gap: 30px;
             align-items: start;
+            justify-items: center;
         }
 
         /* 左侧面板 - 游戏规则 */
@@ -313,79 +313,6 @@
             transform: translateY(0);
         }
 
-        /* 右侧面板 - 排行榜 */
-        .right-panel {
-            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .right-panel h3 {
-            color: #f57c00;
-            margin-bottom: 15px;
-            font-size: 1.4em;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .leaderboard {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .leaderboard table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9em;
-        }
-
-        .leaderboard th,
-        .leaderboard td {
-            padding: 10px;
-            text-align: center;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .leaderboard th {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        .leaderboard tr:nth-child(even) {
-            background: rgba(255, 255, 255, 0.5);
-        }
-
-        .leaderboard tr:hover {
-            background: rgba(255, 235, 59, 0.3);
-        }
-
-        .leaderboard .rank-1 {
-            color: #FFD700;
-            font-weight: bold;
-            font-size: 1.1em;
-        }
-
-        .leaderboard .rank-2 {
-            color: #C0C0C0;
-            font-weight: bold;
-        }
-
-        .leaderboard .rank-3 {
-            color: #CD7F32;
-            font-weight: bold;
-        }
-
-        .leaderboard .loading {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-        }
-
         /* 获胜提示 */
         .win-message {
             position: fixed;
@@ -513,19 +440,22 @@
         }
 
         /* 响应式设计 */
-        @media (max-width: 1200px) {
-            .main-content {
-                grid-template-columns: 1fr;
-                gap: 20px;
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
             }
 
-            .left-panel,
-            .right-panel {
-                order: 2;
+            h1 {
+                font-size: 2em;
             }
 
-            .center-panel {
-                order: 1;
+            .board {
+                padding: 10px;
+            }
+
+            .board canvas {
+                max-width: 100%;
+                height: auto;
             }
         }
 
@@ -683,6 +613,224 @@
         .pause-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 15px rgba(255, 152, 0, 0.4);
+        }
+
+        /* 悔棋按钮 */
+        .undo-btn {
+            padding: 10px 25px;
+            font-size: 1em;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
+            color: white;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .undo-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(156, 39, 176, 0.4);
+        }
+
+        .undo-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* 倒计时显示 */
+        .countdown-display {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 15px;
+        }
+
+        .countdown-item {
+            padding: 10px 20px;
+            border-radius: 10px;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .countdown-item.black {
+            background: linear-gradient(135deg, #424242 0%, #212121 100%);
+            color: white;
+        }
+
+        .countdown-item.white {
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+            color: #333;
+            border: 1px solid #ccc;
+        }
+
+        .countdown-item h4 {
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+
+        .countdown-item .time {
+            font-size: 1.5em;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+
+        .countdown-item.warning {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* 落子动画 */
+        .piece-animation {
+            animation: pieceDrop 0.3s ease-out;
+        }
+
+        @keyframes pieceDrop {
+            0% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* 获胜连线动画 */
+        .win-line {
+            animation: winLine 0.5s ease-out;
+        }
+
+        @keyframes winLine {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* 粒子效果 */
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            border-radius: 50%;
+            animation: particleFade 0.8s ease-out forwards;
+        }
+
+        @keyframes particleFade {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* 棋谱面板 */
+        .record-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            z-index: 1002;
+            display: none;
+        }
+
+        .record-panel.show {
+            display: block;
+        }
+
+        .record-panel h2 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .record-list {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .record-item {
+            padding: 15px;
+            margin: 10px 0;
+            background: #f5f5f5;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .record-item:hover {
+            background: #e0e0e0;
+            transform: translateX(5px);
+        }
+
+        .record-item .record-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .record-item .record-date {
+            color: #666;
+            font-size: 0.85em;
+        }
+
+        .record-item .record-moves {
+            color: #999;
+            font-size: 0.8em;
+            margin-top: 5px;
+        }
+
+        /* 回放控制 */
+        .replay-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 10px;
+        }
+
+        .replay-btn {
+            padding: 10px 20px;
+            font-size: 0.9em;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .replay-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .replay-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         /* 音乐控制 */
@@ -876,11 +1024,6 @@
         <div class="header">
             <h1>🎮 五子棋对战</h1>
         </div>
-        
-        <div class="nickname-section" id="nicknameSection">
-            <input type="text" id="nicknameInput" placeholder="请输入您的昵称" maxlength="20">
-            <button class="restart-btn" onclick="setNickname()">开始游戏</button>
-        </div>
 
         <!-- 游戏模式选择 -->
         <div class="game-mode-section hidden" id="gameModeSection">
@@ -953,36 +1096,6 @@
                     </ul>
                 </div>
 
-                <div style="margin-bottom: 20px;">
-                    <h4 style="color: #4caf50; margin-bottom: 10px; font-size: 1.1em;">💰 计分规则</h4>
-                    <ul class="rules-list">
-                        <li><strong>胜利：</strong>基础分 100 分 + 难度加成</li>
-                        <li><strong>平局：</strong>得 50 分</li>
-                        <li><strong>失败：</strong>得 10 分（参与奖励）</li>
-                        <li><strong>难度加成：</strong>步数越少、时间越短，得分越高</li>
-                        <li><strong>难度倍数：</strong>简单×1.0 | 中等×1.5 | 困难×2.0</li>
-                    </ul>
-                </div>
-
-                <div style="margin-bottom: 20px;">
-                    <h4 style="color: #9c27b0; margin-bottom: 10px; font-size: 1.1em;">🎮 游戏模式</h4>
-                    <ul class="rules-list">
-                        <li><strong>双人对战：</strong>两人同一设备轮流下棋</li>
-                        <li><strong>人机对战：</strong>单人对抗电脑AI</li>
-                        <li><strong>残局挑战：</strong>破解经典残局提升棋力</li>
-                        <li><strong>暂停功能：</strong>可随时暂停和恢复游戏</li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 style="color: #e91e63; margin-bottom: 10px; font-size: 1.1em;">⏱️ 统计说明</h4>
-                    <ul class="rules-list">
-                        <li><strong>游戏时间：</strong>整局游戏的累计时长</li>
-                        <li><strong>总步数：</strong>双方落子的总次数</li>
-                        <li><strong>独立计时：</strong>黑白棋分别统计步数和时间</li>
-                        <li><strong>难度分：</strong>根据表现实时计算的预估得分</li>
-                    </ul>
-                </div>
 
                 <div id="modeSpecificRules" style="margin-top: 20px; padding: 15px; background: rgba(255, 255, 255, 0.8); border-radius: 8px; display: none;">
                     <h4 style="color: #1976d2; margin-bottom: 10px;">模式说明</h4>
@@ -994,23 +1107,7 @@
             <div class="center-panel">
                 <div class="player-info-bar">
                     <div class="score-box">
-                        <div class="label">玩家</div>
-                        <div class="value" id="playerNickname">--</div>
-                    </div>
-                    <div class="score-box">
-                        <div class="label">总积分</div>
-                        <div class="value" id="totalScore">0</div>
-                    </div>
-                    <div class="score-box">
-                        <div class="label">对战场次</div>
-                        <div class="value" id="totalGames">0</div>
-                    </div>
-                    <div class="score-box">
-                        <div class="label">胜场</div>
-                        <div class="value" id="totalWins">0</div>
-                    </div>
-                    <div class="score-box">
-                        <div class="label">难度</div>
+                        <div class="label">当前难度</div>
                         <div class="value" id="currentDifficulty">--</div>
                     </div>
                 </div>
@@ -1018,6 +1115,18 @@
                 <div class="current-turn">
                     <span class="player black"></span>
                     <span id="currentPlayer">黑棋</span>的回合
+                </div>
+
+                <!-- 倒计时显示 -->
+                <div class="countdown-display" id="countdownDisplay" style="display: none;">
+                    <div class="countdown-item black" id="blackCountdown">
+                        <h4>⚫ 黑棋</h4>
+                        <div class="time" id="blackCountdownTime">30</div>
+                    </div>
+                    <div class="countdown-item white" id="whiteCountdown">
+                        <h4>⚪ 白棋</h4>
+                        <div class="time" id="whiteCountdownTime">30</div>
+                    </div>
                 </div>
                 
                 <!-- 双方统计 -->
@@ -1070,50 +1179,21 @@
                     </div>
                 </div>
 
-                <div style="display: flex; gap: 10px; justify-content: center;">
+                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
                     <button class="pause-btn" onclick="togglePause()" id="pauseBtn">⏸️ 暂停</button>
+                    <button class="undo-btn" onclick="undoMove()" id="undoBtn" disabled>↩️ 悔棋</button>
                     <button class="restart-btn" onclick="restartGame()">🔄 重新开始</button>
+                    <button class="restart-btn" style="background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);" onclick="showRecordPanel()">📜 棋谱</button>
                     <button class="restart-btn" style="background: linear-gradient(135deg, #757575 0%, #616161 100%);" onclick="backToMenu()">🏠 返回主菜单</button>
                 </div>
-            </div>
-            
-            <!-- 右侧：排行榜 -->
-            <div class="right-panel">
-                <h3>🏆 排行榜（前10名）</h3>
-                <div class="leaderboard">
-                    <div class="loading" id="leaderboardLoading">加载中...</div>
-                    <table id="leaderboardTable" class="hidden">
-                        <thead>
-                            <tr>
-                                <th>排名</th>
-                                <th>昵称</th>
-                                <th>积分</th>
-                                <th>场次</th>
-                                <th>胜场</th>
-                            </tr>
-                        </thead>
-                        <tbody id="leaderboardBody">
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div style="margin-top: 30px;">
-                    <h3>📊 最近记录</h3>
-                    <div class="game-records" id="gameRecords">
-                        <table id="gameRecordsTable" class="hidden">
-                            <thead>
-                                <tr>
-                                    <th>难度</th>
-                                    <th>结果</th>
-                                    <th>步数</th>
-                                    <th>用时</th>
-                                </tr>
-                            </thead>
-                            <tbody id="gameRecordsBody">
-                            </tbody>
-                        </table>
-                        <div id="gameRecordsEmpty" style="text-align: center; padding: 20px; color: #999;">暂无记录</div>
-                    </div>
+
+                <!-- 回放控制 -->
+                <div class="replay-controls" id="replayControls" style="display: none;">
+                    <button class="replay-btn" onclick="replayFirst()" id="replayFirst">⏮️</button>
+                    <button class="replay-btn" onclick="replayPrev()" id="replayPrev">◀️ 上一手</button>
+                    <button class="replay-btn" onclick="replayNext()" id="replayNext">下一手 ▶️</button>
+                    <button class="replay-btn" onclick="replayLast()" id="replayLast">⏭️</button>
+                    <button class="replay-btn" onclick="exitReplay()" style="background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);">❌ 退出回放</button>
                 </div>
             </div>
         </div>
@@ -1122,13 +1202,19 @@
     <div class="overlay" id="overlay"></div>
     <div class="win-message" id="winMessage"></div>
 
-    <script>
-        // CloudBase 初始化
-        let app;
-        let db;
-        const ENV_ID = 'xy291-4gf0nj6u43fc7139';
-        let useCloudBase = true; // 是否使用 CloudBase
+    <!-- 棋谱面板 -->
+    <div class="record-panel" id="recordPanel">
+        <h2>📜 棋谱记录</h2>
+        <div class="record-list" id="recordList">
+            <div style="text-align: center; padding: 20px; color: #999;">暂无棋谱记录</div>
+        </div>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button class="restart-btn" onclick="closeRecordPanel()">关闭</button>
+            <button class="restart-btn" style="background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);" onclick="clearAllRecords()">清空记录</button>
+        </div>
+    </div>
 
+    <script>
         // 游戏变量
         const canvas = document.getElementById('board');
         const ctx = canvas.getContext('2d');
@@ -1139,9 +1225,7 @@
         let currentPlayer = 'black';
         let gameBoard = [];
         let gameOver = false;
-        let playerNickname = '';
-        let playerData = null;
-        let gameMode = 'pvp'; // pvp: 双人对战, pve: 人机对战, endgame: 残局挑战
+        let gameMode = 'pvp';
         let isPaused = false;
         let isMusicPlaying = false;
         let backgroundMusic = null;
@@ -1153,6 +1237,29 @@
         let whiteTime = 0;
         let blackTimer = null;
         let whiteTimer = null;
+
+        // 悔棋和历史记录
+        let moveHistory = [];
+        let undoCount = 0;
+        const MAX_UNDO = 3;
+
+        // 倒计时计时器
+        let countdownTime = 30; // 每方30秒
+        let blackCountdown = 30;
+        let whiteCountdown = 30;
+        let countdownTimer = null;
+
+        // 棋谱记录
+        let gameRecord = {
+            gameMode: '',
+            difficulty: '',
+            moves: [],
+            result: '',
+            date: null
+        };
+        let isReplaying = false;
+        let replayIndex = 0;
+        let savedGames = [];
 
         // 残局数据
         const PUZZLES = [
@@ -1234,90 +1341,20 @@
         let gameTimer = null;
         let gameTime = 0;
         let moveCount = 0;
-        let gameRecords = [];
-        let currentGameScore = 0;
-
-        // 初始化 CloudBase
-        async function initCloudBase() {
-            try {
-                app = cloudbase.init({
-                    env: ENV_ID
-                });
-                db = app.database();
-                useCloudBase = true;
-                console.log('CloudBase 初始化成功');
-            } catch (error) {
-                console.error('CloudBase 初始化失败，使用本地存储:', error);
-                useCloudBase = false;
-                initLocalLeaderboard();
-            }
-        }
-
-        // 初始化本地排行榜
-        function initLocalLeaderboard() {
-            let leaderboard = localStorage.getItem('gobang_leaderboard');
-            if (!leaderboard) {
-                leaderboard = [];
-                localStorage.setItem('gobang_leaderboard', JSON.stringify(leaderboard));
-            }
-        }
-
-        // 获取本地排行榜
-        function getLocalLeaderboard() {
-            let leaderboard = localStorage.getItem('gobang_leaderboard');
-            return leaderboard ? JSON.parse(leaderboard) : [];
-        }
-
-        // 保存到本地排行榜
-        function saveToLocalLeaderboard(playerData) {
-            let leaderboard = getLocalLeaderboard();
-            const existingIndex = leaderboard.findIndex(p => p.nickname === playerData.nickname);
-            if (existingIndex >= 0) {
-                leaderboard[existingIndex] = playerData;
-            } else {
-                leaderboard.push(playerData);
-            }
-            localStorage.setItem('gobang_leaderboard', JSON.stringify(leaderboard));
-        }
-
-        // 设置昵称
-        async function setNickname() {
-            const nickname = document.getElementById('nicknameInput').value.trim();
-            if (!nickname) {
-                alert('请输入昵称！');
-                return;
-            }
-
-            playerNickname = nickname;
-            document.getElementById('playerNickname').textContent = nickname;
-            document.getElementById('nicknameSection').classList.add('hidden');
-            document.getElementById('gameModeSection').classList.remove('hidden');
-
-            // 加载玩家数据
-            await loadPlayerData();
-
-            // 加载游戏记录
-            loadGameRecords();
-
-            // 加载排行榜
-            await loadLeaderboard();
-        }
 
         // 选择游戏模式
         function selectGameMode(mode) {
             gameMode = mode;
 
-            // 更新按钮状态
             document.querySelectorAll('.mode-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             document.querySelector(`.mode-btn.${mode}`).classList.add('active');
 
-            // 显示模式信息
             const modeDescriptions = {
-                pvp: '👥 <strong>双人对战模式</strong><br>两个人在同一台设备上轮流下棋，黑棋先手，白棋后手。适合朋友之间对弈切磋，增进友谊，公平竞技。',
-                pve: '🤖 <strong>人机对战模式</strong><br>单人对抗电脑AI，您执黑棋先行，AI执白棋应对。简单模式AI会随机失误，困难模式AI会全力以赴，挑战您的棋力！',
-                endgame: '🧩 <strong>残局挑战模式</strong><br>在给定的残局中找到制胜的一着。每个残局都有特定提示，锻炼您的战术思维和解题能力。'
+                pvp: '👥 <strong>双人对战模式</strong><br>两个人在同一台设备上轮流下棋，黑棋先手，白棋后手。',
+                pve: '🤖 <strong>人机对战模式</strong><br>单人对抗电脑AI，您执黑棋先行，AI执白棋应对。',
+                endgame: '🧩 <strong>残局挑战模式</strong><br>在给定的残局中找到制胜的一着。'
             };
             document.getElementById('modeInfo').innerHTML = modeDescriptions[mode];
         }
@@ -1479,259 +1516,7 @@
             startDualTimer();
         }
 
-        // 加载玩家数据
-        async function loadPlayerData() {
-            try {
-                if (useCloudBase) {
-                    const result = await db.collection('gobang_leaderboard')
-                        .where({
-                            nickname: playerNickname
-                        })
-                        .get();
-                    
-                    if (result.data.length > 0) {
-                        playerData = result.data[0];
-                        updateScoreDisplay();
-                    } else {
-                        playerData = {
-                            nickname: playerNickname,
-                            score: 0,
-                            games_played: 0,
-                            games_won: 0,
-                            created_at: new Date().toISOString()
-                        };
-                        updateScoreDisplay();
-                    }
-                } else {
-                    // 使用本地存储
-                    let leaderboard = getLocalLeaderboard();
-                    const existingPlayer = leaderboard.find(p => p.nickname === playerNickname);
-                    if (existingPlayer) {
-                        playerData = existingPlayer;
-                    } else {
-                        playerData = {
-                            nickname: playerNickname,
-                            score: 0,
-                            games_played: 0,
-                            games_won: 0,
-                            created_at: new Date().toISOString()
-                        };
-                    }
-                    updateScoreDisplay();
-                }
-            } catch (error) {
-                console.error('加载玩家数据失败:', error);
-            }
-        }
 
-        // 更新分数显示
-        function updateScoreDisplay() {
-            document.getElementById('totalScore').textContent = playerData.score;
-            document.getElementById('totalGames').textContent = playerData.games_played;
-            document.getElementById('totalWins').textContent = playerData.games_won;
-        }
-
-        // 加载游戏记录
-        function loadGameRecords() {
-            const records = localStorage.getItem(`gobang_records_${playerNickname}`);
-            gameRecords = records ? JSON.parse(records) : [];
-            displayGameRecords();
-        }
-
-        // 保存游戏记录
-        function saveGameRecord(result) {
-            const record = {
-                difficulty: DIFFICULTY_CONFIG[currentDifficulty].name,
-                result: result,
-                steps: moveCount,
-                time: gameTime,
-                score: currentGameScore,
-                date: new Date().toISOString()
-            };
-            
-            gameRecords.unshift(record);
-            if (gameRecords.length > 20) {
-                gameRecords = gameRecords.slice(0, 20);
-            }
-            
-            localStorage.setItem(`gobang_records_${playerNickname}`, JSON.stringify(gameRecords));
-            displayGameRecords();
-        }
-
-        // 显示游戏记录
-        function displayGameRecords() {
-            const emptyEl = document.getElementById('gameRecordsEmpty');
-            const tableEl = document.getElementById('gameRecordsTable');
-            const tbody = document.getElementById('gameRecordsBody');
-            
-            if (gameRecords.length === 0) {
-                emptyEl.classList.remove('hidden');
-                tableEl.classList.add('hidden');
-                return;
-            }
-            
-            emptyEl.classList.add('hidden');
-            tableEl.classList.remove('hidden');
-            
-            tbody.innerHTML = '';
-            gameRecords.forEach((record, index) => {
-                const row = document.createElement('tr');
-                
-                const resultText = record.result === 'win' ? '🏆 胜' : (record.result === 'lose' ? '💔 败' : '🤝 平');
-                const resultClass = record.result === 'win' ? 'color: #4caf50;' : (record.result === 'lose' ? 'color: #f44336;' : 'color: #ff9800;');
-                
-                const speedBadge = getSpeedBadge(record.steps, record.time);
-                
-                row.innerHTML = `
-                    <td>${record.difficulty}</td>
-                    <td style="${resultClass}">${resultText}</td>
-                    <td>${record.steps}步 ${speedBadge}</td>
-                    <td>${formatTime(record.time)}</td>
-                `;
-                tbody.appendChild(row);
-            });
-        }
-
-        // 获取速度评价
-        function getSpeedBadge(steps, time) {
-            const config = DIFFICULTY_CONFIG[currentDifficulty];
-            const timePerStep = time / steps;
-            
-            if (timePerStep < 5) {
-                return '<span class="speed-badge fast">⚡</span>';
-            } else if (timePerStep < 15) {
-                return '<span class="speed-badge medium">🚀</span>';
-            } else {
-                return '<span class="speed-badge slow">🐢</span>';
-            }
-        }
-
-        // 保存游戏结果
-        async function saveGameResult(winner, isDraw) {
-            try {
-                const now = new Date();
-                const config = DIFFICULTY_CONFIG[currentDifficulty];
-                
-                // 计算基础分数
-                let baseScore = 10; // 失败得分
-                let result = 'lose';
-                let won = false;
-                
-                if (isDraw) {
-                    baseScore = 50; // 平局得分
-                    result = 'draw';
-                } else if (winner === currentPlayer) {
-                    baseScore = 100; // 胜利得分
-                    won = true;
-                    result = 'win';
-                }
-                
-                // 计算难度加成
-                let difficultyBonus = 0;
-                
-                // 步数奖励：步数越少奖励越高
-                if (won && moveCount <= config.targetSteps) {
-                    const stepsBonus = Math.floor((config.targetSteps - moveCount) * 2);
-                    difficultyBonus += stepsBonus;
-                }
-                
-                // 时间奖励：时间越短奖励越高
-                if (won && gameTime <= config.targetTime) {
-                    const timeBonus = Math.floor((config.targetTime - gameTime) / 10);
-                    difficultyBonus += timeBonus;
-                }
-                
-                // 应用难度倍数
-                let finalScore = Math.floor((baseScore + difficultyBonus) * config.scoreMultiplier);
-                currentGameScore = finalScore;
-                
-                playerData.score += finalScore;
-                playerData.games_played += 1;
-                playerData.games_won += won ? 1 : 0;
-                playerData.last_played = now.toISOString();
-                playerData.updated_at = now.toISOString();
-                
-                if (useCloudBase) {
-                    if (playerData._id) {
-                        // 更新现有记录
-                        await db.collection('gobang_leaderboard')
-                            .doc(playerData._id)
-                            .update(playerData);
-                    } else {
-                        // 创建新记录
-                        const result = await db.collection('gobang_leaderboard')
-                            .add(playerData);
-                        playerData._id = result.id;
-                    }
-                } else {
-                    // 使用本地存储
-                    saveToLocalLeaderboard(playerData);
-                }
-                
-                updateScoreDisplay();
-                
-                // 保存游戏记录
-                saveGameRecord(result);
-                
-                // 更新排行榜
-                await loadLeaderboard();
-                
-                console.log('游戏结果已保存，得分:', finalScore);
-            } catch (error) {
-                console.error('保存游戏结果失败:', error);
-            }
-        }
-
-        // 加载排行榜
-        async function loadLeaderboard() {
-            const loading = document.getElementById('leaderboardLoading');
-            const table = document.getElementById('leaderboardTable');
-            const tbody = document.getElementById('leaderboardBody');
-            
-            loading.classList.remove('hidden');
-            table.classList.add('hidden');
-            
-            try {
-                let data = [];
-                if (useCloudBase) {
-                    const result = await db.collection('gobang_leaderboard')
-                        .orderBy('score', 'desc')
-                        .limit(10)
-                        .get();
-                    data = result.data;
-                } else {
-                    // 使用本地存储
-                    data = getLocalLeaderboard();
-                    data.sort((a, b) => b.score - a.score);
-                    data = data.slice(0, 10);
-                }
-                
-                tbody.innerHTML = '';
-                
-                if (data.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="5">暂无排行榜数据</td></tr>';
-                } else {
-                    data.forEach((item, index) => {
-                        const row = document.createElement('tr');
-                        const rankClass = index < 3 ? `rank-${index + 1}` : '';
-                        row.innerHTML = `
-                            <td class="${rankClass}">${index + 1}</td>
-                            <td>${item.nickname}</td>
-                            <td>${item.score}</td>
-                            <td>${item.games_played}</td>
-                            <td>${item.games_won}</td>
-                        `;
-                        tbody.appendChild(row);
-                    });
-                }
-                
-                loading.classList.add('hidden');
-                table.classList.remove('hidden');
-            } catch (error) {
-                console.error('加载排行榜失败:', error);
-                loading.textContent = '加载失败，请重试';
-            }
-        }
 
         // 格式化时间
         function formatTime(seconds) {
@@ -1884,6 +1669,19 @@
             currentGameScore = 0;
             isPaused = false;
             currentPuzzle = null;
+            moveHistory = [];
+            undoCount = 0;
+            isReplaying = false;
+            replayIndex = 0;
+
+            // 初始化棋谱记录
+            gameRecord = {
+                gameMode: gameMode,
+                difficulty: currentDifficulty,
+                moves: [],
+                result: '',
+                date: new Date().toISOString()
+            };
 
             document.getElementById('blackMoves').textContent = 0;
             document.getElementById('whiteMoves').textContent = 0;
@@ -1893,6 +1691,20 @@
             document.getElementById('moveCount').textContent = 0;
             document.getElementById('difficultyScore').textContent = 0;
             document.getElementById('pauseBtn').textContent = '⏸️ 暂停';
+            document.getElementById('undoBtn').disabled = true;
+            document.getElementById('replayControls').style.display = 'none';
+
+            // 显示倒计时(仅人机模式)
+            if (gameMode === 'pve') {
+                document.getElementById('countdownDisplay').style.display = 'flex';
+                blackCountdown = countdownTime;
+                whiteCountdown = countdownTime;
+                updateCountdownDisplay();
+                startCountdown();
+            } else {
+                document.getElementById('countdownDisplay').style.display = 'none';
+                stopCountdown();
+            }
 
             updateStatus();
             drawBoard();
@@ -2031,6 +1843,23 @@
             gameBoard[row][col] = currentPlayer;
             moveCount++;
 
+            // 记录历史(用于悔棋)
+            moveHistory.push({
+                row: row,
+                col: col,
+                color: currentPlayer,
+                moveNum: moveCount
+            });
+
+            // 记录棋谱
+            gameRecord.moves.push({
+                row: row,
+                col: col,
+                color: currentPlayer,
+                moveNum: moveCount,
+                time: gameTime
+            });
+
             if (currentPlayer === 'black') {
                 blackMoves++;
                 document.getElementById('blackMoves').textContent = blackMoves;
@@ -2040,7 +1869,11 @@
             }
 
             document.getElementById('moveCount').textContent = moveCount;
+            document.getElementById('undoBtn').disabled = false;
             playSound('place');
+
+            // 播放落子动画
+            animatePiecePlacement(row, col);
 
             // 实时计算难度分
             const config = DIFFICULTY_CONFIG[currentDifficulty];
@@ -2061,6 +1894,10 @@
                 gameOver = true;
                 stopTimer();
                 stopDualTimer();
+                stopCountdown();
+
+                gameRecord.result = currentPlayer === 'black' ? 'black_win' : 'white_win';
+                saveGameRecord();
 
                 if (currentPuzzle) {
                     showWinMessage('🎉 恭喜你破解残局！');
@@ -2068,7 +1905,6 @@
                 } else {
                     showWinMessage(currentPlayer === 'black' ? '🎉 黑棋获胜！' : '🎉 白棋获胜！');
                     playSound(currentPlayer === 'black' ? 'win' : 'lose');
-                    saveGameResult(currentPlayer, false);
                 }
                 return;
             }
@@ -2077,14 +1913,25 @@
                 gameOver = true;
                 stopTimer();
                 stopDualTimer();
+                stopCountdown();
+
+                gameRecord.result = 'draw';
+                saveGameRecord();
+
                 showWinMessage('🤝 平局！');
-                saveGameResult(null, true);
                 return;
             }
 
             // 切换玩家
             currentPlayer = currentPlayer === 'black' ? 'white' : 'black';
             updateStatus();
+
+            // 重置倒计时
+            if (gameMode === 'pve') {
+                blackCountdown = countdownTime;
+                whiteCountdown = countdownTime;
+                updateCountdownDisplay();
+            }
 
             // 人机模式：AI下棋
             if (gameMode === 'pve' && currentPlayer === 'white' && !gameOver) {
@@ -2132,7 +1979,6 @@
                     stopDualTimer();
                     showWinMessage('🎉 白棋获胜！');
                     playSound('lose');
-                    saveGameResult('white', false);
                     return;
                 }
 
@@ -2141,13 +1987,16 @@
                     stopTimer();
                     stopDualTimer();
                     showWinMessage('🤝 平局！');
-                    saveGameResult(null, true);
                     return;
                 }
 
                 currentPlayer = 'black';
                 updateStatus();
                 startDualTimer();
+
+                blackCountdown = countdownTime;
+                whiteCountdown = countdownTime;
+                updateCountdownDisplay();
             }
         }
 
@@ -2402,18 +2251,338 @@
             }
         }
 
-        canvas.addEventListener('click', function(e) {
-            if (!playerNickname) {
-                alert('请先输入昵称开始游戏！');
+        // 悔棋功能
+        function undoMove() {
+            if (undoCount >= MAX_UNDO) {
+                alert(`最多只能悔棋${MAX_UNDO}次！`);
                 return;
             }
 
+            if (moveHistory.length === 0) {
+                alert('没有可以撤销的步骤！');
+                return;
+            }
+
+            // 人机模式需要回退两步(玩家一步+AI一步)
+            let stepsToUndo = (gameMode === 'pve' && moveHistory.length >= 2) ? 2 : 1;
+
+            for (let i = 0; i < stepsToUndo && moveHistory.length > 0; i++) {
+                const lastMove = moveHistory.pop();
+                gameBoard[lastMove.row][lastMove.col] = null;
+
+                if (lastMove.color === 'black') {
+                    blackMoves--;
+                    document.getElementById('blackMoves').textContent = blackMoves;
+                } else {
+                    whiteMoves--;
+                    document.getElementById('whiteMoves').textContent = whiteMoves;
+                }
+
+                moveCount--;
+            }
+
+            undoCount++;
+            currentPlayer = 'black';
+
+            // 更新棋谱记录
+            gameRecord.moves = moveHistory.map(move => ({
+                ...move,
+                time: gameTime
+            }));
+
+            document.getElementById('moveCount').textContent = moveCount;
+            document.getElementById('undoBtn').disabled = moveHistory.length === 0;
+
+            // 实时计算难度分
+            const config = DIFFICULTY_CONFIG[currentDifficulty];
+            let currentDifficultyScore = Math.floor(config.scoreMultiplier * 100);
+
+            if (moveCount <= config.targetSteps) {
+                currentDifficultyScore += (config.targetSteps - moveCount) * 2;
+            }
+            if (gameTime <= config.targetTime) {
+                currentDifficultyScore += Math.floor((config.targetTime - gameTime) / 10);
+            }
+
+            document.getElementById('difficultyScore').textContent = currentDifficultyScore;
+
+            updateStatus();
+            drawBoard();
+        }
+
+        // 倒计时功能
+        function startCountdown() {
+            stopCountdown();
+            countdownTimer = setInterval(() => {
+                if (isPaused) return;
+
+                if (currentPlayer === 'black') {
+                    blackCountdown--;
+                    if (blackCountdown <= 0) {
+                        gameOver = true;
+                        stopTimer();
+                        stopDualTimer();
+                        stopCountdown();
+                        gameRecord.result = 'white_win';
+                        saveGameRecord();
+                        showWinMessage('⏱️ 黑棋超时，白棋获胜！');
+                        playSound('lose');
+                        return;
+                    }
+                } else {
+                    whiteCountdown--;
+                    if (whiteCountdown <= 0) {
+                        gameOver = true;
+                        stopTimer();
+                        stopDualTimer();
+                        stopCountdown();
+                        gameRecord.result = 'black_win';
+                        saveGameRecord();
+                        showWinMessage('⏱️ 白棋超时，黑棋获胜！');
+                        playSound('win');
+                        return;
+                    }
+                }
+
+                updateCountdownDisplay();
+            }, 1000);
+        }
+
+        function stopCountdown() {
+            if (countdownTimer) {
+                clearInterval(countdownTimer);
+                countdownTimer = null;
+            }
+        }
+
+        function updateCountdownDisplay() {
+            document.getElementById('blackCountdownTime').textContent = blackCountdown;
+            document.getElementById('whiteCountdownTime').textContent = whiteCountdown;
+
+            // 高亮警告
+            const blackEl = document.getElementById('blackCountdown');
+            const whiteEl = document.getElementById('whiteCountdown');
+
+            blackEl.classList.toggle('warning', currentPlayer === 'black' && blackCountdown <= 10);
+            whiteEl.classList.toggle('warning', currentPlayer === 'white' && whiteCountdown <= 10);
+        }
+
+        // 棋谱保存
+        function saveGameRecord() {
+            if (gameRecord.moves.length === 0) return;
+
+            let savedGames = localStorage.getItem('gobang_saved_games');
+            if (savedGames) {
+                savedGames = JSON.parse(savedGames);
+            } else {
+                savedGames = [];
+            }
+
+            gameRecord.date = new Date().toISOString();
+            savedGames.unshift(gameRecord);
+
+            // 最多保存20个棋谱
+            if (savedGames.length > 20) {
+                savedGames = savedGames.slice(0, 20);
+            }
+
+            localStorage.setItem('gobang_saved_games', JSON.stringify(savedGames));
+        }
+
+        // 显示棋谱面板
+        function showRecordPanel() {
+            const panel = document.getElementById('recordPanel');
+            const list = document.getElementById('recordList');
+            const savedGames = JSON.parse(localStorage.getItem('gobang_saved_games') || '[]');
+
+            if (savedGames.length === 0) {
+                list.innerHTML = '<div style="text-align: center; padding: 20px; color: #999;">暂无棋谱记录</div>';
+            } else {
+                list.innerHTML = '';
+                savedGames.forEach((game, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'record-item';
+                    item.innerHTML = `
+                        <div class="record-info">
+                            <strong>${getGameModeText(game.gameMode)} - ${getDifficultyText(game.difficulty)}</strong>
+                            <span class="record-date">${new Date(game.date).toLocaleString('zh-CN')}</span>
+                        </div>
+                        <div class="record-moves">步数: ${game.moves.length} | 结果: ${getResultText(game.result)}</div>
+                    `;
+                    item.onclick = () => loadGameForReplay(game);
+                    list.appendChild(item);
+                });
+            }
+
+            panel.classList.add('show');
+            document.getElementById('overlay').classList.add('show');
+        }
+
+        function closeRecordPanel() {
+            document.getElementById('recordPanel').classList.remove('show');
+            document.getElementById('overlay').classList.remove('show');
+        }
+
+        function clearAllRecords() {
+            if (confirm('确定要清空所有棋谱记录吗？')) {
+                localStorage.removeItem('gobang_saved_games');
+                showRecordPanel();
+            }
+        }
+
+        function getGameModeText(mode) {
+            const texts = { pvp: '双人对战', pve: '人机对战', endgame: '残局挑战' };
+            return texts[mode] || mode;
+        }
+
+        function getDifficultyText(difficulty) {
+            const texts = { easy: '简单', medium: '中等', hard: '困难' };
+            return texts[difficulty] || difficulty;
+        }
+
+        function getResultText(result) {
+            const texts = {
+                black_win: '黑棋胜',
+                white_win: '白棋胜',
+                draw: '平局'
+            };
+            return texts[result] || result;
+        }
+
+        // 加载棋谱进行回放
+        function loadGameForReplay(game) {
+            closeRecordPanel();
+
+            // 重置棋盘
+            gameBoard = [];
+            for (let i = 0; i < BOARD_SIZE; i++) {
+                gameBoard[i] = [];
+                for (let j = 0; j < BOARD_SIZE; j++) {
+                    gameBoard[i][j] = null;
+                }
+            }
+
+            moveHistory = [];
+            isReplaying = true;
+            replayIndex = 0;
+
+            // 显示回放控制
+            document.getElementById('replayControls').style.display = 'flex';
+            document.getElementById('pauseBtn').disabled = true;
+            document.getElementById('undoBtn').disabled = true;
+
+            drawBoard();
+            updateReplayButtons();
+        }
+
+        function replayFirst() {
+            replayIndex = 0;
+            drawReplayState();
+            updateReplayButtons();
+        }
+
+        function replayPrev() {
+            if (replayIndex > 0) {
+                replayIndex--;
+                drawReplayState();
+                updateReplayButtons();
+            }
+        }
+
+        function replayNext() {
+            const savedGames = JSON.parse(localStorage.getItem('gobang_saved_games') || '[]');
+            if (replayIndex < savedGames[0].moves.length) {
+                replayIndex++;
+                drawReplayState();
+                updateReplayButtons();
+            }
+        }
+
+        function replayLast() {
+            const savedGames = JSON.parse(localStorage.getItem('gobang_saved_games') || '[]');
+            if (savedGames.length > 0) {
+                replayIndex = savedGames[0].moves.length;
+                drawReplayState();
+                updateReplayButtons();
+            }
+        }
+
+        function drawReplayState() {
+            // 重置棋盘
+            for (let i = 0; i < BOARD_SIZE; i++) {
+                for (let j = 0; j < BOARD_SIZE; j++) {
+                    gameBoard[i][j] = null;
+                }
+            }
+
+            const savedGames = JSON.parse(localStorage.getItem('gobang_saved_games') || '[]');
+            if (savedGames.length > 0) {
+                const game = savedGames[0];
+                for (let i = 0; i < replayIndex && i < game.moves.length; i++) {
+                    const move = game.moves[i];
+                    gameBoard[move.row][move.col] = move.color;
+                }
+            }
+
+            drawBoard();
+        }
+
+        function updateReplayButtons() {
+            const savedGames = JSON.parse(localStorage.getItem('gobang_saved_games') || '[]');
+            const totalMoves = savedGames.length > 0 ? savedGames[0].moves.length : 0;
+
+            document.getElementById('replayFirst').disabled = replayIndex === 0;
+            document.getElementById('replayPrev').disabled = replayIndex === 0;
+            document.getElementById('replayNext').disabled = replayIndex >= totalMoves;
+            document.getElementById('replayLast').disabled = replayIndex >= totalMoves;
+        }
+
+        function exitReplay() {
+            isReplaying = false;
+            document.getElementById('replayControls').style.display = 'none';
+            document.getElementById('pauseBtn').disabled = false;
+            initGame();
+        }
+
+        // 落子动画
+        function animatePiecePlacement(row, col) {
+            const canvas = document.getElementById('board');
+            const rect = canvas.getBoundingClientRect();
+            const x = rect.left + PADDING + col * CELL_SIZE;
+            const y = rect.top + PADDING + row * CELL_SIZE;
+
+            // 创建粒子效果
+            createParticles(x, y, gameBoard[row][col]);
+        }
+
+        function createParticles(x, y, color) {
+            const colors = color === 'black' ?
+                ['#333', '#555', '#777', '#999'] :
+                ['#fff', '#ddd', '#ccc', '#bbb'];
+
+            for (let i = 0; i < 8; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.width = Math.random() * 8 + 4 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.transform = `translate(${(Math.random() - 0.5) * 100}px, ${(Math.random() - 0.5) * 100}px)`;
+                document.body.appendChild(particle);
+
+                setTimeout(() => {
+                    particle.remove();
+                }, 800);
+            }
+        }
+
+        canvas.addEventListener('click', function(e) {
             if (isPaused) {
                 alert('游戏已暂停，请先继续游戏！');
                 return;
             }
 
-            // 人机模式且AI回合，禁止点击
             if (gameMode === 'pve' && currentPlayer === 'white') {
                 return;
             }
@@ -2425,10 +2594,6 @@
             }
         });
 
-        // 初始化
-        initCloudBase();
-
-        // 为模式按钮添加点击确认
         document.querySelectorAll('.mode-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 setTimeout(confirmMode, 100);
