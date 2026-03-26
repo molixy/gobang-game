@@ -623,6 +623,9 @@
                 <button class="difficulty-btn hard" onclick="selectDifficulty('hard')">困难</button>
             </div>
             <div class="difficulty-info" id="difficultyInfo"></div>
+            <div style="margin-top: 20px;">
+                <button class="restart-btn" onclick="startGame()">🎮 开始游戏</button>
+            </div>
         </div>
         
         <div class="main-content hidden" id="mainContent">
@@ -864,21 +867,39 @@
         // 选择难度
         function selectDifficulty(difficulty) {
             currentDifficulty = difficulty;
-            
+
             // 更新按钮状态
             document.querySelectorAll('.difficulty-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             document.querySelector(`.difficulty-btn.${difficulty}`).classList.add('active');
-            
+
             // 显示难度信息
             const config = DIFFICULTY_CONFIG[difficulty];
             document.getElementById('difficultyInfo').innerHTML = `
                 <strong>${config.name}模式</strong>：${config.description}<br>
                 目标步数：${config.targetSteps}步 | 目标时间：${formatTime(config.targetTime)} | 得分倍数：${config.scoreMultiplier}×
             `;
-            
+        }
+
+        // 开始游戏
+        function startGame() {
+            const activeBtn = document.querySelector('.difficulty-btn.active');
+            if (!activeBtn) {
+                alert('请先选择游戏难度！');
+                return;
+            }
+
+            // 显示主界面
+            document.getElementById('difficultySection').classList.add('hidden');
+            document.getElementById('mainContent').classList.remove('hidden');
+
+            // 更新难度显示
+            const config = DIFFICULTY_CONFIG[currentDifficulty];
             document.getElementById('currentDifficulty').textContent = config.name;
+
+            // 初始化游戏
+            initGame();
         }
 
         // 加载玩家数据
@@ -1457,13 +1478,6 @@
 
         function restartGame() {
             hideWinMessage();
-            
-            // 检查是否选择了难度
-            if (!document.querySelector('.difficulty-btn.active')) {
-                alert('请先选择游戏难度！');
-                return;
-            }
-            
             initGame();
         }
 
@@ -1472,15 +1486,9 @@
                 alert('请先输入昵称开始游戏！');
                 return;
             }
-            
-            // 检查是否选择了难度
-            if (!document.querySelector('.difficulty-btn.active')) {
-                alert('请先选择游戏难度！');
-                return;
-            }
-            
+
             const { row, col } = getClickPosition(e);
-            
+
             if (isNearGridCenter(row, col, e)) {
                 placePiece(row, col);
             }
