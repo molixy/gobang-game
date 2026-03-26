@@ -891,6 +891,12 @@
                 <button class="mode-btn endgame" onclick="selectGameMode('endgame')">🧩 残局挑战</button>
             </div>
             <div id="modeInfo" style="margin-top: 15px; padding: 10px; background: rgba(255, 255, 255, 0.7); border-radius: 8px; font-size: 0.9em; color: #666;"></div>
+            <div style="margin-top: 20px; padding: 15px; background: rgba(255, 255, 255, 0.8); border-radius: 8px; font-size: 0.85em; line-height: 1.8;">
+                <strong>💡 玩法提示：</strong><br>
+                • 双人对战：与朋友在一台设备上轮流下棋，增进友谊<br>
+                • 人机对战：单人练习，挑战不同难度的AI<br>
+                • 残局挑战：学习经典棋局，提升棋力水平
+            </div>
         </div>
 
         <div class="difficulty-section hidden" id="difficultySection">
@@ -910,6 +916,13 @@
         <!-- 残局挑战列表 -->
         <div class="difficulty-section hidden" id="puzzleSection">
             <h3>🧩 残局挑战</h3>
+            <div style="margin-bottom: 15px; padding: 12px; background: rgba(255, 255, 255, 0.8); border-radius: 8px; font-size: 0.85em; line-height: 1.6;">
+                <strong>📖 玩法说明：</strong><br>
+                • 每个残局都有特定的棋子摆放<br>
+                • 根据提示找到制胜的一着<br>
+                • 如果选错了位置，会提示重新思考<br>
+                • 破解成功可获得成就感奖励
+            </div>
             <div class="puzzle-list" id="puzzleList"></div>
             <div style="margin-top: 20px;">
                 <button class="restart-btn" style="background: linear-gradient(135deg, #757575 0%, #616161 100%);" onclick="backToModeSelection()">⬅️ 返回</button>
@@ -920,15 +933,57 @@
             <!-- 左侧：游戏规则 -->
             <div class="left-panel">
                 <h3>📋 游戏规则</h3>
-                <ul class="rules-list">
-                    <li><strong>基本规则：</strong>棋盘大小15×15，黑棋先手</li>
-                    <li><strong>获胜条件：</strong>先连成五子（横/竖/斜）的一方获胜</li>
-                    <li><strong>计分规则：</strong>胜利100分 | 失败10分 | 平局50分</li>
-                    <li><strong>操作方式：</strong>点击棋盘交叉点落子，棋子不可移动</li>
-                    <li><strong>难度加成：</strong>步数越少/时间越短，得分越高</li>
-                    <li><strong>游戏模式：</strong>支持双人对战、人机对战、残局挑战</li>
-                    <li><strong>暂停功能：</strong>可随时暂停游戏，点击按钮继续</li>
-                </ul>
+
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: #1976d2; margin-bottom: 10px; font-size: 1.1em;">🎯 基本规则</h4>
+                    <ul class="rules-list">
+                        <li><strong>棋盘：</strong>15×15 格的标准棋盘</li>
+                        <li><strong>先手：</strong>黑棋先行，双方轮流落子</li>
+                        <li><strong>落子：</strong>点击棋盘交叉点放置棋子</li>
+                        <li><strong>不可悔棋：</strong>棋子落地后不可移动</li>
+                    </ul>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: #f57c00; margin-bottom: 10px; font-size: 1.1em;">🏆 获胜条件</h4>
+                    <ul class="rules-list">
+                        <li><strong>五连：</strong>先在横、竖、斜任意方向连成5子的一方获胜</li>
+                        <li><strong>优先权：</strong>黑棋先手，拥有先发优势</li>
+                        <li><strong>胜利判断：</strong>落子后立即判定胜负</li>
+                    </ul>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: #4caf50; margin-bottom: 10px; font-size: 1.1em;">💰 计分规则</h4>
+                    <ul class="rules-list">
+                        <li><strong>胜利：</strong>基础分 100 分 + 难度加成</li>
+                        <li><strong>平局：</strong>得 50 分</li>
+                        <li><strong>失败：</strong>得 10 分（参与奖励）</li>
+                        <li><strong>难度加成：</strong>步数越少、时间越短，得分越高</li>
+                        <li><strong>难度倍数：</strong>简单×1.0 | 中等×1.5 | 困难×2.0</li>
+                    </ul>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: #9c27b0; margin-bottom: 10px; font-size: 1.1em;">🎮 游戏模式</h4>
+                    <ul class="rules-list">
+                        <li><strong>双人对战：</strong>两人同一设备轮流下棋</li>
+                        <li><strong>人机对战：</strong>单人对抗电脑AI</li>
+                        <li><strong>残局挑战：</strong>破解经典残局提升棋力</li>
+                        <li><strong>暂停功能：</strong>可随时暂停和恢复游戏</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 style="color: #e91e63; margin-bottom: 10px; font-size: 1.1em;">⏱️ 统计说明</h4>
+                    <ul class="rules-list">
+                        <li><strong>游戏时间：</strong>整局游戏的累计时长</li>
+                        <li><strong>总步数：</strong>双方落子的总次数</li>
+                        <li><strong>独立计时：</strong>黑白棋分别统计步数和时间</li>
+                        <li><strong>难度分：</strong>根据表现实时计算的预估得分</li>
+                    </ul>
+                </div>
+
                 <div id="modeSpecificRules" style="margin-top: 20px; padding: 15px; background: rgba(255, 255, 255, 0.8); border-radius: 8px; display: none;">
                     <h4 style="color: #1976d2; margin-bottom: 10px;">模式说明</h4>
                     <p id="modeDescription" style="font-size: 0.9em; color: #666; line-height: 1.6;"></p>
@@ -1260,9 +1315,9 @@
 
             // 显示模式信息
             const modeDescriptions = {
-                pvp: '👥 <strong>双人对战</strong><br>两个人在同一台设备上轮流下棋，适合朋友之间对弈切磋。',
-                pve: '🤖 <strong>人机对战</strong><br>单人对抗电脑AI，选择不同的难度挑战您的棋力！',
-                endgame: '🧩 <strong>残局挑战</strong><br>练习经典残局，提升您的战术水平和解题能力。'
+                pvp: '👥 <strong>双人对战模式</strong><br>两个人在同一台设备上轮流下棋，黑棋先手，白棋后手。适合朋友之间对弈切磋，增进友谊，公平竞技。',
+                pve: '🤖 <strong>人机对战模式</strong><br>单人对抗电脑AI，您执黑棋先行，AI执白棋应对。简单模式AI会随机失误，困难模式AI会全力以赴，挑战您的棋力！',
+                endgame: '🧩 <strong>残局挑战模式</strong><br>在给定的残局中找到制胜的一着。每个残局都有特定提示，锻炼您的战术思维和解题能力。'
             };
             document.getElementById('modeInfo').innerHTML = modeDescriptions[mode];
         }
@@ -1378,8 +1433,8 @@
             document.getElementById('modeSpecificRules').style.display = 'block';
 
             const modeDescriptions = {
-                pvp: '<strong>👥 双人对战模式</strong><br>两个人在同一台设备上轮流下棋，适合朋友之间对弈切磋。黑棋先手，白棋后手。',
-                pve: '<strong>🤖 人机对战模式</strong><br>单人对抗电脑AI，AI会根据难度等级选择不同的策略。简单模式AI会随机失误，困难模式AI会全力以赴。'
+                pvp: '<strong>👥 双人对战模式</strong><br>两个人在同一台设备上轮流下棋，适合朋友之间对弈切磋。黑棋先手，白棋后手。双方轮流点击棋盘落子，先连成五子者获胜。',
+                pve: '<strong>🤖 人机对战模式</strong><br>单人对抗电脑AI，您执黑棋先行，AI执白棋应对。AI会根据难度等级选择不同的策略：简单模式AI会随机失误，中等模式AI有一定智能，困难模式AI会全力以赴。'
             };
             document.getElementById('modeDescription').innerHTML = modeDescriptions[gameMode];
         }
