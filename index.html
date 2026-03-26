@@ -1026,7 +1026,7 @@
         </div>
 
         <!-- 游戏模式选择 -->
-        <div class="game-mode-section hidden" id="gameModeSection">
+        <div class="game-mode-section" id="gameModeSection">
             <h3>🎮 选择游戏模式</h3>
             <div class="mode-buttons">
                 <button class="mode-btn pvp" onclick="selectGameMode('pvp')">👥 双人对战</button>
@@ -1039,6 +1039,9 @@
                 • 双人对战：与朋友在一台设备上轮流下棋，增进友谊<br>
                 • 人机对战：单人练习，挑战不同难度的AI<br>
                 • 残局挑战：学习经典棋局，提升棋力水平
+            </div>
+            <div style="margin-top: 20px;">
+                <button class="restart-btn" onclick="confirmMode()">🎮 确认模式</button>
             </div>
         </div>
 
@@ -2592,12 +2595,6 @@
             if (isNearGridCenter(row, col, e)) {
                 placePiece(row, col);
             }
-        });
-
-        document.querySelectorAll('.mode-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                setTimeout(confirmMode, 100);
-            });
         });
     </script>
 </body>
