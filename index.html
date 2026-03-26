@@ -67,6 +67,78 @@
             box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
         }
 
+        /* 难度选择 */
+        .difficulty-section {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #fff9e6 0%, #ffe082 100%);
+            border-radius: 10px;
+        }
+
+        .difficulty-section h3 {
+            color: #f57c00;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .difficulty-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .difficulty-btn {
+            padding: 12px 30px;
+            font-size: 1em;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .difficulty-btn.easy {
+            border-color: #4caf50;
+            color: #4caf50;
+        }
+
+        .difficulty-btn.easy:hover, .difficulty-btn.easy.active {
+            background: #4caf50;
+            color: white;
+        }
+
+        .difficulty-btn.medium {
+            border-color: #ff9800;
+            color: #ff9800;
+        }
+
+        .difficulty-btn.medium:hover, .difficulty-btn.medium.active {
+            background: #ff9800;
+            color: white;
+        }
+
+        .difficulty-btn.hard {
+            border-color: #f44336;
+            color: #f44336;
+        }
+
+        .difficulty-btn.hard:hover, .difficulty-btn.hard.active {
+            background: #f44336;
+            color: white;
+        }
+
+        .difficulty-info {
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
         .main-content {
             display: grid;
             grid-template-columns: 1fr auto 1fr;
@@ -139,6 +211,46 @@
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             border-radius: 8px;
             margin-bottom: 20px;
+        }
+
+        /* 实时统计 */
+        .stats-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-radius: 10px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+
+        .stat-item .icon {
+            font-size: 1.2em;
+        }
+
+        .stat-item .value {
+            font-size: 1.3em;
+            font-family: 'Courier New', monospace;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 5px 12px;
+            border-radius: 5px;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .stat-item .label {
+            font-size: 0.9em;
+            color: #1b5e20;
         }
 
         .current-turn .player {
@@ -280,16 +392,17 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.95);
             color: white;
-            padding: 40px 60px;
-            border-radius: 20px;
-            font-size: 2em;
+            padding: 50px 70px;
+            border-radius: 25px;
+            font-size: 1.8em;
             font-weight: bold;
             z-index: 1000;
             display: none;
             animation: fadeIn 0.3s ease;
             text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         }
 
         @keyframes fadeIn {
@@ -305,6 +418,79 @@
 
         .win-message.show {
             display: block;
+        }
+
+        .win-message .result-text {
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+
+        .win-message .game-stats {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+        }
+
+        .win-message .game-stats .stat-row {
+            display: flex;
+            justify-content: space-around;
+            gap: 30px;
+            margin: 5px 0;
+        }
+
+        .win-message .game-stats .stat-item {
+            text-align: center;
+        }
+
+        .win-message .game-stats .stat-label {
+            color: #aaa;
+            font-size: 0.85em;
+        }
+
+        .win-message .game-stats .stat-value {
+            color: #fff;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .win-message .btn-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .win-message .btn-group button {
+            padding: 12px 35px;
+            font-size: 1em;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .win-message .btn-play-again {
+            background: linear-gradient(135deg, #00c853 0%, #00e676 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 200, 83, 0.4);
+        }
+
+        .win-message .btn-play-again:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 200, 83, 0.6);
+        }
+
+        .win-message .btn-close {
+            background: linear-gradient(135deg, #ff5252 0%, #ff1744 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 82, 82, 0.4);
+        }
+
+        .win-message .btn-close:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 82, 82, 0.6);
         }
 
         .overlay {
@@ -360,6 +546,62 @@
             font-weight: bold;
             color: #333;
         }
+
+        /* 游戏记录 */
+        .game-records {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+
+        .game-records table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85em;
+        }
+
+        .game-records th,
+        .game-records td {
+            padding: 8px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .game-records th {
+            background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 5;
+        }
+
+        .game-records tr:hover {
+            background: rgba(255, 152, 0, 0.1);
+        }
+
+        /* 速度评价 */
+        .speed-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .speed-badge.fast {
+            background: #4caf50;
+            color: white;
+        }
+
+        .speed-badge.medium {
+            background: #ff9800;
+            color: white;
+        }
+
+        .speed-badge.slow {
+            background: #f44336;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -371,6 +613,16 @@
         <div class="nickname-section" id="nicknameSection">
             <input type="text" id="nicknameInput" placeholder="请输入您的昵称" maxlength="20">
             <button class="restart-btn" onclick="setNickname()">开始游戏</button>
+        </div>
+        
+        <div class="difficulty-section hidden" id="difficultySection">
+            <h3>🎯 选择游戏难度</h3>
+            <div class="difficulty-buttons">
+                <button class="difficulty-btn easy" onclick="selectDifficulty('easy')">简单</button>
+                <button class="difficulty-btn medium" onclick="selectDifficulty('medium')">中等</button>
+                <button class="difficulty-btn hard" onclick="selectDifficulty('hard')">困难</button>
+            </div>
+            <div class="difficulty-info" id="difficultyInfo"></div>
         </div>
         
         <div class="main-content hidden" id="mainContent">
@@ -407,11 +659,33 @@
                         <div class="label">胜场</div>
                         <div class="value" id="totalWins">0</div>
                     </div>
+                    <div class="score-box">
+                        <div class="label">难度</div>
+                        <div class="value" id="currentDifficulty">--</div>
+                    </div>
                 </div>
                 
                 <div class="current-turn">
                     <span class="player black"></span>
                     <span id="currentPlayer">黑棋</span>的回合
+                </div>
+                
+                <div class="stats-bar">
+                    <div class="stat-item">
+                        <span class="icon">⏱️</span>
+                        <span class="value" id="gameTimer">00:00</span>
+                        <span class="label">游戏时间</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="icon">👆</span>
+                        <span class="value" id="moveCount">0</span>
+                        <span class="label">步数</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="icon">🎯</span>
+                        <span class="value" id="difficultyScore">0</span>
+                        <span class="label">难度分</span>
+                    </div>
                 </div>
                 
                 <div class="board-container">
@@ -442,6 +716,25 @@
                         </tbody>
                     </table>
                 </div>
+                
+                <div style="margin-top: 30px;">
+                    <h3>📊 最近记录</h3>
+                    <div class="game-records" id="gameRecords">
+                        <table id="gameRecordsTable" class="hidden">
+                            <thead>
+                                <tr>
+                                    <th>难度</th>
+                                    <th>结果</th>
+                                    <th>步数</th>
+                                    <th>用时</th>
+                                </tr>
+                            </thead>
+                            <tbody id="gameRecordsBody">
+                            </tbody>
+                        </table>
+                        <div id="gameRecordsEmpty" style="text-align: center; padding: 20px; color: #999;">暂无记录</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -468,6 +761,39 @@
         let gameOver = false;
         let playerNickname = '';
         let playerData = null;
+
+        // 难度设置
+        const DIFFICULTY_CONFIG = {
+            easy: {
+                name: '简单',
+                scoreMultiplier: 1.0,
+                description: '新手友好，轻松上手',
+                targetSteps: 40,
+                targetTime: 600
+            },
+            medium: {
+                name: '中等',
+                scoreMultiplier: 1.5,
+                description: '挑战中等难度，提升技巧',
+                targetSteps: 30,
+                targetTime: 480
+            },
+            hard: {
+                name: '困难',
+                scoreMultiplier: 2.0,
+                description: '高手对决，极限挑战',
+                targetSteps: 25,
+                targetTime: 360
+            }
+        };
+        let currentDifficulty = 'easy';
+
+        // 游戏统计
+        let gameTimer = null;
+        let gameTime = 0;
+        let moveCount = 0;
+        let gameRecords = [];
+        let currentGameScore = 0;
 
         // 初始化 CloudBase
         async function initCloudBase() {
@@ -519,19 +845,40 @@
                 alert('请输入昵称！');
                 return;
             }
-            
+
             playerNickname = nickname;
             document.getElementById('playerNickname').textContent = nickname;
             document.getElementById('nicknameSection').classList.add('hidden');
-            document.getElementById('mainContent').classList.remove('hidden');
+            document.getElementById('difficultySection').classList.remove('hidden');
             
             // 加载玩家数据
             await loadPlayerData();
             
+            // 加载游戏记录
+            loadGameRecords();
+            
             // 加载排行榜
             await loadLeaderboard();
+        }
+
+        // 选择难度
+        function selectDifficulty(difficulty) {
+            currentDifficulty = difficulty;
             
-            initGame();
+            // 更新按钮状态
+            document.querySelectorAll('.difficulty-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`.difficulty-btn.${difficulty}`).classList.add('active');
+            
+            // 显示难度信息
+            const config = DIFFICULTY_CONFIG[difficulty];
+            document.getElementById('difficultyInfo').innerHTML = `
+                <strong>${config.name}模式</strong>：${config.description}<br>
+                目标步数：${config.targetSteps}步 | 目标时间：${formatTime(config.targetTime)} | 得分倍数：${config.scoreMultiplier}×
+            `;
+            
+            document.getElementById('currentDifficulty').textContent = config.name;
         }
 
         // 加载玩家数据
@@ -586,21 +933,121 @@
             document.getElementById('totalWins').textContent = playerData.games_won;
         }
 
+        // 加载游戏记录
+        function loadGameRecords() {
+            const records = localStorage.getItem(`gobang_records_${playerNickname}`);
+            gameRecords = records ? JSON.parse(records) : [];
+            displayGameRecords();
+        }
+
+        // 保存游戏记录
+        function saveGameRecord(result) {
+            const record = {
+                difficulty: DIFFICULTY_CONFIG[currentDifficulty].name,
+                result: result,
+                steps: moveCount,
+                time: gameTime,
+                score: currentGameScore,
+                date: new Date().toISOString()
+            };
+            
+            gameRecords.unshift(record);
+            if (gameRecords.length > 20) {
+                gameRecords = gameRecords.slice(0, 20);
+            }
+            
+            localStorage.setItem(`gobang_records_${playerNickname}`, JSON.stringify(gameRecords));
+            displayGameRecords();
+        }
+
+        // 显示游戏记录
+        function displayGameRecords() {
+            const emptyEl = document.getElementById('gameRecordsEmpty');
+            const tableEl = document.getElementById('gameRecordsTable');
+            const tbody = document.getElementById('gameRecordsBody');
+            
+            if (gameRecords.length === 0) {
+                emptyEl.classList.remove('hidden');
+                tableEl.classList.add('hidden');
+                return;
+            }
+            
+            emptyEl.classList.add('hidden');
+            tableEl.classList.remove('hidden');
+            
+            tbody.innerHTML = '';
+            gameRecords.forEach((record, index) => {
+                const row = document.createElement('tr');
+                
+                const resultText = record.result === 'win' ? '🏆 胜' : (record.result === 'lose' ? '💔 败' : '🤝 平');
+                const resultClass = record.result === 'win' ? 'color: #4caf50;' : (record.result === 'lose' ? 'color: #f44336;' : 'color: #ff9800;');
+                
+                const speedBadge = getSpeedBadge(record.steps, record.time);
+                
+                row.innerHTML = `
+                    <td>${record.difficulty}</td>
+                    <td style="${resultClass}">${resultText}</td>
+                    <td>${record.steps}步 ${speedBadge}</td>
+                    <td>${formatTime(record.time)}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // 获取速度评价
+        function getSpeedBadge(steps, time) {
+            const config = DIFFICULTY_CONFIG[currentDifficulty];
+            const timePerStep = time / steps;
+            
+            if (timePerStep < 5) {
+                return '<span class="speed-badge fast">⚡</span>';
+            } else if (timePerStep < 15) {
+                return '<span class="speed-badge medium">🚀</span>';
+            } else {
+                return '<span class="speed-badge slow">🐢</span>';
+            }
+        }
+
         // 保存游戏结果
         async function saveGameResult(winner, isDraw) {
             try {
                 const now = new Date();
-                let score = 10; // 失败得分
+                const config = DIFFICULTY_CONFIG[currentDifficulty];
+                
+                // 计算基础分数
+                let baseScore = 10; // 失败得分
+                let result = 'lose';
                 let won = false;
                 
                 if (isDraw) {
-                    score = 50; // 平局得分
+                    baseScore = 50; // 平局得分
+                    result = 'draw';
                 } else if (winner === currentPlayer) {
-                    score = 100; // 胜利得分
+                    baseScore = 100; // 胜利得分
                     won = true;
+                    result = 'win';
                 }
                 
-                playerData.score += score;
+                // 计算难度加成
+                let difficultyBonus = 0;
+                
+                // 步数奖励：步数越少奖励越高
+                if (won && moveCount <= config.targetSteps) {
+                    const stepsBonus = Math.floor((config.targetSteps - moveCount) * 2);
+                    difficultyBonus += stepsBonus;
+                }
+                
+                // 时间奖励：时间越短奖励越高
+                if (won && gameTime <= config.targetTime) {
+                    const timeBonus = Math.floor((config.targetTime - gameTime) / 10);
+                    difficultyBonus += timeBonus;
+                }
+                
+                // 应用难度倍数
+                let finalScore = Math.floor((baseScore + difficultyBonus) * config.scoreMultiplier);
+                currentGameScore = finalScore;
+                
+                playerData.score += finalScore;
                 playerData.games_played += 1;
                 playerData.games_won += won ? 1 : 0;
                 playerData.last_played = now.toISOString();
@@ -625,10 +1072,13 @@
                 
                 updateScoreDisplay();
                 
+                // 保存游戏记录
+                saveGameRecord(result);
+                
                 // 更新排行榜
                 await loadLeaderboard();
                 
-                console.log('游戏结果已保存');
+                console.log('游戏结果已保存，得分:', finalScore);
             } catch (error) {
                 console.error('保存游戏结果失败:', error);
             }
@@ -685,6 +1135,33 @@
             }
         }
 
+        // 格式化时间
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // 更新计时器
+        function updateTimer() {
+            gameTime++;
+            document.getElementById('gameTimer').textContent = formatTime(gameTime);
+        }
+
+        // 开始计时
+        function startTimer() {
+            stopTimer();
+            gameTimer = setInterval(updateTimer, 1000);
+        }
+
+        // 停止计时
+        function stopTimer() {
+            if (gameTimer) {
+                clearInterval(gameTimer);
+                gameTimer = null;
+            }
+        }
+
         function initGame() {
             gameBoard = [];
             for (let i = 0; i < BOARD_SIZE; i++) {
@@ -695,8 +1172,17 @@
             }
             currentPlayer = 'black';
             gameOver = false;
+            gameTime = 0;
+            moveCount = 0;
+            currentGameScore = 0;
+            
+            document.getElementById('gameTimer').textContent = formatTime(0);
+            document.getElementById('moveCount').textContent = 0;
+            document.getElementById('difficultyScore').textContent = 0;
+            
             updateStatus();
             drawBoard();
+            startTimer();
         }
 
         function drawBoard() {
@@ -819,10 +1305,29 @@
             }
             
             gameBoard[row][col] = currentPlayer;
+            moveCount++;
+            document.getElementById('moveCount').textContent = moveCount;
+            
+            // 实时计算难度分
+            const config = DIFFICULTY_CONFIG[currentDifficulty];
+            const timePerStep = gameTime / moveCount;
+            let currentDifficultyScore = Math.floor(config.scoreMultiplier * 100);
+            
+            // 步数和时间加成预览
+            if (moveCount <= config.targetSteps) {
+                currentDifficultyScore += (config.targetSteps - moveCount) * 2;
+            }
+            if (gameTime <= config.targetTime) {
+                currentDifficultyScore += Math.floor((config.targetTime - gameTime) / 10);
+            }
+            
+            document.getElementById('difficultyScore').textContent = currentDifficultyScore;
+            
             drawBoard();
             
             if (checkWin(row, col)) {
                 gameOver = true;
+                stopTimer();
                 showWinMessage(currentPlayer === 'black' ? '🎉 黑棋获胜！' : '🎉 白棋获胜！');
                 saveGameResult(currentPlayer, false);
                 return;
@@ -830,6 +1335,7 @@
             
             if (checkDraw()) {
                 gameOver = true;
+                stopTimer();
                 showWinMessage('🤝 平局！');
                 saveGameResult(null, true);
                 return;
@@ -886,8 +1392,54 @@
         }
 
         function showWinMessage(message) {
-            document.getElementById('winMessage').textContent = message;
-            document.getElementById('winMessage').classList.add('show');
+            const winMessageEl = document.getElementById('winMessage');
+            const config = DIFFICULTY_CONFIG[currentDifficulty];
+            
+            const speedBadge = getSpeedBadge(moveCount, gameTime);
+            const targetDiff = moveCount <= config.targetSteps && gameTime <= config.targetTime;
+            const diffText = targetDiff ? '🎯 达成目标！' : '继续加油！';
+            
+            winMessageEl.innerHTML = `
+                <div class="result-text">${message}</div>
+                <div class="game-stats">
+                    <div class="stat-row">
+                        <div class="stat-item">
+                            <div class="stat-label">难度</div>
+                            <div class="stat-value">${config.name}</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">步数</div>
+                            <div class="stat-value">${moveCount}</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">用时</div>
+                            <div class="stat-value">${formatTime(gameTime)}</div>
+                        </div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-item">
+                            <div class="stat-label">目标步数</div>
+                            <div class="stat-value">${config.targetSteps}</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">目标时间</div>
+                            <div class="stat-value">${formatTime(config.targetTime)}</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">得分</div>
+                            <div class="stat-value" style="color: #ffd700;">+${currentGameScore}</div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 10px; color: ${targetDiff ? '#4caf50' : '#ff9800'}; font-weight: bold;">
+                        ${speedBadge} ${diffText}
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn-play-again" onclick="restartGame()">🎮 再玩一局</button>
+                    <button class="btn-close" onclick="hideWinMessage()">关闭</button>
+                </div>
+            `;
+            winMessageEl.classList.add('show');
             document.getElementById('overlay').classList.add('show');
         }
 
@@ -905,12 +1457,25 @@
 
         function restartGame() {
             hideWinMessage();
+            
+            // 检查是否选择了难度
+            if (!document.querySelector('.difficulty-btn.active')) {
+                alert('请先选择游戏难度！');
+                return;
+            }
+            
             initGame();
         }
 
         canvas.addEventListener('click', function(e) {
             if (!playerNickname) {
                 alert('请先输入昵称开始游戏！');
+                return;
+            }
+            
+            // 检查是否选择了难度
+            if (!document.querySelector('.difficulty-btn.active')) {
+                alert('请先选择游戏难度！');
                 return;
             }
             
