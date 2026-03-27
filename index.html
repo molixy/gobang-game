@@ -385,6 +385,33 @@
             justify-content: center;
         }
 
+        /* 当前回合显示 - 居中并突出 */
+        .current-turn {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+        }
+
+        .current-turn .player {
+            display: inline-block;
+            font-size: 1.5em;
+            font-weight: bold;
+            padding: 12px 30px;
+            border-radius: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .current-turn .player.black {
+            background: linear-gradient(135deg, #333 0%, #000 100%);
+            color: white;
+        }
+
+        .current-turn .player.white {
+            background: linear-gradient(135deg, #fff 0%, #ccc 100%);
+            color: #333;
+            border: 2px solid #999;
+        }
+
         .btn-play-again {
             padding: 15px 40px;
             font-size: 1.1em;
@@ -418,69 +445,6 @@
 
         .overlay.show {
             display: flex;
-        }
-
-        /* 棋盘区域 */
-        .game-area {
-            display: flex;
-            gap: 30px;
-            justify-content: center;
-            align-items: flex-start;
-            flex-wrap: wrap;
-        }
-
-        .player-info {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            min-width: 150px;
-            text-align: center;
-        }
-
-        .player-info h3 {
-            margin-bottom: 15px;
-            font-size: 1.2em;
-        }
-
-        .player-status {
-            margin-bottom: 15px;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-        }
-
-        .current-turn {
-            font-size: 1.3em;
-            font-weight: bold;
-            padding: 10px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .current-turn .player.black {
-            background: #333;
-            color: white;
-            border-radius: 5px;
-            padding: 5px 10px;
-        }
-
-        .current-turn .player.white {
-            background: white;
-            color: #333;
-            border: 2px solid #999;
-            border-radius: 5px;
-            padding: 5px 10px;
-        }
-
-        .board-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
         .board {
@@ -571,6 +535,18 @@
             border-color: #667eea;
             transform: translateY(-2px);
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* 棋盘容器 - 居中显示 */
+        .board-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin: 0 auto 20px auto;
         }
 
         /* 残局列表 */
@@ -726,32 +702,10 @@
 
         <!-- 主游戏区域 -->
         <div class="hidden" id="mainContent">
-            <div class="game-area">
-                <!-- 黑棋信息 -->
-                <div class="player-info black-info">
-                    <h3>⚫ 黑棋</h3>
-                    <div class="player-status">
-                        <div class="stat-row">
-                            <span>当前回合</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 棋盘 -->
-                <div class="board-container">
-                    <div class="board">
-                        <canvas id="board" width="450" height="450"></canvas>
-                    </div>
-                </div>
-
-                <!-- 白棋信息 -->
-                <div class="player-info white-info">
-                    <h3>⚪ 白棋</h3>
-                    <div class="player-status">
-                        <div class="stat-row">
-                            <span>等待中</span>
-                        </div>
-                    </div>
+            <!-- 棋盘 -->
+            <div class="board-container">
+                <div class="board">
+                    <canvas id="board" width="450" height="450"></canvas>
                 </div>
             </div>
 
@@ -1751,8 +1705,6 @@
         // 返回主菜单
         function backToMenu() {
             if (confirm('确定要返回主菜单吗？当前游戏进度将丢失。')) {
-                // 停止所有计时器
-                stopAllTimers();
                 document.getElementById('mainContent').classList.add('hidden');
                 document.getElementById('gameModeSection').classList.remove('hidden');
                 document.getElementById('modeSpecificRules').style.display = 'none';
