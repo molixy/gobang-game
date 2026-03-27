@@ -182,59 +182,6 @@
             cursor: not-allowed;
         }
 
-        /* 倒计时显示 */
-        .countdown-display {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 15px;
-        }
-
-        .countdown-item {
-            padding: 10px 20px;
-            border-radius: 10px;
-            min-width: 100px;
-            text-align: center;
-        }
-
-        .countdown-item.black {
-            background: linear-gradient(135deg, #424242 0%, #212121 100%);
-            color: white;
-        }
-
-        .countdown-item.white {
-            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
-            color: #333;
-            border: 1px solid #ccc;
-        }
-
-        .countdown-item h4 {
-            margin-bottom: 5px;
-            font-size: 0.9em;
-        }
-
-        .countdown-item .time {
-            font-size: 1.5em;
-            font-weight: bold;
-            font-family: 'Courier New', monospace;
-        }
-
-        .countdown-item.warning {
-            animation: pulse 1s infinite;
-        }
-
-        @keyframes pulse {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.5;
-            }
-        }
-
         /* 落子动画 */
         .piece-animation {
             animation: pieceDrop 0.3s ease-out;
@@ -432,36 +379,6 @@
             color: #333;
         }
 
-        .game-stats {
-            margin-bottom: 20px;
-            padding: 20px;
-            background: #f9f9f9;
-            border-radius: 10px;
-        }
-
-        .stat-row {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 15px;
-        }
-
-        .stat-item {
-            text-align: center;
-            padding: 10px;
-        }
-
-        .stat-label {
-            color: #999;
-            font-size: 0.85em;
-            margin-bottom: 5px;
-        }
-
-        .stat-value {
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #333;
-        }
-
         .btn-group {
             display: flex;
             gap: 15px;
@@ -554,42 +471,6 @@
             border: 2px solid #999;
             border-radius: 5px;
             padding: 5px 10px;
-        }
-
-        .stats-bar {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
-        }
-
-        .stats-bar .stat-item {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            padding: 10px 20px;
-            border-radius: 8px;
-            text-align: center;
-        }
-
-        .stats-bar .stat-item .icon {
-            font-size: 1.5em;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .stats-bar .stat-item .value {
-            font-size: 1.3em;
-            font-weight: bold;
-            color: #333;
-            display: block;
-        }
-
-        .stats-bar .stat-item .label {
-            color: #666;
-            font-size: 0.8em;
-            display: block;
         }
 
         .board-container {
@@ -851,12 +732,7 @@
                     <h3>⚫ 黑棋</h3>
                     <div class="player-status">
                         <div class="stat-row">
-                            <span>步数:</span>
-                            <span class="stat-value" id="blackMoves">0</span>
-                        </div>
-                        <div class="stat-row">
-                            <span>时间:</span>
-                            <span class="stat-value" id="blackTime">00:00</span>
+                            <span>当前回合</span>
                         </div>
                     </div>
                 </div>
@@ -873,12 +749,7 @@
                     <h3>⚪ 白棋</h3>
                     <div class="player-status">
                         <div class="stat-row">
-                            <span>步数:</span>
-                            <span class="stat-value" id="whiteMoves">0</span>
-                        </div>
-                        <div class="stat-row">
-                            <span>时间:</span>
-                            <span class="stat-value" id="whiteTime">00:00</span>
+                            <span>等待中</span>
                         </div>
                     </div>
                 </div>
@@ -889,36 +760,6 @@
                 <span class="player" id="currentPlayer"></span>
             </div>
 
-            <!-- 倒计时显示 -->
-            <div class="countdown-display" id="countdownDisplay">
-                <div class="countdown-item black">
-                    <h4>黑棋倒计时</h4>
-                    <div class="time" id="blackCountdown">30</div>
-                </div>
-                <div class="countdown-item white">
-                    <h4>白棋倒计时</h4>
-                    <div class="time" id="whiteCountdown">30</div>
-                </div>
-            </div>
-
-            <div class="stats-bar" id="gameStatsBar">
-                <div class="stat-item">
-                    <span class="icon">⏱️</span>
-                    <span class="value" id="gameTimer">00:00</span>
-                    <span class="label">游戏时间</span>
-                </div>
-                <div class="stat-item">
-                    <span class="icon">👆</span>
-                    <span class="value" id="moveCount">0</span>
-                    <span class="label">步数</span>
-                </div>
-                <div class="stat-item">
-                    <span class="icon">🎯</span>
-                    <span class="value" id="difficultyScore">0</span>
-                    <span class="label">难度分</span>
-                </div>
-            </div>
-
             <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
                 <button class="pause-btn" onclick="togglePause()" id="pauseBtn">⏸️ 暂停</button>
                 <button class="undo-btn" onclick="undoMove()" id="undoBtn" disabled>↩️ 悔棋</button>
@@ -927,8 +768,6 @@
                     onclick="showRecordPanel()">📜 棋谱</button>
                 <button class="restart-btn" style="background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);"
                     onclick="switchTheme()">🎨 切换主题</button>
-                <button class="restart-btn" style="background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);"
-                    onclick="toggleSound()" id="soundBtn">🔊 音效</button>
                 <button class="restart-btn" style="background: linear-gradient(135deg, #757575 0%, #616161 100%);"
                     onclick="backToMenu()">🏠 返回主菜单</button>
             </div>
@@ -978,24 +817,10 @@
         let gameMode = 'pvp';
         let isPaused = false;
 
-        // 黑白棋分别统计
-        let blackMoves = 0;
-        let whiteMoves = 0;
-        let blackTime = 0;
-        let whiteTime = 0;
-        let blackTimer = null;
-        let whiteTimer = null;
-
         // 悔棋和历史记录
         let moveHistory = [];
         let undoCount = 0;
         const MAX_UNDO = 3;
-
-        // 倒计时计时器
-        let countdownTime = 30; // 每方30秒
-        let blackCountdown = 30;
-        let whiteCountdown = 30;
-        let countdownTimer = null;
 
         // 棋谱记录
         let gameRecord = {
@@ -1019,9 +844,6 @@
         let cachedTheme = null;
         let pendingDraw = false;
         let animationFrameId = null;
-
-        // 音效开关
-        let isSoundEnabled = true;
 
         // 棋盘主题配置
         const BOARD_THEMES = {
@@ -1075,11 +897,6 @@
         };
         let currentDifficulty = 'easy';
 
-        // 游戏统计
-        let gameTimer = null;
-        let gameTime = 0;
-        let moveCount = 0;
-        let currentGameScore = 0;
         let currentReplayGame = null;
 
         // 选择游戏模式
@@ -1107,8 +924,6 @@
 
         // 返回模式选择
         function backToModeSelection() {
-            // 停止所有计时器,防止内存泄漏
-            stopAllTimers();
             // 隐藏所有游戏相关区域
             document.getElementById('difficultySection').classList.add('hidden');
             document.getElementById('puzzleSection').classList.add('hidden');
@@ -1238,8 +1053,7 @@
             // 显示难度信息
             const config = DIFFICULTY_CONFIG[difficulty];
             document.getElementById('difficultyInfo').innerHTML = `
-                <strong>${config.name}模式</strong>：${config.description}<br>
-                目标步数：${config.targetSteps}步 | 目标时间：${formatTime(config.targetTime)} | 得分倍数：${config.scoreMultiplier}×
+                <strong>${config.name}模式</strong>：${config.description}
             `;
         }
 
@@ -1288,7 +1102,6 @@
                             <li><strong>玩家执黑：</strong>您执黑棋先行，可以充分利用先手优势</li>
                             <li><strong>AI执白：</strong>电脑会根据难度选择合适的应对策略</li>
                             <li><strong>难度选择：</strong>简单模式AI较为谨慎，困难模式AI更具攻击性</li>
-                            <li><strong>时间限制：</strong>每步棋有30秒思考时间，超时判负</li>
                         </ul>`,
                 endgame: `<strong>残局挑战规则：</strong>
                         <ul>
@@ -1311,13 +1124,6 @@
             }
             currentPlayer = 'black';
             gameOver = false;
-            gameTime = 0;
-            moveCount = 0;
-            blackMoves = 0;
-            whiteMoves = 0;
-            blackTime = 0;
-            whiteTime = 0;
-            currentGameScore = 0;
             isPaused = false;
             currentPuzzle = null;
             moveHistory = [];
@@ -1336,36 +1142,12 @@
                 date: new Date().toISOString()
             };
 
-            document.getElementById('blackMoves').textContent = 0;
-            document.getElementById('whiteMoves').textContent = 0;
-            document.getElementById('blackTime').textContent = formatTime(0);
-            document.getElementById('whiteTime').textContent = formatTime(0);
-            document.getElementById('gameTimer').textContent = formatTime(0);
-            document.getElementById('moveCount').textContent = 0;
-            document.getElementById('difficultyScore').textContent = 0;
             document.getElementById('pauseBtn').textContent = '⏸️ 暂停';
             document.getElementById('undoBtn').disabled = true;
             document.getElementById('replayControls').style.display = 'none';
 
-            // 显示倒计时(仅人机模式)
-            if (gameMode === 'pve') {
-                document.getElementById('countdownDisplay').style.display = 'flex';
-                blackCountdown = countdownTime;
-                whiteCountdown = countdownTime;
-                updateCountdownDisplay();
-                startCountdown();
-            } else {
-                document.getElementById('countdownDisplay').style.display = 'none';
-                stopCountdown();
-            }
-
             updateStatus();
             drawBoard();
-
-            // 先停止所有计时器,再启动新计时器
-            stopAllTimers();
-            startTimer();
-            startDualTimer();
         }
 
         function drawBoard() {
@@ -1621,63 +1403,30 @@
                 }
 
                 gameBoard[row][col] = currentPlayer;
-                moveCount++;
 
                 // 记录历史(用于悔棋)
                 moveHistory.push({
                     row: row,
                     col: col,
-                    color: currentPlayer,
-                    moveNum: moveCount,
-                    time: gameTime
+                    color: currentPlayer
                 });
 
                 // 记录棋谱
                 gameRecord.moves.push({
                     row: row,
                     col: col,
-                    color: currentPlayer,
-                    moveNum: moveCount,
-                    time: gameTime
+                    color: currentPlayer
                 });
 
-                if (currentPlayer === 'black') {
-                    blackMoves++;
-                    document.getElementById('blackMoves').textContent = blackMoves;
-                } else {
-                    whiteMoves++;
-                    document.getElementById('whiteMoves').textContent = whiteMoves;
-                }
-
-                document.getElementById('moveCount').textContent = moveCount;
                 document.getElementById('undoBtn').disabled = false;
-
-                // 播放落子音效
-                playSound('place');
 
                 // 播放落子动画
                 animatePiecePlacement(row, col);
-
-                // 实时计算难度分
-                const config = DIFFICULTY_CONFIG[currentDifficulty];
-                let currentDifficultyScore = Math.floor(config.scoreMultiplier * 100);
-
-                if (moveCount <= config.targetSteps) {
-                    currentDifficultyScore += (config.targetSteps - moveCount) * 2;
-                }
-                if (gameTime <= config.targetTime) {
-                    currentDifficultyScore += Math.floor((config.targetTime - gameTime) / 10);
-                }
-
-                document.getElementById('difficultyScore').textContent = currentDifficultyScore;
 
                 drawBoard();
 
                 if (checkWin(row, col)) {
                     gameOver = true;
-                    stopTimer();
-                    stopDualTimer();
-                    stopCountdown();
 
                     // 绘制获胜连线
                     drawBoard();
@@ -1686,15 +1435,11 @@
                     saveGameRecord();
                     const message = currentPlayer === 'black' ? '🎉 黑棋获胜！' : '🎉 白棋获胜！';
                     showWinMessage(message);
-                    playSound('win');
                     return;
                 }
 
                 if (checkDraw()) {
                     gameOver = true;
-                    stopTimer();
-                    stopDualTimer();
-                    stopCountdown();
 
                     gameRecord.result = 'draw';
                     saveGameRecord();
@@ -1704,11 +1449,6 @@
 
                 currentPlayer = currentPlayer === 'black' ? 'white' : 'black';
                 updateStatus();
-                startDualTimer();
-
-                blackCountdown = countdownTime;
-                whiteCountdown = countdownTime;
-                updateCountdownDisplay();
 
                 // AI下棋
                 if (gameMode === 'pve' && currentPlayer === 'white' && !gameOver) {
@@ -1846,25 +1586,21 @@
 
                 if (bestMove) {
                     gameBoard[bestMove.row][bestMove.col] = 'white';
-                    moveCount++;
-                    whiteMoves++;
 
-                    document.getElementById('moveCount').textContent = moveCount;
-                    document.getElementById('whiteMoves').textContent = whiteMoves;
+                    // 记录历史
+                    moveHistory.push({
+                        row: bestMove.row,
+                        col: bestMove.col,
+                        color: 'white'
+                    });
 
-                    const config = DIFFICULTY_CONFIG[currentDifficulty];
-                    let currentDifficultyScore = Math.floor(config.scoreMultiplier * 100);
+                    gameRecord.moves.push({
+                        row: bestMove.row,
+                        col: bestMove.col,
+                        color: 'white'
+                    });
 
-                    if (moveCount <= config.targetSteps) {
-                        currentDifficultyScore += (config.targetSteps - moveCount) * 2;
-                    }
-                    if (gameTime <= config.targetTime) {
-                        currentDifficultyScore += Math.floor((config.targetTime - gameTime) / 10);
-                    }
-
-                    document.getElementById('difficultyScore').textContent = currentDifficultyScore;
-
-                    playSound('place');
+                    document.getElementById('undoBtn').disabled = false;
 
                     // 播放落子动画
                     animatePiecePlacement(bestMove.row, bestMove.col);
@@ -1873,9 +1609,6 @@
 
                     if (checkWin(bestMove.row, bestMove.col)) {
                         gameOver = true;
-                        stopTimer();
-                        stopDualTimer();
-                        stopCountdown();
 
                         // 绘制获胜连线
                         drawBoard();
@@ -1883,15 +1616,11 @@
                         gameRecord.result = 'white_win';
                         saveGameRecord();
                         showWinMessage('🎉 白棋获胜！');
-                        playSound('lose');
                         return;
                     }
 
                     if (checkDraw()) {
                         gameOver = true;
-                        stopTimer();
-                        stopDualTimer();
-                        stopCountdown();
 
                         gameRecord.result = 'draw';
                         saveGameRecord();
@@ -1901,11 +1630,6 @@
 
                     currentPlayer = 'black';
                     updateStatus();
-                    startDualTimer();
-
-                    blackCountdown = countdownTime;
-                    whiteCountdown = countdownTime;
-                    updateCountdownDisplay();
                 }
             } finally {
                 isProcessing = false;
@@ -1963,48 +1687,8 @@
             const winMessageEl = document.getElementById('winMessage');
             const config = DIFFICULTY_CONFIG[currentDifficulty];
 
-            // 计算最终得分
-            const finalScore = currentGameScore || Math.floor(config.scoreMultiplier * 100);
-
-            const speedBadge = getSpeedBadge(moveCount, gameTime);
-            const targetDiff = moveCount <= config.targetSteps && gameTime <= config.targetTime;
-            const diffText = targetDiff ? '🎯 达成目标！' : '继续加油！';
-
             winMessageEl.innerHTML = `
                 <div class="result-text">${message}</div>
-                <div class="game-stats">
-                    <div class="stat-row">
-                        <div class="stat-item">
-                            <div class="stat-label">难度</div>
-                            <div class="stat-value">${config.name}</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-label">步数</div>
-                            <div class="stat-value">${moveCount}</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-label">用时</div>
-                            <div class="stat-value">${formatTime(gameTime)}</div>
-                        </div>
-                    </div>
-                    <div class="stat-row">
-                        <div class="stat-item">
-                            <div class="stat-label">目标步数</div>
-                            <div class="stat-value">${config.targetSteps}</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-label">目标时间</div>
-                            <div class="stat-value">${formatTime(config.targetTime)}</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-label">得分</div>
-                            <div class="stat-value" style="color: #ffd700;">+${finalScore}</div>
-                        </div>
-                    </div>
-                    <div style="text-align: center; margin-top: 10px; color: ${targetDiff ? '#4caf50' : '#ff9800'}; font-weight: bold;">
-                        ${speedBadge} ${diffText}
-                    </div>
-                </div>
                 <div class="btn-group">
                     <button class="btn-play-again" onclick="restartGame()">🎮 再玩一局</button>
                     <button class="btn-play-again" onclick="backToMenu()">🏠 返回主菜单</button>
@@ -2013,19 +1697,6 @@
 
             winMessageEl.classList.add('show');
             document.getElementById('overlay').classList.add('show');
-        }
-
-        function getSpeedBadge(moveCount, gameTime) {
-            const config = DIFFICULTY_CONFIG[currentDifficulty];
-            if (moveCount <= config.targetSteps && gameTime <= config.targetTime) {
-                return '🚀 闪电速度';
-            } else if (moveCount <= config.targetSteps * 1.2 && gameTime <= config.targetTime * 1.2) {
-                return '⚡ 快速通关';
-            } else if (moveCount <= config.targetSteps * 1.5) {
-                return '🎯 表现优秀';
-            } else {
-                return '💪 继续努力';
-            }
         }
 
         function hideWinMessage() {
@@ -2049,127 +1720,24 @@
             puzzle.moves.forEach(move => {
                 const [row, col, color] = move;
                 gameBoard[row][col] = color;
-                if (color === 'black') {
-                    blackMoves++;
-                } else {
-                    whiteMoves++;
-                }
             });
 
             currentPlayer = 'black';
             gameOver = false;
-            gameTime = 0;
-            moveCount = puzzle.moves.length;
-            blackTime = 0;
-            whiteTime = 0;
-            currentGameScore = 0;
-
-            document.getElementById('blackMoves').textContent = blackMoves;
-            document.getElementById('whiteMoves').textContent = whiteMoves;
-            document.getElementById('blackTime').textContent = formatTime(0);
-            document.getElementById('whiteTime').textContent = formatTime(0);
 
             updateStatus();
             drawBoard();
-
-            // 残局模式隐藏倒计时显示
-            document.getElementById('countdownDisplay').style.display = 'none';
-
-            // 先停止所有计时器,再启动新计时器
-            stopAllTimers();
-            startTimer();
-            startDualTimer();
-        }
-
-        // 格式化时间
-        function formatTime(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = seconds % 60;
-            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        }
-
-        // 更新计时器
-        function updateTimer() {
-            gameTime++;
-            document.getElementById('gameTimer').textContent = formatTime(gameTime);
-        }
-
-        // 开始计时
-        function startTimer() {
-            if (gameTimer) clearInterval(gameTimer);
-            gameTimer = setInterval(updateTimer, 1000);
-        }
-
-        // 停止计时
-        function stopTimer() {
-            if (gameTimer) {
-                clearInterval(gameTimer);
-                gameTimer = null;
-            }
-        }
-
-        // 统一停止所有计时器
-        function stopAllTimers() {
-            if (gameTimer) clearInterval(gameTimer);
-            if (blackTimer) clearInterval(blackTimer);
-            if (whiteTimer) clearInterval(whiteTimer);
-            if (countdownTimer) clearInterval(countdownTimer);
-            gameTimer = null;
-            blackTimer = null;
-            whiteTimer = null;
-            countdownTimer = null;
-        }
-
-        // 开始双方计时
-        function startDualTimer() {
-            if (currentPlayer === 'black') {
-                if (blackTimer) clearInterval(blackTimer);
-                if (whiteTimer) clearInterval(whiteTimer);
-                whiteTimer = null;
-                blackTimer = setInterval(() => {
-                    blackTime++;
-                    document.getElementById('blackTime').textContent = formatTime(blackTime);
-                }, 1000);
-            } else {
-                if (whiteTimer) clearInterval(whiteTimer);
-                if (blackTimer) clearInterval(blackTimer);
-                blackTimer = null;
-                whiteTimer = setInterval(() => {
-                    whiteTime++;
-                    document.getElementById('whiteTime').textContent = formatTime(whiteTime);
-                }, 1000);
-            }
-        }
-
-        // 停止双方计时
-        function stopDualTimer() {
-            if (blackTimer) {
-                clearInterval(blackTimer);
-                blackTimer = null;
-            }
-            if (whiteTimer) {
-                clearInterval(whiteTimer);
-                whiteTimer = null;
-            }
         }
 
         // 切换暂停
         function togglePause() {
             isPaused = !isPaused;
             if (isPaused) {
-                // 暂停时停止所有计时器
-                stopAllTimers();
                 document.getElementById('pauseOverlay').classList.add('show');
                 document.getElementById('pauseBtn').textContent = '▶️ 继续';
             } else {
-                // 恢复时根据当前模式重新启动计时器
                 document.getElementById('pauseOverlay').classList.remove('show');
                 document.getElementById('pauseBtn').textContent = '⏸️ 暂停';
-                startTimer();
-                startDualTimer();
-                if (gameMode === 'pve') {
-                    startCountdown();
-                }
             }
         }
 
@@ -2178,38 +1746,6 @@
             if (isPaused) {
                 togglePause();
             }
-        }
-
-        // 播放音效
-        function playSound(type) {
-            if (!isSoundEnabled) return;
-
-            const audio = new Audio();
-            switch (type) {
-                case 'place':
-                    // 落子音效 - 清脆的敲击声
-                    audio.src = 'https://cdn.pixabay.com/download/audio/2022/03/24/audio_0a5d8e9c5c.mp3?filename=wood-tapping-3-182633.mp3';
-                    break;
-                case 'win':
-                    // 胜利音效 - 温馨的钟声
-                    audio.src = 'https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=success-fanfare-trumpets-6185.mp3';
-                    break;
-                case 'lose':
-                    // 失败音效 - 柔和的提示音
-                    audio.src = 'https://cdn.pixabay.com/download/audio/2021/08/04/audio_33e6426f4e.mp3?filename=notification-simple-885.mp3';
-                    break;
-            }
-            audio.volume = 0.3;
-            audio.play().catch(e => {
-                console.log('音效播放失败:', e);
-            });
-        }
-
-        // 音效控制
-        function toggleSound() {
-            isSoundEnabled = !isSoundEnabled;
-            const btn = document.getElementById('soundBtn');
-            btn.textContent = isSoundEnabled ? '🔊 音效' : '🔇 静音';
         }
 
         // 返回主菜单
@@ -2246,16 +1782,6 @@
             for (let i = 0; i < stepsToUndo && moveHistory.length > 0; i++) {
                 const lastMove = moveHistory.pop();
                 gameBoard[lastMove.row][lastMove.col] = null;
-
-                if (lastMove.color === 'black') {
-                    blackMoves--;
-                    document.getElementById('blackMoves').textContent = blackMoves;
-                } else {
-                    whiteMoves--;
-                    document.getElementById('whiteMoves').textContent = whiteMoves;
-                }
-
-                moveCount--;
             }
 
             undoCount++;
@@ -2265,26 +1791,10 @@
             gameRecord.moves = moveHistory.map(move => ({
                 row: move.row,
                 col: move.col,
-                color: move.color,
-                moveNum: move.moveNum,
-                time: move.time
+                color: move.color
             }));
 
-            document.getElementById('moveCount').textContent = moveCount;
             document.getElementById('undoBtn').disabled = moveHistory.length === 0;
-
-            // 实时计算难度分
-            const config = DIFFICULTY_CONFIG[currentDifficulty];
-            let currentDifficultyScore = Math.floor(config.scoreMultiplier * 100);
-
-            if (moveCount <= config.targetSteps) {
-                currentDifficultyScore += (config.targetSteps - moveCount) * 2;
-            }
-            if (gameTime <= config.targetTime) {
-                currentDifficultyScore += Math.floor((config.targetTime - gameTime) / 10);
-            }
-
-            document.getElementById('difficultyScore').textContent = currentDifficultyScore;
 
             // 清除获胜连线
             winningLine = null;
@@ -2296,8 +1806,6 @@
         // 重新开始游戏
         function restartGame() {
             hideWinMessage();
-            // 先停止所有计时器,防止内存泄漏
-            stopAllTimers();
 
             // 隐藏所有弹窗
             document.getElementById('recordPanel').style.display = 'none';
@@ -2309,62 +1817,6 @@
             } else {
                 initGame();
             }
-        }
-
-        // 倒计时功能
-        function startCountdown() {
-            if (countdownTimer) clearInterval(countdownTimer);
-            countdownTimer = setInterval(() => {
-                if (isPaused) return;
-
-                if (currentPlayer === 'black') {
-                    blackCountdown--;
-                    if (blackCountdown <= 0) {
-                        gameOver = true;
-                        stopTimer();
-                        stopDualTimer();
-                        stopCountdown();
-                        gameRecord.result = 'white_win';
-                        saveGameRecord();
-                        showWinMessage('⏱️ 黑棋超时，白棋获胜！');
-                        playSound('lose');
-                        return;
-                    }
-                } else {
-                    whiteCountdown--;
-                    if (whiteCountdown <= 0) {
-                        gameOver = true;
-                        stopTimer();
-                        stopDualTimer();
-                        stopCountdown();
-                        gameRecord.result = 'black_win';
-                        saveGameRecord();
-                        showWinMessage('⏱️ 白棋超时，黑棋获胜！');
-                        playSound('win');
-                        return;
-                    }
-                }
-                updateCountdownDisplay();
-            }, 1000);
-        }
-
-        function stopCountdown() {
-            if (countdownTimer) {
-                clearInterval(countdownTimer);
-                countdownTimer = null;
-            }
-        }
-
-        function updateCountdownDisplay() {
-            const blackEl = document.getElementById('blackCountdown');
-            const whiteEl = document.getElementById('whiteCountdown');
-
-            blackEl.textContent = blackCountdown;
-            whiteEl.textContent = whiteCountdown;
-
-            // 添加警告样式
-            blackEl.parentElement.classList.toggle('warning', blackCountdown <= 10);
-            whiteEl.parentElement.classList.toggle('warning', whiteCountdown <= 10);
         }
 
         // 保存棋谱记录
@@ -2473,17 +1925,6 @@
             document.getElementById('pauseBtn').disabled = true;
             document.getElementById('undoBtn').disabled = true;
 
-            // 隐藏倒计时显示
-            document.getElementById('countdownDisplay').style.display = 'none';
-
-            // 重置统计显示
-            document.getElementById('blackMoves').textContent = '0';
-            document.getElementById('whiteMoves').textContent = '0';
-            document.getElementById('blackTime').textContent = '00:00';
-            document.getElementById('whiteTime').textContent = '00:00';
-            document.getElementById('gameTimer').textContent = '00:00';
-            document.getElementById('moveCount').textContent = '0';
-
             drawBoard();
             updateReplayButtons();
         }
@@ -2544,8 +1985,6 @@
             isReplaying = false;
             document.getElementById('replayControls').style.display = 'none';
             document.getElementById('pauseBtn').disabled = false;
-            // 停止所有计时器
-            stopAllTimers();
             // 直接返回主菜单而不是重新开始游戏
             backToModeSelection();
         }
