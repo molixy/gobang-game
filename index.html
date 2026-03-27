@@ -1,6 +1,6 @@
-请帮我应用以下代码
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -224,8 +224,15 @@
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
         }
 
         /* 落子动画 */
@@ -238,10 +245,12 @@
                 transform: scale(1.5);
                 opacity: 0;
             }
+
             50% {
                 transform: scale(1.1);
                 opacity: 0.7;
             }
+
             100% {
                 transform: scale(1);
                 opacity: 1;
@@ -257,6 +266,7 @@
             0% {
                 opacity: 0;
             }
+
             100% {
                 opacity: 1;
             }
@@ -275,6 +285,7 @@
                 transform: scale(1);
                 opacity: 1;
             }
+
             100% {
                 transform: scale(0);
                 opacity: 0;
@@ -296,6 +307,11 @@
             overflow-y: auto;
             z-index: 1000;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            display: none;
+        }
+
+        .record-panel.show {
+            display: block;
         }
 
         .record-panel h2 {
@@ -403,6 +419,7 @@
                 transform: translate(-50%, -50%) scale(0.8);
                 opacity: 0;
             }
+
             100% {
                 transform: translate(-50%, -50%) scale(1);
                 opacity: 1;
@@ -763,6 +780,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- 暂停遮罩 -->
     <div class="pause-overlay" id="pauseOverlay">
@@ -785,8 +803,11 @@
                 <button class="mode-btn pve" onclick="selectGameMode('pve')">🤖 人机对战</button>
                 <button class="mode-btn endgame" onclick="selectGameMode('endgame')">🧩 残局挑战</button>
             </div>
-            <div id="modeInfo" style="margin-top: 15px; padding: 10px; background: rgba(255, 255, 255, 0.7); border-radius: 8px; font-size: 0.9em; color: #666;"></div>
-            <div style="margin-top: 20px; padding: 15px; background: rgba(255, 255, 255, 0.8); border-radius: 8px; font-size: 0.85em; line-height: 1.8;">
+            <div id="modeInfo"
+                style="margin-top: 15px; padding: 10px; background: rgba(255, 255, 255, 0.7); border-radius: 8px; font-size: 0.9em; color: #666;">
+            </div>
+            <div
+                style="margin-top: 20px; padding: 15px; background: rgba(255, 255, 255, 0.8); border-radius: 8px; font-size: 0.85em; line-height: 1.8;">
                 <strong>💡 玩法提示：</strong><br>
                 • 双人对战：与朋友在一台设备上轮流下棋，增进友谊<br>
                 • 人机对战：单人练习，挑战不同难度的AI<br>
@@ -807,7 +828,8 @@
             <div class="difficulty-info" id="difficultyInfo"></div>
             <div style="margin-top: 20px;">
                 <button class="restart-btn" onclick="startGame()">🎮 开始游戏</button>
-                <button class="restart-btn" style="background: linear-gradient(135deg, #757575 0%, #616161 100%);" onclick="backToModeSelection()">⬅️ 返回</button>
+                <button class="restart-btn" style="background: linear-gradient(135deg, #757575 0%, #616161 100%);"
+                    onclick="backToModeSelection()">⬅️ 返回</button>
             </div>
         </div>
 
@@ -816,7 +838,8 @@
             <h3>🧩 残局挑战</h3>
             <div class="puzzle-list" id="puzzleList"></div>
             <div style="margin-top: 20px;">
-                <button class="restart-btn" style="background: linear-gradient(135deg, #757575 0%, #616161 100%);" onclick="backToModeSelection()">⬅️ 返回</button>
+                <button class="restart-btn" style="background: linear-gradient(135deg, #757575 0%, #616161 100%);"
+                    onclick="backToModeSelection()">⬅️ 返回</button>
             </div>
         </div>
 
@@ -900,10 +923,14 @@
                 <button class="pause-btn" onclick="togglePause()" id="pauseBtn">⏸️ 暂停</button>
                 <button class="undo-btn" onclick="undoMove()" id="undoBtn" disabled>↩️ 悔棋</button>
                 <button class="restart-btn" onclick="restartGame()">🔄 重新开始</button>
-                <button class="restart-btn" style="background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);" onclick="showRecordPanel()">📜 棋谱</button>
-                <button class="restart-btn" style="background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);" onclick="switchTheme()">🎨 切换主题</button>
-                <button class="restart-btn" style="background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);" onclick="toggleSound()" id="soundBtn">🔊 音效</button>
-                <button class="restart-btn" style="background: linear-gradient(135deg, #757575 0%, #616161 100%);" onclick="backToMenu()">🏠 返回主菜单</button>
+                <button class="restart-btn" style="background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);"
+                    onclick="showRecordPanel()">📜 棋谱</button>
+                <button class="restart-btn" style="background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);"
+                    onclick="switchTheme()">🎨 切换主题</button>
+                <button class="restart-btn" style="background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);"
+                    onclick="toggleSound()" id="soundBtn">🔊 音效</button>
+                <button class="restart-btn" style="background: linear-gradient(135deg, #757575 0%, #616161 100%);"
+                    onclick="backToMenu()">🏠 返回主菜单</button>
             </div>
 
             <!-- 回放控制 -->
@@ -912,7 +939,8 @@
                 <button class="replay-btn" onclick="replayPrev()" id="replayPrev">◀️ 上一手</button>
                 <button class="replay-btn" onclick="replayNext()" id="replayNext">下一手 ▶️</button>
                 <button class="replay-btn" onclick="replayLast()" id="replayLast">⏭️</button>
-                <button class="replay-btn" onclick="exitReplay()" style="background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);">❌ 退出回放</button>
+                <button class="replay-btn" onclick="exitReplay()"
+                    style="background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);">❌ 退出回放</button>
             </div>
 
             <!-- 模式特定规则说明 -->
@@ -924,14 +952,15 @@
     <div class="win-message" id="winMessage"></div>
 
     <!-- 棋谱面板 -->
-    <div class="record-panel" id="recordPanel">
+    <div class="record-panel" id="recordPanel" style="display: none;">
         <h2>📜 棋谱记录</h2>
         <div class="record-list" id="recordList">
             <div style="text-align: center; padding: 20px; color: #999;">暂无棋谱记录</div>
         </div>
         <div style="display: flex; gap: 10px; justify-content: center;">
             <button class="restart-btn" onclick="closeRecordPanel()">关闭</button>
-            <button class="restart-btn" style="background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);" onclick="clearAllRecords()">清空记录</button>
+            <button class="restart-btn" style="background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);"
+                onclick="clearAllRecords()">清空记录</button>
         </div>
     </div>
 
@@ -948,7 +977,7 @@
         let gameOver = false;
         let gameMode = 'pvp';
         let isPaused = false;
-        
+
         // 黑白棋分别统计
         let blackMoves = 0;
         let whiteMoves = 0;
@@ -1080,14 +1109,23 @@
         function backToModeSelection() {
             // 停止所有计时器,防止内存泄漏
             stopAllTimers();
+            // 隐藏所有游戏相关区域
             document.getElementById('difficultySection').classList.add('hidden');
             document.getElementById('puzzleSection').classList.add('hidden');
+            document.getElementById('mainContent').classList.add('hidden');
+            // 显示模式选择区域
             document.getElementById('gameModeSection').classList.remove('hidden');
+            // 关闭所有弹窗
+            document.getElementById('recordPanel').style.display = 'none';
+            document.getElementById('overlay').classList.remove('show');
+            document.getElementById('winMessage').classList.remove('show');
+            document.getElementById('pauseOverlay').classList.remove('show');
         }
 
         // 确认模式并进入下一步
         function confirmMode() {
-            if (!document.querySelector('.mode-btn.active')) {
+            const activeModeBtn = document.querySelector('.mode-btn.active');
+            if (!activeModeBtn) {
                 alert('请先选择游戏模式！');
                 return;
             }
@@ -1097,7 +1135,10 @@
             if (gameMode === 'endgame') {
                 showPuzzleList();
             } else {
+                // 确保难度选择区域显示
                 document.getElementById('difficultySection').classList.remove('hidden');
+                // 确保主游戏区域隐藏
+                document.getElementById('mainContent').classList.add('hidden');
             }
         }
 
@@ -1210,13 +1251,19 @@
                 return;
             }
 
-            // 显示主界面
+            // 隐藏所有其他区域
+            document.getElementById('gameModeSection').classList.add('hidden');
             document.getElementById('difficultySection').classList.add('hidden');
+            document.getElementById('puzzleSection').classList.add('hidden');
+
+            // 显示主界面
             document.getElementById('mainContent').classList.remove('hidden');
 
-            // 更新难度显示
-            const config = DIFFICULTY_CONFIG[currentDifficulty];
-            document.getElementById('currentDifficulty').textContent = config.name;
+            // 确保所有弹窗关闭
+            document.getElementById('recordPanel').style.display = 'none';
+            document.getElementById('overlay').classList.remove('show');
+            document.getElementById('winMessage').classList.remove('show');
+            document.getElementById('pauseOverlay').classList.remove('show');
 
             // 显示模式说明
             showModeRules();
@@ -1802,64 +1849,64 @@
                     moveCount++;
                     whiteMoves++;
 
-                document.getElementById('moveCount').textContent = moveCount;
-                document.getElementById('whiteMoves').textContent = whiteMoves;
+                    document.getElementById('moveCount').textContent = moveCount;
+                    document.getElementById('whiteMoves').textContent = whiteMoves;
 
-                const config = DIFFICULTY_CONFIG[currentDifficulty];
-                let currentDifficultyScore = Math.floor(config.scoreMultiplier * 100);
+                    const config = DIFFICULTY_CONFIG[currentDifficulty];
+                    let currentDifficultyScore = Math.floor(config.scoreMultiplier * 100);
 
-                if (moveCount <= config.targetSteps) {
-                    currentDifficultyScore += (config.targetSteps - moveCount) * 2;
-                }
-                if (gameTime <= config.targetTime) {
-                    currentDifficultyScore += Math.floor((config.targetTime - gameTime) / 10);
-                }
+                    if (moveCount <= config.targetSteps) {
+                        currentDifficultyScore += (config.targetSteps - moveCount) * 2;
+                    }
+                    if (gameTime <= config.targetTime) {
+                        currentDifficultyScore += Math.floor((config.targetTime - gameTime) / 10);
+                    }
 
-                document.getElementById('difficultyScore').textContent = currentDifficultyScore;
+                    document.getElementById('difficultyScore').textContent = currentDifficultyScore;
 
-                playSound('place');
+                    playSound('place');
 
-                // 播放落子动画
-                animatePiecePlacement(bestMove.row, bestMove.col);
+                    // 播放落子动画
+                    animatePiecePlacement(bestMove.row, bestMove.col);
 
-                drawBoard();
-
-                if (checkWin(bestMove.row, bestMove.col)) {
-                    gameOver = true;
-                    stopTimer();
-                    stopDualTimer();
-                    stopCountdown();
-
-                    // 绘制获胜连线
                     drawBoard();
 
-                    gameRecord.result = 'white_win';
-                    saveGameRecord();
-                    showWinMessage('🎉 白棋获胜！');
-                    playSound('lose');
-                    return;
+                    if (checkWin(bestMove.row, bestMove.col)) {
+                        gameOver = true;
+                        stopTimer();
+                        stopDualTimer();
+                        stopCountdown();
+
+                        // 绘制获胜连线
+                        drawBoard();
+
+                        gameRecord.result = 'white_win';
+                        saveGameRecord();
+                        showWinMessage('🎉 白棋获胜！');
+                        playSound('lose');
+                        return;
+                    }
+
+                    if (checkDraw()) {
+                        gameOver = true;
+                        stopTimer();
+                        stopDualTimer();
+                        stopCountdown();
+
+                        gameRecord.result = 'draw';
+                        saveGameRecord();
+                        showWinMessage('🤝 平局！');
+                        return;
+                    }
+
+                    currentPlayer = 'black';
+                    updateStatus();
+                    startDualTimer();
+
+                    blackCountdown = countdownTime;
+                    whiteCountdown = countdownTime;
+                    updateCountdownDisplay();
                 }
-
-                if (checkDraw()) {
-                    gameOver = true;
-                    stopTimer();
-                    stopDualTimer();
-                    stopCountdown();
-
-                    gameRecord.result = 'draw';
-                    saveGameRecord();
-                    showWinMessage('🤝 平局！');
-                    return;
-                }
-
-                currentPlayer = 'black';
-                updateStatus();
-                startDualTimer();
-
-                blackCountdown = countdownTime;
-                whiteCountdown = countdownTime;
-                updateCountdownDisplay();
-            }
             } finally {
                 isProcessing = false;
             }
@@ -2251,6 +2298,12 @@
             hideWinMessage();
             // 先停止所有计时器,防止内存泄漏
             stopAllTimers();
+
+            // 隐藏所有弹窗
+            document.getElementById('recordPanel').style.display = 'none';
+            document.getElementById('overlay').classList.remove('show');
+
+            // 根据当前模式重新初始化游戏
             if (currentPuzzle) {
                 initPuzzleGame(currentPuzzle);
             } else {
@@ -2356,12 +2409,12 @@
                 });
             }
 
-            panel.classList.add('show');
+            panel.style.display = 'block';
             document.getElementById('overlay').classList.add('show');
         }
 
         function closeRecordPanel() {
-            document.getElementById('recordPanel').classList.remove('show');
+            document.getElementById('recordPanel').style.display = 'none';
             document.getElementById('overlay').classList.remove('show');
         }
 
@@ -2419,6 +2472,17 @@
             document.getElementById('replayControls').style.display = 'flex';
             document.getElementById('pauseBtn').disabled = true;
             document.getElementById('undoBtn').disabled = true;
+
+            // 隐藏倒计时显示
+            document.getElementById('countdownDisplay').style.display = 'none';
+
+            // 重置统计显示
+            document.getElementById('blackMoves').textContent = '0';
+            document.getElementById('whiteMoves').textContent = '0';
+            document.getElementById('blackTime').textContent = '00:00';
+            document.getElementById('whiteTime').textContent = '00:00';
+            document.getElementById('gameTimer').textContent = '00:00';
+            document.getElementById('moveCount').textContent = '0';
 
             drawBoard();
             updateReplayButtons();
@@ -2480,14 +2544,22 @@
             isReplaying = false;
             document.getElementById('replayControls').style.display = 'none';
             document.getElementById('pauseBtn').disabled = false;
-            initGame();
+            // 停止所有计时器
+            stopAllTimers();
+            // 直接返回主菜单而不是重新开始游戏
+            backToModeSelection();
         }
 
         function updateStatus() {
             const statusText = currentPlayer === 'black' ? '黑棋落子' : '白棋落子';
             const playerSpan = document.querySelector('.current-turn .player');
-            playerSpan.className = 'player ' + currentPlayer;
-            document.getElementById('currentPlayer').textContent = statusText;
+            if (playerSpan) {
+                playerSpan.className = 'player ' + currentPlayer;
+            }
+            const currentPlayerEl = document.getElementById('currentPlayer');
+            if (currentPlayerEl) {
+                currentPlayerEl.textContent = statusText;
+            }
         }
 
         // 落子动画
@@ -2523,7 +2595,7 @@
             }
         }
 
-        canvas.addEventListener('click', function(e) {
+        canvas.addEventListener('click', function (e) {
             if (isPaused) {
                 alert('游戏已暂停，请先继续游戏！');
                 return;
@@ -2541,7 +2613,7 @@
         });
 
         // 鼠标移动事件 - 用于显示落子预览
-        canvas.addEventListener('mousemove', function(e) {
+        canvas.addEventListener('mousemove', function (e) {
             if (gameOver || isPaused || isProcessing) {
                 mousePosition = null;
                 requestDraw();
@@ -2565,7 +2637,7 @@
         });
 
         // 鼠标离开画布 - 清除预览
-        canvas.addEventListener('mouseleave', function() {
+        canvas.addEventListener('mouseleave', function () {
             if (mousePosition) {
                 mousePosition = null;
                 requestDraw();
@@ -2636,7 +2708,44 @@
         }
 
         // 页面加载时的初始化
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
+            // 确保所有弹窗和面板默认隐藏
+            const panel = document.getElementById('recordPanel');
+            if (panel) {
+                panel.style.display = 'none';
+            }
+
+            const overlay = document.getElementById('overlay');
+            if (overlay) {
+                overlay.classList.remove('show');
+            }
+
+            const winMessage = document.getElementById('winMessage');
+            if (winMessage) {
+                winMessage.classList.remove('show');
+            }
+
+            const pauseOverlay = document.getElementById('pauseOverlay');
+            if (pauseOverlay) {
+                pauseOverlay.classList.remove('show');
+            }
+
+            // 确保主游戏区域默认隐藏
+            const mainContent = document.getElementById('mainContent');
+            if (mainContent) {
+                mainContent.classList.add('hidden');
+            }
+
+            const difficultySection = document.getElementById('difficultySection');
+            if (difficultySection) {
+                difficultySection.classList.add('hidden');
+            }
+
+            const puzzleSection = document.getElementById('puzzleSection');
+            if (puzzleSection) {
+                puzzleSection.classList.add('hidden');
+            }
+
             // 默认选中第一个游戏模式
             selectGameMode('pvp');
 
@@ -2645,4 +2754,5 @@
         });
     </script>
 </body>
+
 </html>
