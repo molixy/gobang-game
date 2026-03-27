@@ -1,3 +1,4 @@
+请帮我应用以下代码
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -99,34 +100,17 @@
             background: white;
         }
 
-        .difficulty-btn.easy {
+        .difficulty-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .difficulty-btn.active {
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+            color: white;
             border-color: #4caf50;
-            color: #4caf50;
-        }
-
-        .difficulty-btn.easy:hover, .difficulty-btn.easy.active {
-            background: #4caf50;
-            color: white;
-        }
-
-        .difficulty-btn.medium {
-            border-color: #ff9800;
-            color: #ff9800;
-        }
-
-        .difficulty-btn.medium:hover, .difficulty-btn.medium.active {
-            background: #ff9800;
-            color: white;
-        }
-
-        .difficulty-btn.hard {
-            border-color: #f44336;
-            color: #f44336;
-        }
-
-        .difficulty-btn.hard:hover, .difficulty-btn.hard.active {
-            background: #f44336;
-            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
         }
 
         .difficulty-info {
@@ -136,464 +120,24 @@
             border-radius: 8px;
             font-size: 0.9em;
             color: #666;
-        }
-
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 30px;
-            align-items: start;
-            justify-items: center;
-        }
-
-        /* 左侧面板 - 游戏规则 */
-        .left-panel {
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .left-panel h3 {
-            color: #1976d2;
-            margin-bottom: 15px;
-            font-size: 1.4em;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .rules-list {
-            color: #424242;
-            line-height: 1.8;
-        }
-
-        .rules-list li {
-            margin: 10px 0;
-            padding-left: 20px;
-            position: relative;
-        }
-
-        .rules-list li::before {
-            content: "▸";
-            position: absolute;
-            left: 0;
-            color: #667eea;
-            font-weight: bold;
-        }
-
-        /* 中间面板 - 棋盘 */
-        .center-panel {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .player-info-bar {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 20px;
-            padding: 15px 30px;
-            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
-            border-radius: 10px;
-            color: #333;
-            font-weight: bold;
-        }
-
-        .current-turn {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.2em;
-            padding: 10px 20px;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        /* 实时统计 */
-        .stats-bar {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 20px;
-            padding: 15px 25px;
-            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-            border-radius: 10px;
-            flex-wrap: wrap;
-        }
-
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: bold;
-            color: #2e7d32;
-        }
-
-        .stat-item .icon {
-            font-size: 1.2em;
-        }
-
-        .stat-item .value {
-            font-size: 1.3em;
-            font-family: 'Courier New', monospace;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 5px 12px;
-            border-radius: 5px;
-            min-width: 60px;
             text-align: center;
         }
 
-        .stat-item .label {
-            font-size: 0.9em;
-            color: #1b5e20;
-        }
-
-        .current-turn .player {
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-
-        .current-turn .player.black {
-            background: radial-gradient(circle at 30% 30%, #555, #000);
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
-        }
-
-        .current-turn .player.white {
-            background: radial-gradient(circle at 30% 30%, #fff, #ddd);
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
-            border: 1px solid #ccc;
-        }
-
-        .board-container {
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            margin-bottom: 20px;
-        }
-
-        .board {
-            background: linear-gradient(135deg, #DEB887 0%, #D2691E 100%);
-            padding: 20px;
-            display: inline-block;
-            border: 8px solid #8B4513;
-            border-radius: 5px;
-        }
-
-        .board canvas {
-            display: block;
-            cursor: pointer;
-        }
-
         .restart-btn {
-            padding: 15px 40px;
-            font-size: 1.2em;
+            padding: 10px 25px;
+            font-size: 1em;
             border: none;
             border-radius: 25px;
             cursor: pointer;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
             font-weight: bold;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
         }
 
         .restart-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-        }
-
-        .restart-btn:active {
-            transform: translateY(0);
-        }
-
-        /* 获胜提示 */
-        .win-message {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.95);
-            color: white;
-            padding: 50px 70px;
-            border-radius: 25px;
-            font-size: 1.8em;
-            font-weight: bold;
-            z-index: 1000;
-            display: none;
-            animation: fadeIn 0.3s ease;
-            text-align: center;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(0.8);
-            }
-            to {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1);
-            }
-        }
-
-        .win-message.show {
-            display: block;
-        }
-
-        .win-message .result-text {
-            margin-bottom: 20px;
-            font-size: 1.2em;
-        }
-
-        .win-message .game-stats {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px 25px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            font-size: 0.9em;
-        }
-
-        .win-message .game-stats .stat-row {
-            display: flex;
-            justify-content: space-around;
-            gap: 30px;
-            margin: 5px 0;
-        }
-
-        .win-message .game-stats .stat-item {
-            text-align: center;
-        }
-
-        .win-message .game-stats .stat-label {
-            color: #aaa;
-            font-size: 0.85em;
-        }
-
-        .win-message .game-stats .stat-value {
-            color: #fff;
-            font-size: 1.2em;
-            font-weight: bold;
-        }
-
-        .win-message .btn-group {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-        }
-
-        .win-message .btn-group button {
-            padding: 12px 35px;
-            font-size: 1em;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-
-        .win-message .btn-play-again {
-            background: linear-gradient(135deg, #00c853 0%, #00e676 100%);
-            color: white;
-            box-shadow: 0 4px 15px rgba(0, 200, 83, 0.4);
-        }
-
-        .win-message .btn-play-again:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 200, 83, 0.6);
-        }
-
-        .win-message .btn-close {
-            background: linear-gradient(135deg, #ff5252 0%, #ff1744 100%);
-            color: white;
-            box-shadow: 0 4px 15px rgba(255, 82, 82, 0.4);
-        }
-
-        .win-message .btn-close:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 82, 82, 0.6);
-        }
-
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            display: none;
-        }
-
-        .overlay.show {
-            display: block;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-            }
-
-            h1 {
-                font-size: 2em;
-            }
-
-            .board {
-                padding: 10px;
-            }
-
-            .board canvas {
-                max-width: 100%;
-                height: auto;
-            }
-        }
-
-        .score-box {
-            display: inline-block;
-            margin: 0 15px;
-            text-align: center;
-        }
-
-        .score-box .label {
-            font-size: 0.85em;
-            color: #666;
-            margin-bottom: 5px;
-        }
-
-        .score-box .value {
-            font-size: 1.3em;
-            font-weight: bold;
-            color: #333;
-        }
-
-        /* 游戏记录 */
-        .game-records {
-            max-height: 300px;
-            overflow-y: auto;
-            margin-top: 20px;
-        }
-
-        .game-records table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85em;
-        }
-
-        .game-records th,
-        .game-records td {
-            padding: 8px;
-            text-align: center;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .game-records th {
-            background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
-            color: white;
-            position: sticky;
-            top: 0;
-            z-index: 5;
-        }
-
-        .game-records tr:hover {
-            background: rgba(255, 152, 0, 0.1);
-        }
-
-        /* 速度评价 */
-        .speed-badge {
-            display: inline-block;
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 0.8em;
-            font-weight: bold;
-        }
-
-        .speed-badge.fast {
-            background: #4caf50;
-            color: white;
-        }
-
-        .speed-badge.medium {
-            background: #ff9800;
-            color: white;
-        }
-
-        .speed-badge.slow {
-            background: #f44336;
-            color: white;
-        }
-
-        /* 游戏模式选择 */
-        .game-mode-section {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-            border-radius: 10px;
-        }
-
-        .game-mode-section h3 {
-            color: #1976d2;
-            margin-bottom: 15px;
-            font-size: 1.2em;
-        }
-
-        .mode-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .mode-btn {
-            padding: 12px 30px;
-            font-size: 1em;
-            border: 2px solid #ddd;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            background: white;
-        }
-
-        .mode-btn.pvp {
-            border-color: #2196f3;
-            color: #2196f3;
-        }
-
-        .mode-btn.pvp:hover, .mode-btn.pvp.active {
-            background: #2196f3;
-            color: white;
-        }
-
-        .mode-btn.pve {
-            border-color: #9c27b0;
-            color: #9c27b0;
-        }
-
-        .mode-btn.pve:hover, .mode-btn.pve.active {
-            background: #9c27b0;
-            color: white;
-        }
-
-        .mode-btn.endgame {
-            border-color: #e91e63;
-            color: #e91e63;
-        }
-
-        .mode-btn.endgame:hover, .mode-btn.endgame.active {
-            background: #e91e63;
-            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
 
         /* 暂停按钮 */
@@ -747,21 +291,17 @@
             border-radius: 20px;
             padding: 30px;
             max-width: 600px;
+            width: 90%;
             max-height: 80vh;
             overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            z-index: 1002;
-            display: none;
-        }
-
-        .record-panel.show {
-            display: block;
+            z-index: 1000;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
         }
 
         .record-panel h2 {
+            text-align: center;
             color: #333;
             margin-bottom: 20px;
-            text-align: center;
         }
 
         .record-list {
@@ -772,140 +312,39 @@
 
         .record-item {
             padding: 15px;
-            margin: 10px 0;
-            background: #f5f5f5;
-            border-radius: 10px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            margin-bottom: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
+            border: 1px solid #eee;
         }
 
         .record-item:hover {
-            background: #e0e0e0;
-            transform: translateX(5px);
+            background: #f0f0f0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
-        .record-item .record-info {
+        .record-info {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 8px;
         }
 
-        .record-item .record-date {
-            color: #666;
-            font-size: 0.85em;
-        }
-
-        .record-item .record-moves {
-            color: #999;
-            font-size: 0.8em;
-            margin-top: 5px;
-        }
-
-        /* 回放控制 */
-        .replay-controls {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 20px;
-            padding: 15px;
-            background: #f5f5f5;
-            border-radius: 10px;
-        }
-
-        .replay-btn {
-            padding: 10px 20px;
-            font-size: 0.9em;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-
-        .replay-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .replay-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* 音乐控制 */
-        .music-control {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 100;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 10px 15px;
-            border-radius: 25px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .music-btn {
-            padding: 8px 15px;
-            font-size: 0.9em;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-
-        .music-btn:hover {
-            transform: scale(1.05);
-        }
-
-        /* 黑白棋分别统计 */
-        .dual-stats {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 20px;
-        }
-
-        .player-stats {
-            padding: 15px 20px;
-            border-radius: 10px;
-            min-width: 120px;
-        }
-
-        .player-stats.black {
-            background: linear-gradient(135deg, #424242 0%, #212121 100%);
-            color: white;
-        }
-
-        .player-stats.white {
-            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+        .record-info strong {
             color: #333;
-            border: 1px solid #ccc;
         }
 
-        .player-stats h4 {
-            margin-bottom: 10px;
-            text-align: center;
-            font-size: 1.1em;
-        }
-
-        .player-stats .stat-row {
-            display: flex;
-            justify-content: space-around;
-            gap: 10px;
-            margin: 5px 0;
+        .record-date {
+            color: #999;
             font-size: 0.85em;
         }
 
-        .player-stats .stat-value {
-            font-weight: bold;
-            font-family: 'Courier New', monospace;
+        .record-moves {
+            color: #666;
+            font-size: 0.9em;
         }
 
         /* 暂停遮罩 */
@@ -915,11 +354,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.7);
             display: none;
             justify-content: center;
             align-items: center;
-            z-index: 1001;
+            z-index: 100;
         }
 
         .pause-overlay.show {
@@ -931,87 +370,400 @@
             padding: 40px 60px;
             border-radius: 20px;
             text-align: center;
-            animation: fadeIn 0.3s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
 
         .pause-message h2 {
-            font-size: 2em;
+            margin-bottom: 20px;
             color: #333;
+        }
+
+        /* 获胜消息 */
+        .win-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 40px 60px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+            display: none;
+        }
+
+        .win-message.show {
+            display: block;
+            animation: winMessagePopup 0.5s ease-out;
+        }
+
+        @keyframes winMessagePopup {
+            0% {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .result-text {
+            font-size: 2em;
             margin-bottom: 20px;
+            color: #333;
         }
 
-        .pause-message p {
-            color: #666;
+        .game-stats {
             margin-bottom: 20px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
         }
 
-        /* 残局挑战 */
-        .puzzle-list {
-            max-height: 300px;
-            overflow-y: auto;
-            margin-top: 20px;
-        }
-
-        .puzzle-item {
-            padding: 12px 15px;
-            margin: 8px 0;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .stat-row {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            justify-content: space-around;
+            margin-bottom: 15px;
         }
 
-        .puzzle-item:hover {
-            background: rgba(255, 255, 255, 1);
-            transform: translateX(5px);
+        .stat-item {
+            text-align: center;
+            padding: 10px;
         }
 
-        .puzzle-item .puzzle-info {
-            flex: 1;
+        .stat-label {
+            color: #999;
+            font-size: 0.85em;
+            margin-bottom: 5px;
         }
 
-        .puzzle-item .puzzle-title {
+        .stat-value {
+            font-size: 1.5em;
             font-weight: bold;
             color: #333;
         }
 
-        .puzzle-item .puzzle-desc {
-            font-size: 0.85em;
-            color: #666;
-            margin-top: 3px;
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
         }
 
-        .puzzle-item .puzzle-difficulty {
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 0.75em;
+        .btn-play-again {
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+            color: white;
+        }
+
+        .btn-play-again:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        /* 遮罩层 */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .overlay.show {
+            display: flex;
+        }
+
+        /* 棋盘区域 */
+        .game-area {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .player-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            min-width: 150px;
+            text-align: center;
+        }
+
+        .player-info h3 {
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .player-status {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+        }
+
+        .current-turn {
+            font-size: 1.3em;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .current-turn .player.black {
+            background: #333;
+            color: white;
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+
+        .current-turn .player.white {
+            background: white;
+            color: #333;
+            border: 2px solid #999;
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+        }
+
+        .stats-bar .stat-item {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stats-bar .stat-item .icon {
+            font-size: 1.5em;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .stats-bar .stat-item .value {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+            display: block;
+        }
+
+        .stats-bar .stat-item .label {
+            color: #666;
+            font-size: 0.8em;
+            display: block;
+        }
+
+        .board-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .board {
+            position: relative;
+        }
+
+        canvas#board {
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+        }
+
+        /* 回放控制 */
+        .replay-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+        }
+
+        .replay-btn {
+            padding: 8px 20px;
+            font-size: 0.9em;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .replay-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .replay-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* 游戏模式选择 */
+        .game-mode-section {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .game-mode-section h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .mode-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .mode-btn {
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            background: white;
+            color: #333;
+        }
+
+        .mode-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* 残局列表 */
+        .puzzle-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .puzzle-item {
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #eee;
+        }
+
+        .puzzle-item:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .puzzle-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .puzzle-description {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 8px;
+        }
+
+        .puzzle-difficulty {
+            display: inline-block;
+            padding: 3px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
             font-weight: bold;
             color: white;
         }
 
-        .puzzle-item .puzzle-difficulty.easy {
+        .puzzle-difficulty.easy {
             background: #4caf50;
         }
 
-        .puzzle-item .puzzle-difficulty.medium {
+        .puzzle-difficulty.medium {
             background: #ff9800;
         }
 
-        .puzzle-item .puzzle-difficulty.hard {
+        .puzzle-difficulty.hard {
             background: #f44336;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .mode-specific-rules {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            font-size: 0.85em;
+            line-height: 1.8;
+            color: #666;
+        }
+
+        /* 主题按钮样式 */
+        .theme-btn {
+            padding: 10px 25px;
+            font-size: 1em;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+            color: white;
+        }
+
+        .theme-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.4);
         }
     </style>
 </head>
 <body>
-    <!-- 音乐控制 -->
-    <div class="music-control">
-        <span>🎵</span>
-        <button class="music-btn" onclick="toggleMusic()" id="musicBtn">播放音乐</button>
-    </div>
-
     <!-- 暂停遮罩 -->
     <div class="pause-overlay" id="pauseOverlay">
         <div class="pause-message">
@@ -1062,80 +814,19 @@
         <!-- 残局挑战列表 -->
         <div class="difficulty-section hidden" id="puzzleSection">
             <h3>🧩 残局挑战</h3>
-            <div style="margin-bottom: 15px; padding: 12px; background: rgba(255, 255, 255, 0.8); border-radius: 8px; font-size: 0.85em; line-height: 1.6;">
-                <strong>📖 玩法说明：</strong><br>
-                • 每个残局都有特定的棋子摆放<br>
-                • 根据提示找到制胜的一着<br>
-                • 如果选错了位置，会提示重新思考<br>
-                • 破解成功可获得成就感奖励
-            </div>
             <div class="puzzle-list" id="puzzleList"></div>
             <div style="margin-top: 20px;">
                 <button class="restart-btn" style="background: linear-gradient(135deg, #757575 0%, #616161 100%);" onclick="backToModeSelection()">⬅️ 返回</button>
             </div>
         </div>
-        
-        <div class="main-content hidden" id="mainContent">
-            <!-- 左侧：游戏规则 -->
-            <div class="left-panel">
-                <h3>📋 游戏规则</h3>
 
-                <div style="margin-bottom: 20px;">
-                    <h4 style="color: #1976d2; margin-bottom: 10px; font-size: 1.1em;">🎯 基本规则</h4>
-                    <ul class="rules-list">
-                        <li><strong>棋盘：</strong>15×15 格的标准棋盘</li>
-                        <li><strong>先手：</strong>黑棋先行，双方轮流落子</li>
-                        <li><strong>落子：</strong>点击棋盘交叉点放置棋子</li>
-                        <li><strong>不可悔棋：</strong>棋子落地后不可移动</li>
-                    </ul>
-                </div>
-
-                <div style="margin-bottom: 20px;">
-                    <h4 style="color: #f57c00; margin-bottom: 10px; font-size: 1.1em;">🏆 获胜条件</h4>
-                    <ul class="rules-list">
-                        <li><strong>五连：</strong>先在横、竖、斜任意方向连成5子的一方获胜</li>
-                        <li><strong>优先权：</strong>黑棋先手，拥有先发优势</li>
-                        <li><strong>胜利判断：</strong>落子后立即判定胜负</li>
-                    </ul>
-                </div>
-
-
-                <div id="modeSpecificRules" style="margin-top: 20px; padding: 15px; background: rgba(255, 255, 255, 0.8); border-radius: 8px; display: none;">
-                    <h4 style="color: #1976d2; margin-bottom: 10px;">模式说明</h4>
-                    <p id="modeDescription" style="font-size: 0.9em; color: #666; line-height: 1.6;"></p>
-                </div>
-            </div>
-            
-            <!-- 中间：棋盘区域 -->
-            <div class="center-panel">
-                <div class="player-info-bar">
-                    <div class="score-box">
-                        <div class="label">当前难度</div>
-                        <div class="value" id="currentDifficulty">--</div>
-                    </div>
-                </div>
-                
-                <div class="current-turn">
-                    <span class="player black"></span>
-                    <span id="currentPlayer">黑棋</span>的回合
-                </div>
-
-                <!-- 倒计时显示 -->
-                <div class="countdown-display" id="countdownDisplay" style="display: none;">
-                    <div class="countdown-item black" id="blackCountdown">
-                        <h4>⚫ 黑棋</h4>
-                        <div class="time" id="blackCountdownTime">30</div>
-                    </div>
-                    <div class="countdown-item white" id="whiteCountdown">
-                        <h4>⚪ 白棋</h4>
-                        <div class="time" id="whiteCountdownTime">30</div>
-                    </div>
-                </div>
-                
-                <!-- 双方统计 -->
-                <div class="dual-stats" id="dualStats">
-                    <div class="player-stats black">
-                        <h4>⚫ 黑棋</h4>
+        <!-- 主游戏区域 -->
+        <div class="hidden" id="mainContent">
+            <div class="game-area">
+                <!-- 黑棋信息 -->
+                <div class="player-info black-info">
+                    <h3>⚫ 黑棋</h3>
+                    <div class="player-status">
                         <div class="stat-row">
                             <span>步数:</span>
                             <span class="stat-value" id="blackMoves">0</span>
@@ -1145,8 +836,19 @@
                             <span class="stat-value" id="blackTime">00:00</span>
                         </div>
                     </div>
-                    <div class="player-stats white">
-                        <h4>⚪ 白棋</h4>
+                </div>
+
+                <!-- 棋盘 -->
+                <div class="board-container">
+                    <div class="board">
+                        <canvas id="board" width="450" height="450"></canvas>
+                    </div>
+                </div>
+
+                <!-- 白棋信息 -->
+                <div class="player-info white-info">
+                    <h3>⚪ 白棋</h3>
+                    <div class="player-status">
                         <div class="stat-row">
                             <span>步数:</span>
                             <span class="stat-value" id="whiteMoves">0</span>
@@ -1157,53 +859,67 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="stats-bar" id="gameStatsBar">
-                    <div class="stat-item">
-                        <span class="icon">⏱️</span>
-                        <span class="value" id="gameTimer">00:00</span>
-                        <span class="label">游戏时间</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="icon">👆</span>
-                        <span class="value" id="moveCount">0</span>
-                        <span class="label">步数</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="icon">🎯</span>
-                        <span class="value" id="difficultyScore">0</span>
-                        <span class="label">难度分</span>
-                    </div>
-                </div>
-                
-                <div class="board-container">
-                    <div class="board">
-                        <canvas id="board" width="450" height="450"></canvas>
-                    </div>
-                </div>
+            <!-- 当前回合 -->
+            <div class="current-turn">
+                <span class="player" id="currentPlayer"></span>
+            </div>
 
-                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-                    <button class="pause-btn" onclick="togglePause()" id="pauseBtn">⏸️ 暂停</button>
-                    <button class="undo-btn" onclick="undoMove()" id="undoBtn" disabled>↩️ 悔棋</button>
-                    <button class="restart-btn" onclick="restartGame()">🔄 重新开始</button>
-                    <button class="restart-btn" style="background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);" onclick="showRecordPanel()">📜 棋谱</button>
-                    <button class="restart-btn" style="background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);" onclick="switchTheme()">🎨 切换主题</button>
-                    <button class="restart-btn" style="background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);" onclick="toggleSound()" id="soundBtn">🔊 音效</button>
-                    <button class="restart-btn" style="background: linear-gradient(135deg, #757575 0%, #616161 100%);" onclick="backToMenu()">🏠 返回主菜单</button>
+            <!-- 倒计时显示 -->
+            <div class="countdown-display" id="countdownDisplay">
+                <div class="countdown-item black">
+                    <h4>黑棋倒计时</h4>
+                    <div class="time" id="blackCountdown">30</div>
                 </div>
-
-                <!-- 回放控制 -->
-                <div class="replay-controls" id="replayControls" style="display: none;">
-                    <button class="replay-btn" onclick="replayFirst()" id="replayFirst">⏮️</button>
-                    <button class="replay-btn" onclick="replayPrev()" id="replayPrev">◀️ 上一手</button>
-                    <button class="replay-btn" onclick="replayNext()" id="replayNext">下一手 ▶️</button>
-                    <button class="replay-btn" onclick="replayLast()" id="replayLast">⏭️</button>
-                    <button class="replay-btn" onclick="exitReplay()" style="background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);">❌ 退出回放</button>
+                <div class="countdown-item white">
+                    <h4>白棋倒计时</h4>
+                    <div class="time" id="whiteCountdown">30</div>
                 </div>
             </div>
+
+            <div class="stats-bar" id="gameStatsBar">
+                <div class="stat-item">
+                    <span class="icon">⏱️</span>
+                    <span class="value" id="gameTimer">00:00</span>
+                    <span class="label">游戏时间</span>
+                </div>
+                <div class="stat-item">
+                    <span class="icon">👆</span>
+                    <span class="value" id="moveCount">0</span>
+                    <span class="label">步数</span>
+                </div>
+                <div class="stat-item">
+                    <span class="icon">🎯</span>
+                    <span class="value" id="difficultyScore">0</span>
+                    <span class="label">难度分</span>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                <button class="pause-btn" onclick="togglePause()" id="pauseBtn">⏸️ 暂停</button>
+                <button class="undo-btn" onclick="undoMove()" id="undoBtn" disabled>↩️ 悔棋</button>
+                <button class="restart-btn" onclick="restartGame()">🔄 重新开始</button>
+                <button class="restart-btn" style="background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);" onclick="showRecordPanel()">📜 棋谱</button>
+                <button class="restart-btn" style="background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);" onclick="switchTheme()">🎨 切换主题</button>
+                <button class="restart-btn" style="background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);" onclick="toggleSound()" id="soundBtn">🔊 音效</button>
+                <button class="restart-btn" style="background: linear-gradient(135deg, #757575 0%, #616161 100%);" onclick="backToMenu()">🏠 返回主菜单</button>
+            </div>
+
+            <!-- 回放控制 -->
+            <div class="replay-controls" id="replayControls" style="display: none;">
+                <button class="replay-btn" onclick="replayFirst()" id="replayFirst">⏮️</button>
+                <button class="replay-btn" onclick="replayPrev()" id="replayPrev">◀️ 上一手</button>
+                <button class="replay-btn" onclick="replayNext()" id="replayNext">下一手 ▶️</button>
+                <button class="replay-btn" onclick="replayLast()" id="replayLast">⏭️</button>
+                <button class="replay-btn" onclick="exitReplay()" style="background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);">❌ 退出回放</button>
+            </div>
+
+            <!-- 模式特定规则说明 -->
+            <div class="mode-specific-rules" id="modeSpecificRules"></div>
         </div>
     </div>
-    
+
     <div class="overlay" id="overlay"></div>
     <div class="win-message" id="winMessage"></div>
 
@@ -1232,10 +948,7 @@
         let gameOver = false;
         let gameMode = 'pvp';
         let isPaused = false;
-        let isMusicPlaying = false;
-        let isSoundEnabled = true;
-        let backgroundMusic = null;
-
+        
         // 黑白棋分别统计
         let blackMoves = 0;
         let whiteMoves = 0;
@@ -1273,13 +986,13 @@
         // 第一阶段优化变量
         let mousePosition = null;
         let winningLine = null;
-        let boardCanvas = null;
-        let boardCtx = null;
-        let currentTheme = 'wood';
         let backgroundCache = null;
         let cachedTheme = null;
         let pendingDraw = false;
         let animationFrameId = null;
+
+        // 音效开关
+        let isSoundEnabled = true;
 
         // 棋盘主题配置
         const BOARD_THEMES = {
@@ -1305,79 +1018,30 @@
                 bgColor: 'linear-gradient(135deg, #232526 0%, #414345 100%)'
             }
         };
+        let currentTheme = 'wood';
 
-        // 残局数据
-        const PUZZLES = [
-            {
-                id: 1,
-                title: "四三杀",
-                description: "黑棋如何在一着内取胜？",
-                difficulty: "easy",
-                moves: [[7, 7, 'black'], [7, 8, 'black'], [7, 9, 'black'], [8, 8, 'black']],
-                solution: [7, 6],
-                hint: "利用四三杀的技巧"
-            },
-            {
-                id: 2,
-                title: "双三杀",
-                description: "找到制胜的一手",
-                difficulty: "medium",
-                moves: [[7, 6, 'black'], [7, 7, 'black'], [7, 8, 'black'], [6, 7, 'black'], [8, 7, 'black']],
-                solution: [7, 5],
-                hint: "形成两个活三"
-            },
-            {
-                id: 3,
-                title: "四四杀",
-                description: "黑棋绝杀局面",
-                difficulty: "hard",
-                moves: [[7, 5, 'black'], [7, 6, 'black'], [7, 7, 'black'], [6, 6, 'black'], [8, 6, 'black'], [5, 5, 'black'], [5, 6, 'black']],
-                solution: [7, 4],
-                hint: "利用四四必杀"
-            },
-            {
-                id: 4,
-                title: "防守反击",
-                description: "白棋先行，如何防守？",
-                difficulty: "medium",
-                moves: [[7, 7, 'black'], [7, 8, 'black'], [7, 9, 'black']],
-                solution: [7, 10],
-                hint: "必须防守对方的活四"
-            },
-            {
-                id: 5,
-                title: "连珠杀",
-                description: "黑棋的连珠杀法",
-                difficulty: "hard",
-                moves: [[7, 4, 'black'], [7, 5, 'black'], [7, 6, 'black'], [7, 7, 'black'], [7, 8, 'black'], [6, 5, 'white'], [6, 6, 'white'], [6, 7, 'white']],
-                solution: [7, 3],
-                hint: "制造连五的杀机"
-            }
-        ];
-        let currentPuzzle = null;
-
-        // 难度设置
+        // 难度配置
         const DIFFICULTY_CONFIG = {
             easy: {
                 name: '简单',
-                scoreMultiplier: 1.0,
-                description: '新手友好，轻松上手',
+                description: '适合新手入门',
                 targetSteps: 40,
-                targetTime: 600
+                targetTime: 300,
+                scoreMultiplier: 1
             },
             medium: {
                 name: '中等',
-                scoreMultiplier: 1.5,
-                description: '挑战中等难度，提升技巧',
+                description: '适合有一定基础的玩家',
                 targetSteps: 30,
-                targetTime: 480
+                targetTime: 240,
+                scoreMultiplier: 1.5
             },
             hard: {
                 name: '困难',
-                scoreMultiplier: 2.0,
-                description: '高手对决，极限挑战',
-                targetSteps: 25,
-                targetTime: 360
+                description: '适合资深玩家挑战',
+                targetSteps: 20,
+                targetTime: 180,
+                scoreMultiplier: 2
             }
         };
         let currentDifficulty = 'easy';
@@ -1387,7 +1051,7 @@
         let gameTime = 0;
         let moveCount = 0;
         let currentGameScore = 0;
-        let currentReplayGame = null; // 当前回放的棋谱
+        let currentReplayGame = null;
 
         // 选择游戏模式
         function selectGameMode(mode) {
@@ -1439,43 +1103,79 @@
 
         // 显示残局列表
         function showPuzzleList() {
-            const puzzleList = document.getElementById('puzzleList');
-            puzzleList.innerHTML = '';
+            document.getElementById('gameModeSection').classList.add('hidden');
+            document.getElementById('puzzleSection').classList.remove('hidden');
+
+            const list = document.getElementById('puzzleList');
+            list.innerHTML = '';
 
             PUZZLES.forEach(puzzle => {
                 const item = document.createElement('div');
                 item.className = 'puzzle-item';
                 item.innerHTML = `
-                    <div class="puzzle-info">
-                        <div class="puzzle-title">${puzzle.id}. ${puzzle.title}</div>
-                        <div class="puzzle-desc">${puzzle.description}</div>
-                    </div>
-                    <div class="puzzle-difficulty ${puzzle.difficulty}">${puzzle.difficulty.toUpperCase()}</div>
+                    <div class="puzzle-title">${puzzle.title}</div>
+                    <div class="puzzle-description">${puzzle.description}</div>
+                    <span class="puzzle-difficulty ${puzzle.difficulty}">${puzzle.difficulty}</span>
+                    <p style="font-size: 0.85em; color: #999; margin-top: 8px;">提示：${puzzle.hint}</p>
                 `;
-                item.onclick = () => startPuzzle(puzzle);
-                puzzleList.appendChild(item);
+                item.onclick = () => selectPuzzle(puzzle);
+                list.appendChild(item);
             });
-
-            document.getElementById('puzzleSection').classList.remove('hidden');
         }
 
-        // 开始残局
-        function startPuzzle(puzzle) {
+        // 残局数据
+        const PUZZLES = [
+            {
+                id: 1,
+                title: "四三杀",
+                description: "黑棋如何在一着内取胜？",
+                difficulty: "easy",
+                moves: [[7, 7, 'black'], [7, 8, 'black'], [7, 9, 'black'], [8, 8, 'black']],
+                solution: [7, 6],
+                hint: "利用四三杀的技巧"
+            },
+            {
+                id: 2,
+                title: "双三杀",
+                description: "找到制胜的一手",
+                difficulty: "medium",
+                moves: [[7, 6, 'black'], [7, 7, 'black'], [7, 8, 'black'], [6, 7, 'black'], [8, 7, 'black']],
+                solution: [7, 5],
+                hint: "形成两个活三"
+            },
+            {
+                id: 3,
+                title: "四四杀",
+                description: "黑棋绝杀局面",
+                difficulty: "hard",
+                moves: [[7, 5, 'black'], [7, 6, 'black'], [7, 7, 'black'], [6, 6, 'black'], [8, 6, 'black'], [5, 5, 'black'], [5, 6, 'black']],
+                solution: [7, 4],
+                hint: "利用四四必杀"
+            },
+            {
+                id: 4,
+                title: "活四冲四",
+                description: "黑棋必胜局面",
+                difficulty: "medium",
+                moves: [[7, 6, 'black'], [7, 7, 'black'], [7, 8, 'black'], [7, 9, 'black'], [6, 7, 'black']],
+                solution: [7, 10],
+                hint: "形成活四冲四"
+            },
+            {
+                id: 5,
+                title: "双四杀",
+                description: "黑棋双杀局面",
+                difficulty: "hard",
+                moves: [[7, 5, 'black'], [7, 6, 'black'], [6, 6, 'black'], [8, 6, 'black'], [6, 7, 'black'], [8, 7, 'black']],
+                solution: [7, 7],
+                hint: "形成两个四连"
+            }
+        ];
+        let currentPuzzle = null;
+
+        // 选择残局
+        function selectPuzzle(puzzle) {
             currentPuzzle = puzzle;
-            document.getElementById('puzzleSection').classList.add('hidden');
-            document.getElementById('mainContent').classList.remove('hidden');
-
-            // 显示模式说明
-            document.getElementById('modeSpecificRules').style.display = 'block';
-            document.getElementById('modeDescription').innerHTML = `
-                <strong>🧩 残局挑战：${puzzle.title}</strong><br>
-                ${puzzle.description}<br>
-                <br>
-                <strong>💡 提示：</strong>${puzzle.hint}<br>
-                <strong>🎯 目标：</strong>在指定位置落子取胜
-            `;
-
-            // 初始化残局
             initPuzzleGame(puzzle);
         }
 
@@ -1530,233 +1230,28 @@
             document.getElementById('modeSpecificRules').style.display = 'block';
 
             const modeDescriptions = {
-                pvp: '<strong>👥 双人对战模式</strong><br>两个人在同一台设备上轮流下棋，适合朋友之间对弈切磋。黑棋先手，白棋后手。双方轮流点击棋盘落子，先连成五子者获胜。',
-                pve: '<strong>🤖 人机对战模式</strong><br>单人对抗电脑AI，您执黑棋先行，AI执白棋应对。AI会根据难度等级选择不同的策略：简单模式AI会随机失误，中等模式AI有一定智能，困难模式AI会全力以赴。'
+                pvp: `<strong>双人对战规则：</strong>
+                        <ul>
+                            <li><strong>轮流落子：</strong>黑棋先行，白棋后手，双方轮流下棋</li>
+                            <li><strong>不可悔棋：</strong>棋子落地后不可移动</li>
+                            <li><strong>获胜条件：</strong>先连成五子者获胜（横、竖、斜均可）</li>
+                        </ul>`,
+                pve: `<strong>人机对战规则：</strong>
+                        <ul>
+                            <li><strong>玩家执黑：</strong>您执黑棋先行，可以充分利用先手优势</li>
+                            <li><strong>AI执白：</strong>电脑会根据难度选择合适的应对策略</li>
+                            <li><strong>难度选择：</strong>简单模式AI较为谨慎，困难模式AI更具攻击性</li>
+                            <li><strong>时间限制：</strong>每步棋有30秒思考时间，超时判负</li>
+                        </ul>`,
+                endgame: `<strong>残局挑战规则：</strong>
+                        <ul>
+                            <li><strong>执黑先行：</strong>在给定的残局中，您执黑棋先行</li>
+                            <li><strong>唯一解法：</strong>每个残局只有唯一的一步最佳着法</li>
+                            <li><strong>一步制胜：</strong>需要找到一步即可直接获胜的关键着法</li>
+                            <li><strong>提示系统：</strong>如遇困难，可点击提示按钮获取帮助</li>
+                        </ul>`
             };
-            document.getElementById('modeDescription').innerHTML = modeDescriptions[gameMode];
-        }
-
-        // 初始化残局游戏
-        function initPuzzleGame(puzzle) {
-            gameBoard = [];
-            for (let i = 0; i < BOARD_SIZE; i++) {
-                gameBoard[i] = [];
-                for (let j = 0; j < BOARD_SIZE; j++) {
-                    gameBoard[i][j] = null;
-                }
-            }
-
-            // 放置残局棋子
-            puzzle.moves.forEach(move => {
-                const [row, col, color] = move;
-                gameBoard[row][col] = color;
-                if (color === 'black') {
-                    blackMoves++;
-                } else {
-                    whiteMoves++;
-                }
-            });
-
-            currentPlayer = 'black';
-            gameOver = false;
-            gameTime = 0;
-            moveCount = puzzle.moves.length;
-            blackTime = 0;
-            whiteTime = 0;
-            currentGameScore = 0;
-
-            document.getElementById('blackMoves').textContent = blackMoves;
-            document.getElementById('whiteMoves').textContent = whiteMoves;
-            document.getElementById('blackTime').textContent = formatTime(0);
-            document.getElementById('whiteTime').textContent = formatTime(0);
-
-            updateStatus();
-            drawBoard();
-
-            // 残局模式隐藏倒计时显示
-            document.getElementById('countdownDisplay').style.display = 'none';
-
-            // 先停止所有计时器,再启动新计时器
-            stopAllTimers();
-            startTimer();
-            startDualTimer();
-        }
-
-
-
-        // 格式化时间
-        function formatTime(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = seconds % 60;
-            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        }
-
-        // 更新计时器
-        function updateTimer() {
-            gameTime++;
-            document.getElementById('gameTimer').textContent = formatTime(gameTime);
-        }
-
-        // 开始计时
-        function startTimer() {
-            if (gameTimer) clearInterval(gameTimer);
-            gameTimer = setInterval(updateTimer, 1000);
-        }
-
-        // 停止计时
-        function stopTimer() {
-            if (gameTimer) {
-                clearInterval(gameTimer);
-                gameTimer = null;
-            }
-        }
-
-        // 统一停止所有计时器
-        function stopAllTimers() {
-            if (gameTimer) clearInterval(gameTimer);
-            if (blackTimer) clearInterval(blackTimer);
-            if (whiteTimer) clearInterval(whiteTimer);
-            if (countdownTimer) clearInterval(countdownTimer);
-            gameTimer = null;
-            blackTimer = null;
-            whiteTimer = null;
-            countdownTimer = null;
-        }
-
-        // 开始双方计时
-        function startDualTimer() {
-            if (currentPlayer === 'black') {
-                if (blackTimer) clearInterval(blackTimer);
-                if (whiteTimer) clearInterval(whiteTimer);
-                whiteTimer = null;
-                blackTimer = setInterval(() => {
-                    blackTime++;
-                    document.getElementById('blackTime').textContent = formatTime(blackTime);
-                }, 1000);
-            } else {
-                if (whiteTimer) clearInterval(whiteTimer);
-                if (blackTimer) clearInterval(blackTimer);
-                blackTimer = null;
-                whiteTimer = setInterval(() => {
-                    whiteTime++;
-                    document.getElementById('whiteTime').textContent = formatTime(whiteTime);
-                }, 1000);
-            }
-        }
-
-        // 停止双方计时
-        function stopDualTimer() {
-            if (blackTimer) {
-                clearInterval(blackTimer);
-                blackTimer = null;
-            }
-            if (whiteTimer) {
-                clearInterval(whiteTimer);
-                whiteTimer = null;
-            }
-        }
-
-        // 切换暂停
-        function togglePause() {
-            isPaused = !isPaused;
-            if (isPaused) {
-                // 暂停时停止所有计时器
-                stopAllTimers();
-                document.getElementById('pauseOverlay').classList.add('show');
-                document.getElementById('pauseBtn').textContent = '▶️ 继续';
-            } else {
-                // 恢复时根据当前模式重新启动计时器
-                document.getElementById('pauseOverlay').classList.remove('show');
-                document.getElementById('pauseBtn').textContent = '⏸️ 暂停';
-                startTimer();
-                startDualTimer();
-                if (gameMode === 'pve') {
-                    startCountdown();
-                }
-            }
-        }
-
-        // 恢复游戏
-        function resumeGame() {
-            if (isPaused) {
-                togglePause();
-            }
-        }
-
-        // 音乐控制
-        function toggleMusic() {
-            isMusicPlaying = !isMusicPlaying;
-            const btn = document.getElementById('musicBtn');
-
-            if (isMusicPlaying) {
-                btn.textContent = '🎵 暂停音乐';
-                if (!backgroundMusic) {
-                    backgroundMusic = new Audio();
-                    // 使用平和的古筝音乐，适合下棋
-                    backgroundMusic.src = 'https://cdn.pixabay.com/download/audio/2022/10/25/audio_226e2b2316.mp3?filename=guzheng-solo-peaceful-26584.mp3';
-                    backgroundMusic.loop = true;
-                    backgroundMusic.volume = 0.4;
-                }
-                // 先加载音频再播放
-                const playPromise = backgroundMusic.play();
-                if (playPromise !== undefined) {
-                    playPromise.catch(e => {
-                        console.log('音频播放失败:', e);
-                        // 如果播放失败，尝试使用备用源
-                        backgroundMusic.src = 'https://cdn.pixabay.com/download/audio/2022/03/10/audio_c8c8a73420.mp3?filename=zen-meditation-176884.mp3';
-                        backgroundMusic.play().catch(err => console.log('备用音频播放失败:', err));
-                    });
-                }
-            } else {
-                btn.textContent = '🎵 播放音乐';
-                if (backgroundMusic) {
-                    backgroundMusic.pause();
-                    backgroundMusic.currentTime = 0; // 重置播放进度
-                }
-            }
-        }
-
-        // 播放音效
-        function playSound(type) {
-            if (!isSoundEnabled) return;
-
-            const audio = new Audio();
-            switch (type) {
-                case 'place':
-                    // 落子音效 - 清脆的敲击声
-                    audio.src = 'https://cdn.pixabay.com/download/audio/2022/03/24/audio_0a5d8e9c5c.mp3?filename=wood-tapping-3-182633.mp3';
-                    break;
-                case 'win':
-                    // 胜利音效 - 温馨的钟声
-                    audio.src = 'https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=success-fanfare-trumpets-6185.mp3';
-                    break;
-                case 'lose':
-                    // 失败音效 - 柔和的提示音
-                    audio.src = 'https://cdn.pixabay.com/download/audio/2021/08/04/audio_33e6426f4e.mp3?filename=notification-simple-885.mp3';
-                    break;
-            }
-            audio.volume = 0.3;
-            audio.play().catch(e => {
-                console.log('音效播放失败:', e);
-            });
-        }
-
-        // 音效控制
-        function toggleSound() {
-            isSoundEnabled = !isSoundEnabled;
-            const btn = document.getElementById('soundBtn');
-            btn.textContent = isSoundEnabled ? '🔊 音效' : '🔇 静音';
-        }
-
-        // 返回主菜单
-        function backToMenu() {
-            if (confirm('确定要返回主菜单吗？当前游戏进度将丢失。')) {
-                // 停止所有计时器
-                stopAllTimers();
-                document.getElementById('mainContent').classList.add('hidden');
-                document.getElementById('gameModeSection').classList.remove('hidden');
-                document.getElementById('modeSpecificRules').style.display = 'none';
-            }
+            document.getElementById('modeSpecificRules').innerHTML = modeDescriptions[gameMode];
         }
 
         function initGame() {
@@ -1892,96 +1387,6 @@
             }
         }
 
-        // 创建离屏棋盘缓存
-        function createBoardCache() {
-            if (cachedTheme === currentTheme && backgroundCache) {
-                return;
-            }
-
-            backgroundCache = document.createElement('canvas');
-            backgroundCache.width = canvas.width;
-            backgroundCache.height = canvas.height;
-            const cacheCtx = backgroundCache.getContext('2d');
-
-            const theme = BOARD_THEMES[currentTheme];
-
-            // 绘制棋盘背景
-            cacheCtx.fillStyle = theme.boardColor;
-            cacheCtx.fillRect(0, 0, backgroundCache.width, backgroundCache.height);
-
-            // 绘制网格
-            cacheCtx.strokeStyle = theme.gridColor;
-            cacheCtx.lineWidth = 1;
-
-            for (let i = 0; i < BOARD_SIZE; i++) {
-                cacheCtx.beginPath();
-                cacheCtx.moveTo(PADDING, PADDING + i * CELL_SIZE);
-                cacheCtx.lineTo(PADDING + (BOARD_SIZE - 1) * CELL_SIZE, PADDING + i * CELL_SIZE);
-                cacheCtx.stroke();
-
-                cacheCtx.beginPath();
-                cacheCtx.moveTo(PADDING + i * CELL_SIZE, PADDING);
-                cacheCtx.lineTo(PADDING + i * CELL_SIZE, PADDING + (BOARD_SIZE - 1) * CELL_SIZE);
-                cacheCtx.stroke();
-            }
-
-            // 绘制星位
-            const starPoints = [
-                [3, 3], [3, 11], [7, 7], [11, 3], [11, 11]
-            ];
-
-            cacheCtx.fillStyle = theme.starColor;
-            starPoints.forEach(point => {
-                cacheCtx.beginPath();
-                cacheCtx.arc(
-                    PADDING + point[0] * CELL_SIZE,
-                    PADDING + point[1] * CELL_SIZE,
-                    4,
-                    0,
-                    Math.PI * 2
-                );
-                cacheCtx.fill();
-            });
-
-            cachedTheme = currentTheme;
-        }
-
-        // 绘制带缓存的棋盘
-        function drawBoardWithCache() {
-            createBoardCache();
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // 绘制缓存的棋盘背景
-            if (backgroundCache) {
-                ctx.drawImage(backgroundCache, 0, 0);
-            }
-
-            // 绘制所有棋子
-            for (let i = 0; i < BOARD_SIZE; i++) {
-                for (let j = 0; j < BOARD_SIZE; j++) {
-                    if (gameBoard[i][j]) {
-                        drawPiece(i, j, gameBoard[i][j]);
-                    }
-                }
-            }
-
-            // 绘制获胜连线
-            if (winningLine) {
-                drawWinningLine(winningLine);
-            }
-
-            // 绘制鼠标悬停预览
-            if (mousePosition && !gameOver && !isPaused) {
-                const { row, col } = mousePosition;
-                if (isValidPosition(row, col) && !gameBoard[row][col]) {
-                    if (gameMode !== 'pve' || currentPlayer === 'black') {
-                        drawPreviewPiece(row, col);
-                    }
-                }
-            }
-        }
-
         function drawPiece(row, col, color) {
             const x = PADDING + col * CELL_SIZE;
             const y = PADDING + row * CELL_SIZE;
@@ -2058,17 +1463,6 @@
             ctx.restore();
         }
 
-        // 节流绘制请求
-        function requestDraw() {
-            if (!pendingDraw) {
-                pendingDraw = true;
-                animationFrameId = requestAnimationFrame(() => {
-                    drawBoard();
-                    pendingDraw = false;
-                });
-            }
-        }
-
         // 绘制获胜连线
         function drawWinningLine(line) {
             if (!line || line.length < 5) return;
@@ -2135,10 +1529,10 @@
             const rect = canvas.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
-            
+
             const col = Math.round((x - PADDING) / CELL_SIZE);
             const row = Math.round((y - PADDING) / CELL_SIZE);
-            
+
             return { row, col };
         }
 
@@ -2150,10 +1544,10 @@
             const rect = canvas.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
-            
+
             const gridX = PADDING + col * CELL_SIZE;
             const gridY = PADDING + row * CELL_SIZE;
-            
+
             const distance = Math.sqrt(Math.pow(x - gridX, 2) + Math.pow(y - gridY, 2));
             return distance <= CELL_SIZE / 2;
         }
@@ -2182,114 +1576,216 @@
                 gameBoard[row][col] = currentPlayer;
                 moveCount++;
 
-            // 记录历史(用于悔棋)
-            moveHistory.push({
-                row: row,
-                col: col,
-                color: currentPlayer,
-                moveNum: moveCount,
-                time: gameTime
-            });
+                // 记录历史(用于悔棋)
+                moveHistory.push({
+                    row: row,
+                    col: col,
+                    color: currentPlayer,
+                    moveNum: moveCount,
+                    time: gameTime
+                });
 
-            // 记录棋谱
-            gameRecord.moves.push({
-                row: row,
-                col: col,
-                color: currentPlayer,
-                moveNum: moveCount,
-                time: gameTime
-            });
+                // 记录棋谱
+                gameRecord.moves.push({
+                    row: row,
+                    col: col,
+                    color: currentPlayer,
+                    moveNum: moveCount,
+                    time: gameTime
+                });
 
-            if (currentPlayer === 'black') {
-                blackMoves++;
-                document.getElementById('blackMoves').textContent = blackMoves;
-            } else {
-                whiteMoves++;
-                document.getElementById('whiteMoves').textContent = whiteMoves;
-            }
+                if (currentPlayer === 'black') {
+                    blackMoves++;
+                    document.getElementById('blackMoves').textContent = blackMoves;
+                } else {
+                    whiteMoves++;
+                    document.getElementById('whiteMoves').textContent = whiteMoves;
+                }
 
-            document.getElementById('moveCount').textContent = moveCount;
-            document.getElementById('undoBtn').disabled = false;
-            playSound('place');
+                document.getElementById('moveCount').textContent = moveCount;
+                document.getElementById('undoBtn').disabled = false;
 
-            // 播放落子动画
-            animatePiecePlacement(row, col);
+                // 播放落子音效
+                playSound('place');
 
-            // 实时计算难度分
-            const config = DIFFICULTY_CONFIG[currentDifficulty];
-            let currentDifficultyScore = Math.floor(config.scoreMultiplier * 100);
+                // 播放落子动画
+                animatePiecePlacement(row, col);
 
-            if (moveCount <= config.targetSteps) {
-                currentDifficultyScore += (config.targetSteps - moveCount) * 2;
-            }
-            if (gameTime <= config.targetTime) {
-                currentDifficultyScore += Math.floor((config.targetTime - gameTime) / 10);
-            }
+                // 实时计算难度分
+                const config = DIFFICULTY_CONFIG[currentDifficulty];
+                let currentDifficultyScore = Math.floor(config.scoreMultiplier * 100);
 
-            document.getElementById('difficultyScore').textContent = currentDifficultyScore;
+                if (moveCount <= config.targetSteps) {
+                    currentDifficultyScore += (config.targetSteps - moveCount) * 2;
+                }
+                if (gameTime <= config.targetTime) {
+                    currentDifficultyScore += Math.floor((config.targetTime - gameTime) / 10);
+                }
 
-            drawBoard();
+                document.getElementById('difficultyScore').textContent = currentDifficultyScore;
 
-            if (checkWin(row, col)) {
-                gameOver = true;
-                stopTimer();
-                stopDualTimer();
-                stopCountdown();
-
-                // 绘制获胜连线
                 drawBoard();
 
-                gameRecord.result = currentPlayer === 'black' ? 'black_win' : 'white_win';
-                saveGameRecord();
+                if (checkWin(row, col)) {
+                    gameOver = true;
+                    stopTimer();
+                    stopDualTimer();
+                    stopCountdown();
 
-                if (currentPuzzle) {
-                    showWinMessage('🎉 恭喜你破解残局！');
+                    // 绘制获胜连线
+                    drawBoard();
+
+                    gameRecord.result = currentPlayer === 'black' ? 'black_win' : 'white_win';
+                    saveGameRecord();
+                    const message = currentPlayer === 'black' ? '🎉 黑棋获胜！' : '🎉 白棋获胜！';
+                    showWinMessage(message);
                     playSound('win');
-                } else {
-                    showWinMessage(currentPlayer === 'black' ? '🎉 黑棋获胜！' : '🎉 白棋获胜！');
-                    playSound(currentPlayer === 'black' ? 'win' : 'lose');
+                    return;
                 }
-                return;
-            }
 
-            if (checkDraw()) {
-                gameOver = true;
-                stopTimer();
-                stopDualTimer();
-                stopCountdown();
+                if (checkDraw()) {
+                    gameOver = true;
+                    stopTimer();
+                    stopDualTimer();
+                    stopCountdown();
 
-                gameRecord.result = 'draw';
-                saveGameRecord();
+                    gameRecord.result = 'draw';
+                    saveGameRecord();
+                    showWinMessage('🤝 平局！');
+                    return;
+                }
 
-                showWinMessage('🤝 平局！');
-                return;
-            }
+                currentPlayer = currentPlayer === 'black' ? 'white' : 'black';
+                updateStatus();
+                startDualTimer();
 
-            // 切换玩家
-            currentPlayer = currentPlayer === 'black' ? 'white' : 'black';
-            updateStatus();
-
-            // 重置倒计时
-            if (gameMode === 'pve') {
                 blackCountdown = countdownTime;
                 whiteCountdown = countdownTime;
                 updateCountdownDisplay();
-            }
 
-            // 人机模式：AI下棋
-            if (gameMode === 'pve' && currentPlayer === 'white' && !gameOver) {
-                stopDualTimer();
-                setTimeout(() => {
-                    // 在AI下棋前再次检查游戏状态
-                    if (isPaused || gameOver) return;
-                    makeAIMove();
-                }, 500);
-            } else {
-                startDualTimer();
-            }
+                // AI下棋
+                if (gameMode === 'pve' && currentPlayer === 'white' && !gameOver) {
+                    setTimeout(makeAIMove, 500);
+                }
             } finally {
                 isProcessing = false;
             }
+        }
+
+        // 获取最佳落子位置
+        function getBestMove() {
+            let bestScore = -Infinity;
+            let bestMoves = [];
+
+            for (let i = 0; i < BOARD_SIZE; i++) {
+                for (let j = 0; j < BOARD_SIZE; j++) {
+                    if (!gameBoard[i][j] && hasNeighbor(i, j)) {
+                        gameBoard[i][j] = 'white';
+                        let score = evaluateBoard('white');
+                        gameBoard[i][j] = null;
+
+                        if (score > bestScore) {
+                            bestScore = score;
+                            bestMoves = [{ row: i, col: j }];
+                        } else if (score === bestScore) {
+                            bestMoves.push({ row: i, col: j });
+                        }
+                    }
+                }
+            }
+
+            return bestMoves.length > 0 ? bestMoves[Math.floor(Math.random() * bestMoves.length)] : { row: 7, col: 7 };
+        }
+
+        // 评估棋盘
+        function evaluateBoard(color) {
+            let score = 0;
+            const patterns = {
+                five: 100000,
+                liveFour: 10000,
+                deadFour: 1000,
+                liveThree: 1000,
+                deadThree: 100,
+                liveTwo: 100,
+                deadTwo: 10
+            };
+
+            for (let i = 0; i < BOARD_SIZE; i++) {
+                for (let j = 0; j < BOARD_SIZE; j++) {
+                    if (gameBoard[i][j] === color) {
+                        score += evaluatePosition(i, j, color);
+                    }
+                }
+            }
+
+            return score;
+        }
+
+        // 评估位置
+        function evaluatePosition(row, col, color) {
+            let score = 0;
+            const directions = [
+                [[0, 1], [0, -1]],
+                [[1, 0], [-1, 0]],
+                [[1, 1], [-1, -1]],
+                [[1, -1], [-1, 1]]
+            ];
+
+            for (const direction of directions) {
+                let count = 1;
+                let blocked = 0;
+
+                for (const [dr, dc] of direction) {
+                    let r = row + dr;
+                    let c = col + dc;
+
+                    while (
+                        isValidPosition(r, c) &&
+                        gameBoard[r][c] === color
+                    ) {
+                        count++;
+                        r += dr;
+                        c += dc;
+                    }
+
+                    if (isValidPosition(r, c) && gameBoard[r][c] === (color === 'black' ? 'white' : 'black')) {
+                        blocked++;
+                    }
+                }
+
+                if (count === 5) {
+                    score += 100000;
+                } else if (count === 4 && blocked === 0) {
+                    score += 10000;
+                } else if (count === 4 && blocked === 1) {
+                    score += 1000;
+                } else if (count === 3 && blocked === 0) {
+                    score += 1000;
+                } else if (count === 3 && blocked === 1) {
+                    score += 100;
+                } else if (count === 2 && blocked === 0) {
+                    score += 100;
+                } else if (count === 2 && blocked === 1) {
+                    score += 10;
+                }
+            }
+
+            return score;
+        }
+
+        // 检查是否有相邻棋子
+        function hasNeighbor(row, col) {
+            for (let i = -1; i <= 1; i++) {
+                for (let j = -1; j <= 1; j++) {
+                    if (i === 0 && j === 0) continue;
+                    const r = row + i;
+                    const c = col + j;
+                    if (isValidPosition(r, c) && gameBoard[r][c]) {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         // AI下棋
@@ -2299,7 +1795,7 @@
             isProcessing = true;
 
             try {
-                let bestMove = findBestMove();
+                let bestMove = getBestMove();
 
                 if (bestMove) {
                     gameBoard[bestMove.row][bestMove.col] = 'white';
@@ -2321,13 +1817,24 @@
 
                 document.getElementById('difficultyScore').textContent = currentDifficultyScore;
 
-                drawBoard();
                 playSound('place');
+
+                // 播放落子动画
+                animatePiecePlacement(bestMove.row, bestMove.col);
+
+                drawBoard();
 
                 if (checkWin(bestMove.row, bestMove.col)) {
                     gameOver = true;
                     stopTimer();
                     stopDualTimer();
+                    stopCountdown();
+
+                    // 绘制获胜连线
+                    drawBoard();
+
+                    gameRecord.result = 'white_win';
+                    saveGameRecord();
                     showWinMessage('🎉 白棋获胜！');
                     playSound('lose');
                     return;
@@ -2337,6 +1844,10 @@
                     gameOver = true;
                     stopTimer();
                     stopDualTimer();
+                    stopCountdown();
+
+                    gameRecord.result = 'draw';
+                    saveGameRecord();
                     showWinMessage('🤝 平局！');
                     return;
                 }
@@ -2352,138 +1863,6 @@
             } finally {
                 isProcessing = false;
             }
-        }
-
-        // 寻找最佳落子位置
-        function findBestMove() {
-            let bestScore = -Infinity;
-            let bestMoves = [];
-
-            // 根据难度设置搜索深度
-            const searchDepth = currentDifficulty === 'easy' ? 1 : (currentDifficulty === 'medium' ? 2 : 3);
-
-            // 评估所有空位
-            for (let i = 0; i < BOARD_SIZE; i++) {
-                for (let j = 0; j < BOARD_SIZE; j++) {
-                    if (!gameBoard[i][j] && hasNeighbor(i, j)) {
-                        gameBoard[i][j] = 'white';
-                        let score = evaluateBoard('white', searchDepth);
-                        gameBoard[i][j] = null;
-
-                        if (score > bestScore) {
-                            bestScore = score;
-                            bestMoves = [{ row: i, col: j }];
-                        } else if (score === bestScore) {
-                            bestMoves.push({ row: i, col: j });
-                        }
-                    }
-                }
-            }
-
-            // 简单模式随机选择，困难模式选择最佳
-            if (currentDifficulty === 'easy' && bestMoves.length > 0 && Math.random() < 0.3) {
-                return bestMoves[Math.floor(Math.random() * bestMoves.length)];
-            }
-
-            return bestMoves.length > 0 ? bestMoves[0] : { row: 7, col: 7 };
-        }
-
-        // 检查是否有相邻棋子
-        function hasNeighbor(row, col) {
-            for (let dr = -2; dr <= 2; dr++) {
-                for (let dc = -2; dc <= 2; dc++) {
-                    if (dr === 0 && dc === 0) continue;
-                    const r = row + dr;
-                    const c = col + dc;
-                    if (r >= 0 && r < BOARD_SIZE && c >= 0 && c < BOARD_SIZE && gameBoard[r][c]) {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        // 评估棋盘
-        function evaluateBoard(color, depth) {
-            let score = 0;
-
-            // 评估所有可能的连子
-            for (let i = 0; i < BOARD_SIZE; i++) {
-                for (let j = 0; j < BOARD_SIZE; j++) {
-                    if (gameBoard[i][j] === color) {
-                        score += evaluatePosition(i, j, color);
-                    } else if (gameBoard[i][j] === (color === 'black' ? 'white' : 'black')) {
-                        score -= evaluatePosition(i, j, gameBoard[i][j]) * 1.2;
-                    }
-                }
-            }
-
-            // 简单模式降低AI智力
-            if (currentDifficulty === 'easy') {
-                score *= 0.6;
-            }
-
-            return score;
-        }
-
-        // 评估位置分数
-        function evaluatePosition(row, col, color) {
-            let score = 0;
-            const directions = [[0, 1], [1, 0], [1, 1], [1, -1]];
-
-            for (const [dr, dc] of directions) {
-                let count = 1;
-                let blocked = 0;
-
-                // 正方向
-                for (let k = 1; k <= 4; k++) {
-                    const r = row + dr * k;
-                    const c = col + dc * k;
-                    if (r < 0 || r >= BOARD_SIZE || c < 0 || c >= BOARD_SIZE) {
-                        blocked++;
-                        break;
-                    }
-                    if (gameBoard[r][c] === color) {
-                        count++;
-                    } else if (gameBoard[r][c]) {
-                        blocked++;
-                        break;
-                    } else {
-                        break;
-                    }
-                }
-
-                // 反方向
-                for (let k = 1; k <= 4; k++) {
-                    const r = row - dr * k;
-                    const c = col - dc * k;
-                    if (r < 0 || r >= BOARD_SIZE || c < 0 || c >= BOARD_SIZE) {
-                        blocked++;
-                        break;
-                    }
-                    if (gameBoard[r][c] === color) {
-                        count++;
-                    } else if (gameBoard[r][c]) {
-                        blocked++;
-                        break;
-                    } else {
-                        break;
-                    }
-                }
-
-                // 评分
-                if (count >= 5) {
-                    score += 100000;
-                } else if (count === 4) {
-                    score += blocked === 0 ? 10000 : 1000;
-                } else if (count === 3) {
-                    score += blocked === 0 ? 1000 : 100;
-                } else if (count === 2) {
-                    score += blocked === 0 ? 100 : 10;
-                }
-            }
-
-            return score;
         }
 
         function checkWin(row, col) {
@@ -2581,25 +1960,24 @@
                 </div>
                 <div class="btn-group">
                     <button class="btn-play-again" onclick="restartGame()">🎮 再玩一局</button>
-                    <button class="btn-close" onclick="hideWinMessage()">关闭</button>
+                    <button class="btn-play-again" onclick="backToMenu()">🏠 返回主菜单</button>
                 </div>
             `;
+
             winMessageEl.classList.add('show');
             document.getElementById('overlay').classList.add('show');
         }
 
-        // 获取速度评价徽章
-        function getSpeedBadge(moves, time) {
+        function getSpeedBadge(moveCount, gameTime) {
             const config = DIFFICULTY_CONFIG[currentDifficulty];
-            const isFast = moves <= config.targetSteps && time <= config.targetTime;
-            const isMedium = moves <= config.targetSteps * 1.5 && time <= config.targetTime * 1.5;
-
-            if (isFast) {
-                return '<span class="speed-badge fast">⚡ 快速</span>';
-            } else if (isMedium) {
-                return '<span class="speed-badge medium">🐢 中等</span>';
+            if (moveCount <= config.targetSteps && gameTime <= config.targetTime) {
+                return '🚀 闪电速度';
+            } else if (moveCount <= config.targetSteps * 1.2 && gameTime <= config.targetTime * 1.2) {
+                return '⚡ 快速通关';
+            } else if (moveCount <= config.targetSteps * 1.5) {
+                return '🎯 表现优秀';
             } else {
-                return '<span class="speed-badge slow">🐌 慢速</span>';
+                return '💪 继续努力';
             }
         }
 
@@ -2608,21 +1986,193 @@
             document.getElementById('overlay').classList.remove('show');
         }
 
-        function updateStatus() {
-            const statusText = currentPlayer === 'black' ? '黑棋' : '白棋';
-            const playerSpan = document.querySelector('.current-turn .player');
-            playerSpan.className = 'player ' + currentPlayer;
-            document.getElementById('currentPlayer').textContent = statusText;
+        // 初始化残局
+        function initPuzzleGame(puzzle) {
+            document.getElementById('puzzleSection').classList.add('hidden');
+            document.getElementById('mainContent').classList.remove('hidden');
+
+            gameBoard = [];
+            for (let i = 0; i < BOARD_SIZE; i++) {
+                gameBoard[i] = [];
+                for (let j = 0; j < BOARD_SIZE; j++) {
+                    gameBoard[i][j] = null;
+                }
+            }
+
+            puzzle.moves.forEach(move => {
+                const [row, col, color] = move;
+                gameBoard[row][col] = color;
+                if (color === 'black') {
+                    blackMoves++;
+                } else {
+                    whiteMoves++;
+                }
+            });
+
+            currentPlayer = 'black';
+            gameOver = false;
+            gameTime = 0;
+            moveCount = puzzle.moves.length;
+            blackTime = 0;
+            whiteTime = 0;
+            currentGameScore = 0;
+
+            document.getElementById('blackMoves').textContent = blackMoves;
+            document.getElementById('whiteMoves').textContent = whiteMoves;
+            document.getElementById('blackTime').textContent = formatTime(0);
+            document.getElementById('whiteTime').textContent = formatTime(0);
+
+            updateStatus();
+            drawBoard();
+
+            // 残局模式隐藏倒计时显示
+            document.getElementById('countdownDisplay').style.display = 'none';
+
+            // 先停止所有计时器,再启动新计时器
+            stopAllTimers();
+            startTimer();
+            startDualTimer();
         }
 
-        function restartGame() {
-            hideWinMessage();
-            // 先停止所有计时器,防止内存泄漏
-            stopAllTimers();
-            if (currentPuzzle) {
-                initPuzzleGame(currentPuzzle);
+        // 格式化时间
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // 更新计时器
+        function updateTimer() {
+            gameTime++;
+            document.getElementById('gameTimer').textContent = formatTime(gameTime);
+        }
+
+        // 开始计时
+        function startTimer() {
+            if (gameTimer) clearInterval(gameTimer);
+            gameTimer = setInterval(updateTimer, 1000);
+        }
+
+        // 停止计时
+        function stopTimer() {
+            if (gameTimer) {
+                clearInterval(gameTimer);
+                gameTimer = null;
+            }
+        }
+
+        // 统一停止所有计时器
+        function stopAllTimers() {
+            if (gameTimer) clearInterval(gameTimer);
+            if (blackTimer) clearInterval(blackTimer);
+            if (whiteTimer) clearInterval(whiteTimer);
+            if (countdownTimer) clearInterval(countdownTimer);
+            gameTimer = null;
+            blackTimer = null;
+            whiteTimer = null;
+            countdownTimer = null;
+        }
+
+        // 开始双方计时
+        function startDualTimer() {
+            if (currentPlayer === 'black') {
+                if (blackTimer) clearInterval(blackTimer);
+                if (whiteTimer) clearInterval(whiteTimer);
+                whiteTimer = null;
+                blackTimer = setInterval(() => {
+                    blackTime++;
+                    document.getElementById('blackTime').textContent = formatTime(blackTime);
+                }, 1000);
             } else {
-                initGame();
+                if (whiteTimer) clearInterval(whiteTimer);
+                if (blackTimer) clearInterval(blackTimer);
+                blackTimer = null;
+                whiteTimer = setInterval(() => {
+                    whiteTime++;
+                    document.getElementById('whiteTime').textContent = formatTime(whiteTime);
+                }, 1000);
+            }
+        }
+
+        // 停止双方计时
+        function stopDualTimer() {
+            if (blackTimer) {
+                clearInterval(blackTimer);
+                blackTimer = null;
+            }
+            if (whiteTimer) {
+                clearInterval(whiteTimer);
+                whiteTimer = null;
+            }
+        }
+
+        // 切换暂停
+        function togglePause() {
+            isPaused = !isPaused;
+            if (isPaused) {
+                // 暂停时停止所有计时器
+                stopAllTimers();
+                document.getElementById('pauseOverlay').classList.add('show');
+                document.getElementById('pauseBtn').textContent = '▶️ 继续';
+            } else {
+                // 恢复时根据当前模式重新启动计时器
+                document.getElementById('pauseOverlay').classList.remove('show');
+                document.getElementById('pauseBtn').textContent = '⏸️ 暂停';
+                startTimer();
+                startDualTimer();
+                if (gameMode === 'pve') {
+                    startCountdown();
+                }
+            }
+        }
+
+        // 恢复游戏
+        function resumeGame() {
+            if (isPaused) {
+                togglePause();
+            }
+        }
+
+        // 播放音效
+        function playSound(type) {
+            if (!isSoundEnabled) return;
+
+            const audio = new Audio();
+            switch (type) {
+                case 'place':
+                    // 落子音效 - 清脆的敲击声
+                    audio.src = 'https://cdn.pixabay.com/download/audio/2022/03/24/audio_0a5d8e9c5c.mp3?filename=wood-tapping-3-182633.mp3';
+                    break;
+                case 'win':
+                    // 胜利音效 - 温馨的钟声
+                    audio.src = 'https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=success-fanfare-trumpets-6185.mp3';
+                    break;
+                case 'lose':
+                    // 失败音效 - 柔和的提示音
+                    audio.src = 'https://cdn.pixabay.com/download/audio/2021/08/04/audio_33e6426f4e.mp3?filename=notification-simple-885.mp3';
+                    break;
+            }
+            audio.volume = 0.3;
+            audio.play().catch(e => {
+                console.log('音效播放失败:', e);
+            });
+        }
+
+        // 音效控制
+        function toggleSound() {
+            isSoundEnabled = !isSoundEnabled;
+            const btn = document.getElementById('soundBtn');
+            btn.textContent = isSoundEnabled ? '🔊 音效' : '🔇 静音';
+        }
+
+        // 返回主菜单
+        function backToMenu() {
+            if (confirm('确定要返回主菜单吗？当前游戏进度将丢失。')) {
+                // 停止所有计时器
+                stopAllTimers();
+                document.getElementById('mainContent').classList.add('hidden');
+                document.getElementById('gameModeSection').classList.remove('hidden');
+                document.getElementById('modeSpecificRules').style.display = 'none';
             }
         }
 
@@ -2696,6 +2246,18 @@
             drawBoard();
         }
 
+        // 重新开始游戏
+        function restartGame() {
+            hideWinMessage();
+            // 先停止所有计时器,防止内存泄漏
+            stopAllTimers();
+            if (currentPuzzle) {
+                initPuzzleGame(currentPuzzle);
+            } else {
+                initGame();
+            }
+        }
+
         // 倒计时功能
         function startCountdown() {
             if (countdownTimer) clearInterval(countdownTimer);
@@ -2729,7 +2291,6 @@
                         return;
                     }
                 }
-
                 updateCountdownDisplay();
             }, 1000);
         }
@@ -2742,45 +2303,22 @@
         }
 
         function updateCountdownDisplay() {
-            document.getElementById('blackCountdownTime').textContent = blackCountdown;
-            document.getElementById('whiteCountdownTime').textContent = whiteCountdown;
-
-            // 高亮警告
             const blackEl = document.getElementById('blackCountdown');
             const whiteEl = document.getElementById('whiteCountdown');
 
-            blackEl.classList.toggle('warning', currentPlayer === 'black' && blackCountdown <= 10);
-            whiteEl.classList.toggle('warning', currentPlayer === 'white' && whiteCountdown <= 10);
+            blackEl.textContent = blackCountdown;
+            whiteEl.textContent = whiteCountdown;
+
+            // 添加警告样式
+            blackEl.parentElement.classList.toggle('warning', blackCountdown <= 10);
+            whiteEl.parentElement.classList.toggle('warning', whiteCountdown <= 10);
         }
 
-        // 棋谱保存
+        // 保存棋谱记录
         function saveGameRecord() {
-            if (gameRecord.moves.length === 0) return;
-
-            let savedGames;
             try {
-                savedGames = localStorage.getItem('gobang_saved_games');
-                if (savedGames) {
-                    savedGames = JSON.parse(savedGames);
-                } else {
-                    savedGames = [];
-                }
-            } catch (e) {
-                console.error('读取棋谱记录失败:', e);
-                savedGames = [];
-            }
-
-            // 深拷贝当前棋谱,避免引用问题
-            const recordToSave = JSON.parse(JSON.stringify(gameRecord));
-            recordToSave.date = new Date().toISOString();
-            savedGames.unshift(recordToSave);
-
-            // 最多保存20个棋谱
-            if (savedGames.length > 20) {
-                savedGames = savedGames.slice(0, 20);
-            }
-
-            try {
+                let savedGames = JSON.parse(localStorage.getItem('gobang_saved_games') || '[]');
+                savedGames.push(gameRecord);
                 localStorage.setItem('gobang_saved_games', JSON.stringify(savedGames));
             } catch (e) {
                 console.error('保存棋谱记录失败:', e);
@@ -2789,15 +2327,15 @@
 
         // 显示棋谱面板
         function showRecordPanel() {
-            const panel = document.getElementById('recordPanel');
-            const list = document.getElementById('recordList');
-            let savedGames;
             try {
                 savedGames = JSON.parse(localStorage.getItem('gobang_saved_games') || '[]');
             } catch (e) {
                 console.error('读取棋谱记录失败:', e);
                 savedGames = [];
             }
+
+            const panel = document.getElementById('recordPanel');
+            const list = document.getElementById('recordList');
 
             if (savedGames.length === 0) {
                 list.innerHTML = '<div style="text-align: center; padding: 20px; color: #999;">暂无棋谱记录</div>';
@@ -2901,7 +2439,7 @@
         }
 
         function replayNext() {
-            if (currentReplayGame && replayIndex < currentReplayGame.moves.length) {
+            if (replayIndex < currentReplayGame.moves.length) {
                 replayIndex++;
                 drawReplayState();
                 updateReplayButtons();
@@ -2909,11 +2447,9 @@
         }
 
         function replayLast() {
-            if (currentReplayGame) {
-                replayIndex = currentReplayGame.moves.length;
-                drawReplayState();
-                updateReplayButtons();
-            }
+            replayIndex = currentReplayGame.moves.length;
+            drawReplayState();
+            updateReplayButtons();
         }
 
         function drawReplayState() {
@@ -2924,40 +2460,34 @@
                 }
             }
 
-            if (currentReplayGame) {
-                for (let i = 0; i < replayIndex && i < currentReplayGame.moves.length; i++) {
-                    const move = currentReplayGame.moves[i];
-                    gameBoard[move.row][move.col] = move.color;
-                }
+            // 应用到replayIndex的所有移动
+            for (let i = 0; i < replayIndex; i++) {
+                const move = currentReplayGame.moves[i];
+                gameBoard[move.row][move.col] = move.color;
             }
 
             drawBoard();
         }
 
         function updateReplayButtons() {
-            const totalMoves = currentReplayGame ? currentReplayGame.moves.length : 0;
-
             document.getElementById('replayFirst').disabled = replayIndex === 0;
             document.getElementById('replayPrev').disabled = replayIndex === 0;
-            document.getElementById('replayNext').disabled = replayIndex >= totalMoves;
-            document.getElementById('replayLast').disabled = replayIndex >= totalMoves;
+            document.getElementById('replayNext').disabled = replayIndex === currentReplayGame.moves.length;
+            document.getElementById('replayLast').disabled = replayIndex === currentReplayGame.moves.length;
         }
 
         function exitReplay() {
             isReplaying = false;
-            currentReplayGame = null;
-
-            // 停止所有计时器,防止内存泄漏
-            stopAllTimers();
-
             document.getElementById('replayControls').style.display = 'none';
             document.getElementById('pauseBtn').disabled = false;
-            document.getElementById('undoBtn').disabled = false;
+            initGame();
+        }
 
-            // 返回主菜单而不是直接开始新游戏
-            document.getElementById('mainContent').classList.add('hidden');
-            document.getElementById('gameModeSection').classList.remove('hidden');
-            document.getElementById('modeSpecificRules').style.display = 'none';
+        function updateStatus() {
+            const statusText = currentPlayer === 'black' ? '黑棋落子' : '白棋落子';
+            const playerSpan = document.querySelector('.current-turn .player');
+            playerSpan.className = 'player ' + currentPlayer;
+            document.getElementById('currentPlayer').textContent = statusText;
         }
 
         // 落子动画
@@ -3042,6 +2572,17 @@
             }
         });
 
+        // 节流绘制请求
+        function requestDraw() {
+            if (!pendingDraw) {
+                pendingDraw = true;
+                animationFrameId = requestAnimationFrame(() => {
+                    drawBoard();
+                    pendingDraw = false;
+                });
+            }
+        }
+
         // 切换棋盘主题
         function switchTheme() {
             const themes = Object.keys(BOARD_THEMES);
@@ -3096,12 +2637,6 @@
 
         // 页面加载时的初始化
         window.addEventListener('load', function() {
-            // 预加载背景音乐
-            backgroundMusic = new Audio();
-            backgroundMusic.src = 'https://cdn.pixabay.com/download/audio/2022/10/25/audio_226e2b2316.mp3?filename=guzheng-solo-peaceful-26584.mp3';
-            backgroundMusic.loop = true;
-            backgroundMusic.volume = 0.4;
-
             // 默认选中第一个游戏模式
             selectGameMode('pvp');
 
