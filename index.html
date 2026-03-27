@@ -1187,6 +1187,8 @@
                     <button class="undo-btn" onclick="undoMove()" id="undoBtn" disabled>↩️ 悔棋</button>
                     <button class="restart-btn" onclick="restartGame()">🔄 重新开始</button>
                     <button class="restart-btn" style="background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);" onclick="showRecordPanel()">📜 棋谱</button>
+                    <button class="restart-btn" style="background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);" onclick="switchTheme()">🎨 切换主题</button>
+                    <button class="restart-btn" style="background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);" onclick="toggleSound()" id="soundBtn">🔊 音效</button>
                     <button class="restart-btn" style="background: linear-gradient(135deg, #757575 0%, #616161 100%);" onclick="backToMenu()">🏠 返回主菜单</button>
                 </div>
 
@@ -1231,6 +1233,7 @@
         let gameMode = 'pvp';
         let isPaused = false;
         let isMusicPlaying = false;
+        let isSoundEnabled = true;
         let backgroundMusic = null;
 
         // 黑白棋分别统计
@@ -1263,6 +1266,45 @@
         let isReplaying = false;
         let replayIndex = 0;
         let savedGames = [];
+
+        // 防止重复落子
+        let isProcessing = false;
+
+        // 第一阶段优化变量
+        let mousePosition = null;
+        let winningLine = null;
+        let boardCanvas = null;
+        let boardCtx = null;
+        let currentTheme = 'wood';
+        let backgroundCache = null;
+        let cachedTheme = null;
+        let pendingDraw = false;
+        let animationFrameId = null;
+
+        // 棋盘主题配置
+        const BOARD_THEMES = {
+            wood: {
+                name: '木纹',
+                boardColor: '#DEB887',
+                gridColor: '#8B4513',
+                starColor: '#8B4513',
+                bgColor: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+            },
+            marble: {
+                name: '大理石',
+                boardColor: '#F5F5DC',
+                gridColor: '#696969',
+                starColor: '#696969',
+                bgColor: 'linear-gradient(135deg, #a8e063 0%, #56ab2f 100%)'
+            },
+            dark: {
+                name: '暗黑',
+                boardColor: '#2C2C2C',
+                gridColor: '#666666',
+                starColor: '#888888',
+                bgColor: 'linear-gradient(135deg, #232526 0%, #414345 100%)'
+            }
+        };
 
         // 残局数据
         const PUZZLES = [
@@ -1351,10 +1393,16 @@
         function selectGameMode(mode) {
             gameMode = mode;
 
+            // 移除所有按钮的active类
             document.querySelectorAll('.mode-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
-            document.querySelector(`.mode-btn.${mode}`).classList.add('active');
+
+            // 为选中的按钮添加active类
+            const selectedBtn = document.querySelector(`.mode-btn.${mode}`);
+            if (selectedBtn) {
+                selectedBtn.classList.add('active');
+            }
 
             const modeDescriptions = {
                 pvp: '👥 <strong>双人对战模式</strong><br>两个人在同一台设备上轮流下棋，黑棋先手，白棋后手。',
@@ -1366,6 +1414,8 @@
 
         // 返回模式选择
         function backToModeSelection() {
+            // 停止所有计时器,防止内存泄漏
+            stopAllTimers();
             document.getElementById('difficultySection').classList.add('hidden');
             document.getElementById('puzzleSection').classList.add('hidden');
             document.getElementById('gameModeSection').classList.remove('hidden');
@@ -1433,11 +1483,16 @@
         function selectDifficulty(difficulty) {
             currentDifficulty = difficulty;
 
-            // 更新按钮状态
+            // 移除所有按钮的active类
             document.querySelectorAll('.difficulty-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
-            document.querySelector(`.difficulty-btn.${difficulty}`).classList.add('active');
+
+            // 为选中的按钮添加active类
+            const selectedBtn = document.querySelector(`.difficulty-btn.${difficulty}`);
+            if (selectedBtn) {
+                selectedBtn.classList.add('active');
+            }
 
             // 显示难度信息
             const config = DIFFICULTY_CONFIG[difficulty];
@@ -1517,6 +1572,12 @@
 
             updateStatus();
             drawBoard();
+
+            // 残局模式隐藏倒计时显示
+            document.getElementById('countdownDisplay').style.display = 'none';
+
+            // 先停止所有计时器,再启动新计时器
+            stopAllTimers();
             startTimer();
             startDualTimer();
         }
@@ -1538,7 +1599,7 @@
 
         // 开始计时
         function startTimer() {
-            stopTimer();
+            if (gameTimer) clearInterval(gameTimer);
             gameTimer = setInterval(updateTimer, 1000);
         }
 
@@ -1550,15 +1611,32 @@
             }
         }
 
+        // 统一停止所有计时器
+        function stopAllTimers() {
+            if (gameTimer) clearInterval(gameTimer);
+            if (blackTimer) clearInterval(blackTimer);
+            if (whiteTimer) clearInterval(whiteTimer);
+            if (countdownTimer) clearInterval(countdownTimer);
+            gameTimer = null;
+            blackTimer = null;
+            whiteTimer = null;
+            countdownTimer = null;
+        }
+
         // 开始双方计时
         function startDualTimer() {
-            stopDualTimer();
             if (currentPlayer === 'black') {
+                if (blackTimer) clearInterval(blackTimer);
+                if (whiteTimer) clearInterval(whiteTimer);
+                whiteTimer = null;
                 blackTimer = setInterval(() => {
                     blackTime++;
                     document.getElementById('blackTime').textContent = formatTime(blackTime);
                 }, 1000);
             } else {
+                if (whiteTimer) clearInterval(whiteTimer);
+                if (blackTimer) clearInterval(blackTimer);
+                blackTimer = null;
                 whiteTimer = setInterval(() => {
                     whiteTime++;
                     document.getElementById('whiteTime').textContent = formatTime(whiteTime);
@@ -1582,15 +1660,19 @@
         function togglePause() {
             isPaused = !isPaused;
             if (isPaused) {
-                stopTimer();
-                stopDualTimer();
+                // 暂停时停止所有计时器
+                stopAllTimers();
                 document.getElementById('pauseOverlay').classList.add('show');
                 document.getElementById('pauseBtn').textContent = '▶️ 继续';
             } else {
+                // 恢复时根据当前模式重新启动计时器
                 document.getElementById('pauseOverlay').classList.remove('show');
                 document.getElementById('pauseBtn').textContent = '⏸️ 暂停';
                 startTimer();
                 startDualTimer();
+                if (gameMode === 'pve') {
+                    startCountdown();
+                }
             }
         }
 
@@ -1607,48 +1689,70 @@
             const btn = document.getElementById('musicBtn');
 
             if (isMusicPlaying) {
-                btn.textContent = '🔇 静音';
+                btn.textContent = '🎵 暂停音乐';
                 if (!backgroundMusic) {
                     backgroundMusic = new Audio();
-                    // 使用免费的音乐源
-                    backgroundMusic.src = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
+                    // 使用平和的古筝音乐，适合下棋
+                    backgroundMusic.src = 'https://cdn.pixabay.com/download/audio/2022/10/25/audio_226e2b2316.mp3?filename=guzheng-solo-peaceful-26584.mp3';
                     backgroundMusic.loop = true;
-                    backgroundMusic.volume = 0.3;
+                    backgroundMusic.volume = 0.4;
                 }
-                backgroundMusic.play().catch(e => console.log('音频播放失败:', e));
+                // 先加载音频再播放
+                const playPromise = backgroundMusic.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(e => {
+                        console.log('音频播放失败:', e);
+                        // 如果播放失败，尝试使用备用源
+                        backgroundMusic.src = 'https://cdn.pixabay.com/download/audio/2022/03/10/audio_c8c8a73420.mp3?filename=zen-meditation-176884.mp3';
+                        backgroundMusic.play().catch(err => console.log('备用音频播放失败:', err));
+                    });
+                }
             } else {
                 btn.textContent = '🎵 播放音乐';
                 if (backgroundMusic) {
                     backgroundMusic.pause();
+                    backgroundMusic.currentTime = 0; // 重置播放进度
                 }
             }
         }
 
         // 播放音效
         function playSound(type) {
-            if (!isMusicPlaying) return;
+            if (!isSoundEnabled) return;
 
             const audio = new Audio();
             switch (type) {
                 case 'place':
-                    audio.src = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
+                    // 落子音效 - 清脆的敲击声
+                    audio.src = 'https://cdn.pixabay.com/download/audio/2022/03/24/audio_0a5d8e9c5c.mp3?filename=wood-tapping-3-182633.mp3';
                     break;
                 case 'win':
-                    audio.src = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
+                    // 胜利音效 - 温馨的钟声
+                    audio.src = 'https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=success-fanfare-trumpets-6185.mp3';
                     break;
                 case 'lose':
-                    audio.src = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
+                    // 失败音效 - 柔和的提示音
+                    audio.src = 'https://cdn.pixabay.com/download/audio/2021/08/04/audio_33e6426f4e.mp3?filename=notification-simple-885.mp3';
                     break;
             }
-            audio.volume = 0.2;
-            audio.play().catch(e => {});
+            audio.volume = 0.3;
+            audio.play().catch(e => {
+                console.log('音效播放失败:', e);
+            });
+        }
+
+        // 音效控制
+        function toggleSound() {
+            isSoundEnabled = !isSoundEnabled;
+            const btn = document.getElementById('soundBtn');
+            btn.textContent = isSoundEnabled ? '🔊 音效' : '🔇 静音';
         }
 
         // 返回主菜单
         function backToMenu() {
             if (confirm('确定要返回主菜单吗？当前游戏进度将丢失。')) {
-                stopTimer();
-                stopDualTimer();
+                // 停止所有计时器
+                stopAllTimers();
                 document.getElementById('mainContent').classList.add('hidden');
                 document.getElementById('gameModeSection').classList.remove('hidden');
                 document.getElementById('modeSpecificRules').style.display = 'none';
@@ -1678,6 +1782,8 @@
             undoCount = 0;
             isReplaying = false;
             replayIndex = 0;
+            winningLine = null;
+            mousePosition = null;
 
             // 初始化棋谱记录
             gameRecord = {
@@ -1713,35 +1819,42 @@
 
             updateStatus();
             drawBoard();
+
+            // 先停止所有计时器,再启动新计时器
+            stopAllTimers();
             startTimer();
             startDualTimer();
         }
 
         function drawBoard() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            ctx.strokeStyle = '#8B4513';
+
+            const theme = BOARD_THEMES[currentTheme];
+
+            // 绘制棋盘背景
+            ctx.fillStyle = theme.boardColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.strokeStyle = theme.gridColor;
             ctx.lineWidth = 1;
-            
+
             for (let i = 0; i < BOARD_SIZE; i++) {
                 ctx.beginPath();
                 ctx.moveTo(PADDING, PADDING + i * CELL_SIZE);
                 ctx.lineTo(PADDING + (BOARD_SIZE - 1) * CELL_SIZE, PADDING + i * CELL_SIZE);
                 ctx.stroke();
-                
+
                 ctx.beginPath();
                 ctx.moveTo(PADDING + i * CELL_SIZE, PADDING);
                 ctx.lineTo(PADDING + i * CELL_SIZE, PADDING + (BOARD_SIZE - 1) * CELL_SIZE);
                 ctx.stroke();
             }
-            
+
             const starPoints = [
-                [3, 3], [3, 7], [3, 11],
-                [7, 3], [7, 7], [7, 11],
-                [11, 3], [11, 7], [11, 11]
+                [3, 3], [3, 11], [7, 7], [11, 3], [11, 11]
             ];
-            
-            ctx.fillStyle = '#8B4513';
+
+            ctx.fillStyle = theme.starColor;
             starPoints.forEach(point => {
                 ctx.beginPath();
                 ctx.arc(
@@ -1753,11 +1866,117 @@
                 );
                 ctx.fill();
             });
-            
+
+            // 绘制所有棋子
             for (let i = 0; i < BOARD_SIZE; i++) {
                 for (let j = 0; j < BOARD_SIZE; j++) {
                     if (gameBoard[i][j]) {
                         drawPiece(i, j, gameBoard[i][j]);
+                    }
+                }
+            }
+
+            // 绘制获胜连线
+            if (winningLine) {
+                drawWinningLine(winningLine);
+            }
+
+            // 绘制鼠标悬停预览
+            if (mousePosition && !gameOver && !isPaused) {
+                const { row, col } = mousePosition;
+                if (isValidPosition(row, col) && !gameBoard[row][col]) {
+                    if (gameMode !== 'pve' || currentPlayer === 'black') {
+                        drawPreviewPiece(row, col);
+                    }
+                }
+            }
+        }
+
+        // 创建离屏棋盘缓存
+        function createBoardCache() {
+            if (cachedTheme === currentTheme && backgroundCache) {
+                return;
+            }
+
+            backgroundCache = document.createElement('canvas');
+            backgroundCache.width = canvas.width;
+            backgroundCache.height = canvas.height;
+            const cacheCtx = backgroundCache.getContext('2d');
+
+            const theme = BOARD_THEMES[currentTheme];
+
+            // 绘制棋盘背景
+            cacheCtx.fillStyle = theme.boardColor;
+            cacheCtx.fillRect(0, 0, backgroundCache.width, backgroundCache.height);
+
+            // 绘制网格
+            cacheCtx.strokeStyle = theme.gridColor;
+            cacheCtx.lineWidth = 1;
+
+            for (let i = 0; i < BOARD_SIZE; i++) {
+                cacheCtx.beginPath();
+                cacheCtx.moveTo(PADDING, PADDING + i * CELL_SIZE);
+                cacheCtx.lineTo(PADDING + (BOARD_SIZE - 1) * CELL_SIZE, PADDING + i * CELL_SIZE);
+                cacheCtx.stroke();
+
+                cacheCtx.beginPath();
+                cacheCtx.moveTo(PADDING + i * CELL_SIZE, PADDING);
+                cacheCtx.lineTo(PADDING + i * CELL_SIZE, PADDING + (BOARD_SIZE - 1) * CELL_SIZE);
+                cacheCtx.stroke();
+            }
+
+            // 绘制星位
+            const starPoints = [
+                [3, 3], [3, 11], [7, 7], [11, 3], [11, 11]
+            ];
+
+            cacheCtx.fillStyle = theme.starColor;
+            starPoints.forEach(point => {
+                cacheCtx.beginPath();
+                cacheCtx.arc(
+                    PADDING + point[0] * CELL_SIZE,
+                    PADDING + point[1] * CELL_SIZE,
+                    4,
+                    0,
+                    Math.PI * 2
+                );
+                cacheCtx.fill();
+            });
+
+            cachedTheme = currentTheme;
+        }
+
+        // 绘制带缓存的棋盘
+        function drawBoardWithCache() {
+            createBoardCache();
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // 绘制缓存的棋盘背景
+            if (backgroundCache) {
+                ctx.drawImage(backgroundCache, 0, 0);
+            }
+
+            // 绘制所有棋子
+            for (let i = 0; i < BOARD_SIZE; i++) {
+                for (let j = 0; j < BOARD_SIZE; j++) {
+                    if (gameBoard[i][j]) {
+                        drawPiece(i, j, gameBoard[i][j]);
+                    }
+                }
+            }
+
+            // 绘制获胜连线
+            if (winningLine) {
+                drawWinningLine(winningLine);
+            }
+
+            // 绘制鼠标悬停预览
+            if (mousePosition && !gameOver && !isPaused) {
+                const { row, col } = mousePosition;
+                if (isValidPosition(row, col) && !gameBoard[row][col]) {
+                    if (gameMode !== 'pve' || currentPlayer === 'black') {
+                        drawPreviewPiece(row, col);
                     }
                 }
             }
@@ -1767,15 +1986,17 @@
             const x = PADDING + col * CELL_SIZE;
             const y = PADDING + row * CELL_SIZE;
             const radius = CELL_SIZE / 2 - 2;
-            
+
+            ctx.save();
+
             ctx.beginPath();
             ctx.arc(x, y, radius, 0, Math.PI * 2);
-            
+
             const gradient = ctx.createRadialGradient(
                 x - radius / 3, y - radius / 3, radius / 10,
                 x, y, radius
             );
-            
+
             if (color === 'black') {
                 gradient.addColorStop(0, '#666');
                 gradient.addColorStop(1, '#000');
@@ -1783,10 +2004,10 @@
                 gradient.addColorStop(0, '#fff');
                 gradient.addColorStop(1, '#ccc');
             }
-            
+
             ctx.fillStyle = gradient;
             ctx.fill();
-            
+
             ctx.beginPath();
             ctx.arc(x - radius / 3, y - radius / 3, radius / 4, 0, Math.PI * 2);
             const highlightGradient = ctx.createRadialGradient(
@@ -1797,11 +2018,117 @@
             highlightGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
             ctx.fillStyle = highlightGradient;
             ctx.fill();
-            
+
             ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
             ctx.shadowBlur = 4;
             ctx.shadowOffsetX = 2;
             ctx.shadowOffsetY = 2;
+
+            ctx.restore();
+        }
+
+        // 绘制预览棋子（半透明）
+        function drawPreviewPiece(row, col) {
+            const x = PADDING + col * CELL_SIZE;
+            const y = PADDING + row * CELL_SIZE;
+            const radius = CELL_SIZE / 2 - 2;
+
+            ctx.save();
+
+            ctx.globalAlpha = 0.5;
+
+            const gradient = ctx.createRadialGradient(
+                x - radius / 3, y - radius / 3, radius / 10,
+                x, y, radius
+            );
+
+            if (currentPlayer === 'black') {
+                gradient.addColorStop(0, '#666');
+                gradient.addColorStop(1, '#000');
+            } else {
+                gradient.addColorStop(0, '#fff');
+                gradient.addColorStop(1, '#ccc');
+            }
+
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, Math.PI * 2);
+            ctx.fillStyle = gradient;
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        // 节流绘制请求
+        function requestDraw() {
+            if (!pendingDraw) {
+                pendingDraw = true;
+                animationFrameId = requestAnimationFrame(() => {
+                    drawBoard();
+                    pendingDraw = false;
+                });
+            }
+        }
+
+        // 绘制获胜连线
+        function drawWinningLine(line) {
+            if (!line || line.length < 5) return;
+
+            const theme = BOARD_THEMES[currentTheme];
+            const startX = PADDING + line[0].col * CELL_SIZE;
+            const startY = PADDING + line[0].row * CELL_SIZE;
+            const endX = PADDING + line[4].col * CELL_SIZE;
+            const endY = PADDING + line[4].row * CELL_SIZE;
+
+            ctx.save();
+
+            ctx.strokeStyle = '#ff4444';
+            ctx.lineWidth = 6;
+            ctx.lineCap = 'round';
+            ctx.shadowColor = '#ff0000';
+            ctx.shadowBlur = 10;
+
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(endX, endY);
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
+        // 获取获胜连线的棋子位置
+        function getWinningLine(row, col) {
+            const directions = [
+                [[0, 1], [0, -1]],
+                [[1, 0], [-1, 0]],
+                [[1, 1], [-1, -1]],
+                [[1, -1], [-1, 1]]
+            ];
+
+            const color = gameBoard[row][col];
+
+            for (const direction of directions) {
+                let line = [{ row, col }];
+
+                for (const [dr, dc] of direction) {
+                    let r = row + dr;
+                    let c = col + dc;
+
+                    while (
+                        isValidPosition(r, c) &&
+                        gameBoard[r][c] === color
+                    ) {
+                        line.push({ row: r, col: c });
+                        r += dr;
+                        c += dc;
+                    }
+                }
+
+                if (line.length >= 5) {
+                    return line.slice(0, 5);
+                }
+            }
+
+            return null;
         }
 
         function getClickPosition(e) {
@@ -1836,24 +2163,32 @@
                 return;
             }
 
-            // 残局模式检查答案
-            if (currentPuzzle) {
-                const [solutionRow, solutionCol] = currentPuzzle.solution;
-                if (row !== solutionRow || col !== solutionCol) {
-                    alert('😅 不是最佳解法，请再想想！');
-                    return;
-                }
+            // 防止重复落子
+            if (isProcessing) {
+                return;
             }
+            isProcessing = true;
 
-            gameBoard[row][col] = currentPlayer;
-            moveCount++;
+            try {
+                // 残局模式检查答案
+                if (currentPuzzle) {
+                    const [solutionRow, solutionCol] = currentPuzzle.solution;
+                    if (row !== solutionRow || col !== solutionCol) {
+                        alert('😅 不是最佳解法，请再想想！');
+                        return;
+                    }
+                }
+
+                gameBoard[row][col] = currentPlayer;
+                moveCount++;
 
             // 记录历史(用于悔棋)
             moveHistory.push({
                 row: row,
                 col: col,
                 color: currentPlayer,
-                moveNum: moveCount
+                moveNum: moveCount,
+                time: gameTime
             });
 
             // 记录棋谱
@@ -1901,6 +2236,9 @@
                 stopDualTimer();
                 stopCountdown();
 
+                // 绘制获胜连线
+                drawBoard();
+
                 gameRecord.result = currentPlayer === 'black' ? 'black_win' : 'white_win';
                 saveGameRecord();
 
@@ -1942,23 +2280,31 @@
             if (gameMode === 'pve' && currentPlayer === 'white' && !gameOver) {
                 stopDualTimer();
                 setTimeout(() => {
+                    // 在AI下棋前再次检查游戏状态
+                    if (isPaused || gameOver) return;
                     makeAIMove();
                 }, 500);
             } else {
                 startDualTimer();
+            }
+            } finally {
+                isProcessing = false;
             }
         }
 
         // AI下棋
         function makeAIMove() {
             if (gameOver || isPaused) return;
+            if (isProcessing) return;
+            isProcessing = true;
 
-            let bestMove = findBestMove();
+            try {
+                let bestMove = findBestMove();
 
-            if (bestMove) {
-                gameBoard[bestMove.row][bestMove.col] = 'white';
-                moveCount++;
-                whiteMoves++;
+                if (bestMove) {
+                    gameBoard[bestMove.row][bestMove.col] = 'white';
+                    moveCount++;
+                    whiteMoves++;
 
                 document.getElementById('moveCount').textContent = moveCount;
                 document.getElementById('whiteMoves').textContent = whiteMoves;
@@ -2002,6 +2348,9 @@
                 blackCountdown = countdownTime;
                 whiteCountdown = countdownTime;
                 updateCountdownDisplay();
+            }
+            } finally {
+                isProcessing = false;
             }
         }
 
@@ -2144,31 +2493,32 @@
                 [[1, 1], [-1, -1]],
                 [[1, -1], [-1, 1]]
             ];
-            
+
             const color = gameBoard[row][col];
-            
+
             for (const direction of directions) {
-                let count = 1;
-                
+                let line = [{ row, col }];
+
                 for (const [dr, dc] of direction) {
                     let r = row + dr;
                     let c = col + dc;
-                    
+
                     while (
                         isValidPosition(r, c) &&
                         gameBoard[r][c] === color
                     ) {
-                        count++;
+                        line.push({ row: r, col: c });
                         r += dr;
                         c += dc;
                     }
                 }
-                
-                if (count >= 5) {
+
+                if (line.length >= 5) {
+                    winningLine = line.slice(0, 5);
                     return true;
                 }
             }
-            
+
             return false;
         }
 
@@ -2267,6 +2617,8 @@
 
         function restartGame() {
             hideWinMessage();
+            // 先停止所有计时器,防止内存泄漏
+            stopAllTimers();
             if (currentPuzzle) {
                 initPuzzleGame(currentPuzzle);
             } else {
@@ -2283,6 +2635,11 @@
 
             if (moveHistory.length === 0) {
                 alert('没有可以撤销的步骤！');
+                return;
+            }
+
+            // 添加确认对话框
+            if (!confirm('确定要悔棋吗？')) {
                 return;
             }
 
@@ -2309,8 +2666,11 @@
 
             // 更新棋谱记录
             gameRecord.moves = moveHistory.map(move => ({
-                ...move,
-                time: gameTime
+                row: move.row,
+                col: move.col,
+                color: move.color,
+                moveNum: move.moveNum,
+                time: move.time
             }));
 
             document.getElementById('moveCount').textContent = moveCount;
@@ -2329,13 +2689,16 @@
 
             document.getElementById('difficultyScore').textContent = currentDifficultyScore;
 
+            // 清除获胜连线
+            winningLine = null;
+
             updateStatus();
             drawBoard();
         }
 
         // 倒计时功能
         function startCountdown() {
-            stopCountdown();
+            if (countdownTimer) clearInterval(countdownTimer);
             countdownTimer = setInterval(() => {
                 if (isPaused) return;
 
@@ -2394,10 +2757,16 @@
         function saveGameRecord() {
             if (gameRecord.moves.length === 0) return;
 
-            let savedGames = localStorage.getItem('gobang_saved_games');
-            if (savedGames) {
-                savedGames = JSON.parse(savedGames);
-            } else {
+            let savedGames;
+            try {
+                savedGames = localStorage.getItem('gobang_saved_games');
+                if (savedGames) {
+                    savedGames = JSON.parse(savedGames);
+                } else {
+                    savedGames = [];
+                }
+            } catch (e) {
+                console.error('读取棋谱记录失败:', e);
                 savedGames = [];
             }
 
@@ -2411,14 +2780,24 @@
                 savedGames = savedGames.slice(0, 20);
             }
 
-            localStorage.setItem('gobang_saved_games', JSON.stringify(savedGames));
+            try {
+                localStorage.setItem('gobang_saved_games', JSON.stringify(savedGames));
+            } catch (e) {
+                console.error('保存棋谱记录失败:', e);
+            }
         }
 
         // 显示棋谱面板
         function showRecordPanel() {
             const panel = document.getElementById('recordPanel');
             const list = document.getElementById('recordList');
-            const savedGames = JSON.parse(localStorage.getItem('gobang_saved_games') || '[]');
+            let savedGames;
+            try {
+                savedGames = JSON.parse(localStorage.getItem('gobang_saved_games') || '[]');
+            } catch (e) {
+                console.error('读取棋谱记录失败:', e);
+                savedGames = [];
+            }
 
             if (savedGames.length === 0) {
                 list.innerHTML = '<div style="text-align: center; padding: 20px; color: #999;">暂无棋谱记录</div>';
@@ -2450,7 +2829,11 @@
 
         function clearAllRecords() {
             if (confirm('确定要清空所有棋谱记录吗？')) {
-                localStorage.removeItem('gobang_saved_games');
+                try {
+                    localStorage.removeItem('gobang_saved_games');
+                } catch (e) {
+                    console.error('清空棋谱记录失败:', e);
+                }
                 showRecordPanel();
             }
         }
@@ -2563,6 +2946,10 @@
         function exitReplay() {
             isReplaying = false;
             currentReplayGame = null;
+
+            // 停止所有计时器,防止内存泄漏
+            stopAllTimers();
+
             document.getElementById('replayControls').style.display = 'none';
             document.getElementById('pauseBtn').disabled = false;
             document.getElementById('undoBtn').disabled = false;
@@ -2621,6 +3008,105 @@
             if (isNearGridCenter(row, col, e)) {
                 placePiece(row, col);
             }
+        });
+
+        // 鼠标移动事件 - 用于显示落子预览
+        canvas.addEventListener('mousemove', function(e) {
+            if (gameOver || isPaused || isProcessing) {
+                mousePosition = null;
+                requestDraw();
+                return;
+            }
+
+            if (gameMode === 'pve' && currentPlayer === 'white') {
+                return;
+            }
+
+            const { row, col } = getClickPosition(e);
+            if (isValidPosition(row, col) && isNearGridCenter(row, col, e) && !gameBoard[row][col]) {
+                mousePosition = { row, col };
+                requestDraw();
+            } else {
+                if (mousePosition) {
+                    mousePosition = null;
+                    requestDraw();
+                }
+            }
+        });
+
+        // 鼠标离开画布 - 清除预览
+        canvas.addEventListener('mouseleave', function() {
+            if (mousePosition) {
+                mousePosition = null;
+                requestDraw();
+            }
+        });
+
+        // 切换棋盘主题
+        function switchTheme() {
+            const themes = Object.keys(BOARD_THEMES);
+            const currentIndex = themes.indexOf(currentTheme);
+            const nextIndex = (currentIndex + 1) % themes.length;
+            currentTheme = themes[nextIndex];
+
+            // 清除缓存
+            backgroundCache = null;
+            cachedTheme = null;
+
+            const theme = BOARD_THEMES[currentTheme];
+            document.body.style.background = theme.bgColor;
+
+            drawBoard();
+
+            // 显示主题名称提示
+            const themeName = theme.name;
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                padding: 20px 40px;
+                border-radius: 10px;
+                font-size: 1.5em;
+                z-index: 10000;
+                animation: fadeInOut 1.5s ease-in-out;
+            `;
+            toast.textContent = `已切换到${themeName}主题`;
+
+            if (!document.querySelector('#fadeInOutStyle')) {
+                const style = document.createElement('style');
+                style.id = 'fadeInOutStyle';
+                style.textContent = `
+                    @keyframes fadeInOut {
+                        0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+                        20% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+                        80% { opacity: 1; }
+                        100% { opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 1500);
+        }
+
+        // 页面加载时的初始化
+        window.addEventListener('load', function() {
+            // 预加载背景音乐
+            backgroundMusic = new Audio();
+            backgroundMusic.src = 'https://cdn.pixabay.com/download/audio/2022/10/25/audio_226e2b2316.mp3?filename=guzheng-solo-peaceful-26584.mp3';
+            backgroundMusic.loop = true;
+            backgroundMusic.volume = 0.4;
+
+            // 默认选中第一个游戏模式
+            selectGameMode('pvp');
+
+            // 默认选中简单难度
+            selectDifficulty('easy');
         });
     </script>
 </body>
